@@ -20,7 +20,7 @@ provider "google-beta" {
 
 module "vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 1.0.0"
+  version = "~> 9.1.0"
 
   project_id   = var.project_id[var.envt]
   network_name = format("%s-%s", "custom-network", var.project_id[var.envt])

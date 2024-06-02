@@ -1,10 +1,3 @@
-terraform {
-  backend "gcs" {
-    bucket = "satisfi-prod"
-    prefix = "terraform/state"
-  }
-}
-
 
 provider "google" {
   credentials = file(var.credentials)
@@ -20,7 +13,7 @@ provider "google-beta" {
 
 module "vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 1.0.0"
+  version = "~> 9.1.0"
 
   project_id   = var.project_id
   network_name = "custom-network-${var.project_id}"

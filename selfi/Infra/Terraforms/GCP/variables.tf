@@ -6,7 +6,7 @@ variable "project_id" {
 variable "credentials" {
 
   description = "GCP credentials file"
-  default     = "C:\Users\abamb\Downloads\sl-dev-gmni-prj-8f920a74eb81.json"
+  default     = "C:\\Users\\abamb\\Downloads\\sl-dev-gmni-prj-8f920a74eb81.json"
 }
 
 variable "region" {
