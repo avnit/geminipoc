@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "gvts-prod"
+    bucket = "satisfi-prod"
     prefix = "terraform/state"
   }
 }
@@ -28,7 +28,7 @@ module "vpc" {
 
   subnets = [
     {
-      subnet_name           = "gvts-prod-subnetwork-data"
+      subnet_name           = "satisfi-prod-subnetwork-data"
       subnet_ip             = "10.50.0.0/22"
       subnet_region         = var.region
       subnet_private_access = "true"
@@ -36,7 +36,7 @@ module "vpc" {
       description           = "data "
     },
     {
-      subnet_name           = "gvts-prod-subnetwork-app"
+      subnet_name           = "satisfi-prod-subnetwork-app"
       subnet_ip             = "10.52.0.0/22"
       subnet_region         = var.region
       subnet_private_access = "true"
@@ -44,7 +44,7 @@ module "vpc" {
       description           = "Application "
     },
     {
-      subnet_name           = "gvts-prod-subnetwork-dmz"
+      subnet_name           = "satisfi-prod-subnetwork-dmz"
       subnet_ip             = "10.54.0.0/22"
       subnet_region         = var.region
       subnet_private_access = "true"
@@ -54,9 +54,9 @@ module "vpc" {
   ]
 
   secondary_ranges = {
-    gvts-prod-subnetwork-app = []
-    gvts-prod-subnetwork-data = []
-    gvts-prod-subnetwork-dmz  = []
+    satisfi-prod-subnetwork-app = []
+    satisfi-prod-subnetwork-data = []
+    satisfi-prod-subnetwork-dmz  = []
   }
 }
 

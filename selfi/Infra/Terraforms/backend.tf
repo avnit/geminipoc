@@ -1,6 +1,6 @@
 terraform {
  backend "gcs" {
-   bucket  = "gvts-core"
+   bucket  = "satisfi-core"
    prefix  = "terraform/state"
  }
 }

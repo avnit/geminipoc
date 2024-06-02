@@ -1,9 +1,9 @@
 
 export USER=terraform
-# export TF_VAR_org_id=satisfi-core
+export TF_VAR_org_id=sl-dev-gmni-prj
 # export TF_VAR_billing_account=01CEE9-AC5060-6BA6C2
 export TF_ADMIN=${USER}-admin
-export TF_CREDS=GCP/satisfi-core-fa7cb69d1b74.json
+export TF_CREDS=GCP/sl-dev-gmni-prj-fa7cb69d1b74.json
 
 # gcloud init --console-only 
 
