@@ -1,0 +1,135 @@
+terraform {
+  backend "gcs" {
+    bucket = "gvts-prod"
+    prefix = "terraform/state"
+  }
+}
+
+
+provider "google" {
+  credentials = file(var.credentials)
+  project     = var.project_id
+  region      = var.region
+}
+
+provider "google-beta" {
+  credentials = file(var.credentials)
+  project     = var.project_id
+  region      = var.region
+}
+
+module "vpc" {
+  source  = "terraform-google-modules/network/google"
+  version = "~> 1.0.0"
+
+  project_id   = var.project_id
+  network_name = "custom-network-${var.project_id}"
+  routing_mode = "GLOBAL"
+
+  subnets = [
+    {
+      subnet_name           = "gvts-prod-subnetwork-data"
+      subnet_ip             = "10.50.0.0/22"
+      subnet_region         = var.region
+      subnet_private_access = "true"
+      subnet_flow_logs      = "false"
+      description           = "data "
+    },
+    {
+      subnet_name           = "gvts-prod-subnetwork-app"
+      subnet_ip             = "10.52.0.0/22"
+      subnet_region         = var.region
+      subnet_private_access = "true"
+      subnet_flow_logs      = "false"
+      description           = "Application "
+    },
+    {
+      subnet_name           = "gvts-prod-subnetwork-dmz"
+      subnet_ip             = "10.54.0.0/22"
+      subnet_region         = var.region
+      subnet_private_access = "true"
+      subnet_flow_logs      = "false"
+      description           = "Application "
+    },
+  ]
+
+  secondary_ranges = {
+    gvts-prod-subnetwork-app = []
+    gvts-prod-subnetwork-data = []
+    gvts-prod-subnetwork-dmz  = []
+  }
+}
+
+/*
+locals {
+my_apis_to_enable = ["compute.googleapis.com"]
+}
+
+resource "google_project_service" "my_enabled_api" {
+  project            = "${var.project_id}"
+  count              = "${length(local.my_apis_to_enable)}"
+  service            = "${local.my_apis_to_enable[count.index]}"
+  disable_on_destroy = false
+}
+
+
+resource "google_compute_network" "asb-custom-network" {
+  // depends_on              = ["google_project_service.my_enabled_api"]
+  provider                = google-beta
+  name                    = "custom-network-${var.project_id}"
+  auto_create_subnetworks = "false"
+  routing_mode            = "REGIONAL"
+}
+
+resource "google_compute_subnetwork" "subnetwork" {
+  count = length(var.subnets)
+
+  name                     = var.subnets[count.index]["subnet_name"]
+  ip_cidr_range            = var.subnets[count.index]["subnet_ip"]
+  region                   = var.subnets[count.index]["subnet_region"]
+  private_ip_google_access = lookup(var.subnets[count.index], "subnet_private_access", "false")
+  enable_flow_logs         = lookup(var.subnets[count.index], "subnet_flow_logs", "false")
+  network                  = local.network_self_link
+  project                  = var.project_id
+  secondary_ip_range       = [for i in range(length(contains(keys(var.secondary_ranges), var.subnets[count.index]["subnet_name"]) == true ? var.secondary_ranges[var.subnets[count.index]["subnet_name"]] : [])) : var.secondary_ranges[var.subnets[count.index]["subnet_name"]][i]]
+  description              = lookup(var.subnets[count.index], "description", null)
+  depends_on               = [google_compute_network.network]
+}
+
+
+
+
+resource "google_compute_subnetwork" "asb-subnetwork-application" {
+  depends_on    = [google_compute_network.asb-custom-network]
+  name          = "${var.project_id}-subnetwork-application"
+  project       = var.project_id
+  region        = var.region
+  network       = "custom-network-${var.project_id}"
+  ip_cidr_range = "10.0.0.0/20"
+  private_ip_google_access = "true"
+  secondary_ip_range       =  [
+    
+  ]
+}
+
+resource "google_compute_subnetwork" "asb-subnetwork-data" {
+  name          = "${var.project_id}-subnetwork-data-data"
+  project       = var.project_id
+  region        = var.region
+  network       = "custom-network-${var.project_id}"
+  ip_cidr_range = "10.4.0.0/20"
+  depends_on               = [google_compute_network.asb-custom-network]
+  private_ip_google_access = "true"
+}
+
+resource "google_compute_subnetwork" "asb-subnetwork-dmz" {
+  name          = "${var.project_id}-subnetwork-dmz"
+  project       = var.project_id
+  region        = var.region
+  network       = "custom-network-${var.project_id}"
+  ip_cidr_range = "10.8.0.0/20"
+  depends_on               = [google_compute_network.asb-custom-network]
+  private_ip_google_access = "true"
+}
+
+*/
