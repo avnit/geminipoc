@@ -1,9 +1,9 @@
 
 export USER=terraform
-export TF_VAR_org_id=gvts-core
-export TF_VAR_billing_account=01CEE9-AC5060-6BA6C2
+# export TF_VAR_org_id=satisfi-core
+# export TF_VAR_billing_account=01CEE9-AC5060-6BA6C2
 export TF_ADMIN=${USER}-admin
-export TF_CREDS=GCP/gvts-core-fa7cb69d1b74.json
+export TF_CREDS=GCP/satisfi-core-fa7cb69d1b74.json
 
 # gcloud init --console-only 
 
@@ -47,4 +47,4 @@ gsutil versioning set on gs://${TF_VAR_org_id}
 export GOOGLE_APPLICATION_CREDENTIALS=${TF_CREDS}
 export GOOGLE_PROJECT=${TF_VAR_org_id}
  
-gcloud auth activate-service-account terraform@gvts-core.iam.gserviceaccount.com --key-file=gvts-core-fa7cb69d1b74.json
+gcloud auth activate-service-account terraform@satisfi-core.iam.gserviceaccount.com --key-file=satisfi-core-fa7cb69d1b74.json
