@@ -23,13 +23,13 @@ gcloud services enable cloudbilling.googleapis.com
 gcloud services enable iam.googleapis.com
 gcloud services enable compute.googleapis.com
 gcloud services enable serviceusage.googleapis.com
+gclous services enable aiplatform.googleapis.com
  
 # Add the service layer permission 
  
 echo "add service layer permissions gcloud organizations add-iam-policy-binding ${TF_VAR_org_id} --member serviceAccount:terraform@${TF_VAR_org_id}.iam.gserviceaccount.com --role roles/resourcemanager.projectCreator"
 # gcloud organizations add-iam-policy-binding ${TF_VAR_org_id} --member serviceAccount:terraform@${TF_VAR_org_id}.iam.gserviceaccount.com --role roles/resourcemanager.projectCreator
- 
-# gcloud organizations add-iam-policy-binding ${TF_VAR_org_id} --member serviceAccount:terraform@${TF_VAR_org_id}.iam.gserviceaccount.com --role roles/billing.user
+gcloud organizations add-iam-policy-binding ${TF_VAR_org_id} --member serviceAccount:terraform@${TF_VAR_org_id}.iam.gserviceaccount.com --role roles/owner
 
 echo "gsutil mb -p ${TF_VAR_org_id} gs://${TF_VAR_org_id}"
 gsutil mb -p ${TF_VAR_org_id} gs://${TF_VAR_org_id}
