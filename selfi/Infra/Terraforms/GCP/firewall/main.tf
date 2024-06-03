@@ -1,9 +1,10 @@
 terraform {
  backend "gcs" {
-   bucket  = "astrologyash"
+   bucket  = "satisfi-core"
    prefix  = "terraform/state/firewall"
  }
 }
+
 
 provider "google" {
   credentials = "${file(var.credentials)}"
@@ -25,14 +26,13 @@ firewall-ingress-allow-http-to-priv    = "${var.vpc_name}-ingress-allow-http-to-
 firewall-ingress-deny-all              = "${var.vpc_name}-ingress-deny-all"
 }
 resource "google_compute_firewall" "global-firewall-egress-allow-http-any-to-any" {
-  provider           = "google-beta"                                          # Required for enabling logging (enable_logging = true)
   name               = "${local.firewall-egress-allow-https-any-to-any}"
   description        = "FASM-ID : 2429/2431 - VPC allow HTTPS egress traffic"
   project            = "${var.project_id}"
   network            = "${var.vpc_name}"
   destination_ranges = ["0.0.0.0/0"]
   direction          = "EGRESS"
-  enable_logging     = true                                                   # Feature in Beta (google-beta provider is required)
+  enable_logging     = true                                               
   priority           = "30000"
 
   allow {
@@ -42,7 +42,6 @@ resource "google_compute_firewall" "global-firewall-egress-allow-http-any-to-any
 }
 
 resource "google_compute_firewall" "global-firewall-egress-deny-all" {
-  provider           = "google-beta"                       # Required for enabling logging (enable_logging = true)
   name               = "${local.firewall-egress-deny-all}"
   description        = "VPC deny egress All"
   project            = "${var.project_id}"
@@ -58,7 +57,6 @@ resource "google_compute_firewall" "global-firewall-egress-deny-all" {
 }
 
 resource "google_compute_firewall" "global-firewall-ingress-allow-http-any-to-public" {
-  provider       = "google-beta"                                                             # Required for enabling logging (enable_logging = true)
   name           = "${local.firewall-ingress-allow-http-any-to-pub}"
   description    = "FASM-ID : 2548/2549 - VPC allow HTTP ingress traffic from Any to Public"
   project        = "${var.project_id}"
@@ -76,7 +74,6 @@ resource "google_compute_firewall" "global-firewall-ingress-allow-http-any-to-pu
 }
 
 resource "google_compute_firewall" "global-firewall-ingress-allow-http-to-private" {
-  provider       = "google-beta"                                                                         # Required for enabling logging (enable_logging = true)
   name           = "${local.firewall-ingress-allow-http-to-priv}"
   description    = "FASM-ID : 2548/2549 - VPC allow HTTPS ingress traffic from Public/Private to Public"
   project        = "${var.project_id}"
@@ -94,7 +91,6 @@ resource "google_compute_firewall" "global-firewall-ingress-allow-http-to-privat
 }
 
 resource "google_compute_firewall" "global-firewall-ingress-deny-all" {
-  provider       = "google-beta"                        # Required for enabling logging (enable_logging = true)
   name           = "${local.firewall-ingress-deny-all}"
   description    = "VPC deny ingress All"
   project        = "${var.project_id}"

@@ -48,3 +48,8 @@ Thumbs.db
 *.mov
 *.wmv
 
+selfi/Infra/Terraforms/GCP/.terraform/terraform.tfstate
+selfi/Infra/Terraforms/GCP/firewall/.terraform.lock.hcl
+selfi/Infra/Terraforms/GCP/firewall/.terraform/terraform.tfstate
+selfi/Infra/Terraforms/GCP/firewall/.terraform/providers/registry.terraform.io/hashicorp/google/5.31.1/windows_386/LICENSE.txt
+selfi/Infra/Terraforms/GCP/firewall/.terraform/providers/registry.terraform.io/hashicorp/google-beta/5.31.1/windows_386/LICENSE.txt

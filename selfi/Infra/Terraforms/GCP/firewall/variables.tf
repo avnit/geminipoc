@@ -1,19 +1,21 @@
-variable "project_id" {
-  type        = "string"
-  description = "the project id of the project"
-  default     = "astrologyash"
-}
-variable "credentials" {
-  type        = "string"
-  description = "GCP credentials file"
-  default     = "astrologyash-fa7cb69d1b74.json"
-}
-variable "region" {
-  type        = "string"
-  description = "only run in one region for now for testing"
-  default     = "us-east1"
-}
+
 variable "vpc_name" {
-  type        = "string"
-  default     = "custom-network-astrologyash"
+  type        = string
+  default     = "custom-network-sl-dev-gmni-prj"
+}
+variable "project_id" {
+  description = "the project id of the project"
+  default     = "sl-dev-gmni-prj"
+}
+
+variable "credentials" {
+
+  description = "GCP credentials file"
+  default     = "C:\\Users\\abamb\\Downloads\\sl-dev-gmni-prj-8f920a74eb81.json"
+}
+
+variable "region" {
+
+  description = "only run in one region for now for testing"
+  default     = "us-central1"
 }
