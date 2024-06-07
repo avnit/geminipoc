@@ -11,30 +11,27 @@ provider "google" {
   region      = var.region
 }
 
-provider "google-beta" {
-  credentials = file(var.credentials[var.envt])
-  project     = var.project_id[var.envt]
-  region      = var.region
-}
+/*
 
 data "google_client_config" "default" {
 }
 
+
 data "google_compute_subnetwork" "subnetwork" {
-  name    = format ("%s-%s",var.project_id[var.envt],"subnetwork-app")
+  name    = "satisfi-prod-subnetwork-app"
   project = var.project_id[var.envt]
   region  = var.region
 }
+*/
 
 resource "google_container_cluster" "primary" {
-  provider = "google-beta"
   name                     = var.gke_cluster_name[var.envt]
   location                 = var.zone
   remove_default_node_pool = true
   initial_node_count       = 1
   project = var.project_id[var.envt]
-  network  = format("%s-%s", "custom-network", var.project_id[var.envt])
-  subnetwork = format ("%s-%s",var.project_id[var.envt],"subnetwork-app")
+  network  = "custom-network-sl-dev-gmni-prj"
+  subnetwork = "satisfi-prod-subnetwork-app"
   master_auth {
     client_certificate_config {
       issue_client_certificate = false
@@ -54,9 +51,6 @@ resource "google_container_cluster" "primary" {
       disabled = false
     }
     horizontal_pod_autoscaling {
-      disabled = false
-    }
-    istio_config {
       disabled = false
     }
   }

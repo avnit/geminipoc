@@ -1,5 +1,5 @@
 variable "envt" {
-  type = "string"
+  type = string
   default = "dev"
 }
 
@@ -39,7 +39,7 @@ variable "vpc_name" {
   default =  { 
    "prod" =  "custom-network-satisfi-prod"
    "stage" = "custom-network-satisfi-core"
-   "core" = "custom-network-satisfi-core"
+   "dev" = "custom-network-sl-dev-gmni-prj"
   }
 }
 
@@ -48,6 +48,7 @@ variable "gke_cluster_name" {
   default = {
     "prod"  = "gke-cluster-name"
     "core" = "gke-cluster-core"
+    "dev" = "gke-cluster-dev"
 }
 }
 variable "ip_range_pods" {
@@ -61,10 +62,10 @@ variable "ip_range_services" {
 }
 
 variable "gke_minimal_worknode_count" { 
-  type = "string"
+  type = string
   default = "1" 
 }
 variable "gke_maximum_worknode_count" { 
-  type = "string" 
+  type = string 
   default = "5"
 }
