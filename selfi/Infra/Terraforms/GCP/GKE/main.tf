@@ -1,8 +1,8 @@
 terraform {
-  backend "gcs" {
-    bucket = "gvts-core"
-    prefix = "terraform/state/gke"
-  }
+ backend "gcs" {
+   bucket  = "satisfi-core"
+   prefix  = "terraform/state/GKE"
+ }
 }
 
 provider "google" {
