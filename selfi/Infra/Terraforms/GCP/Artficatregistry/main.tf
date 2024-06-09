@@ -2,9 +2,9 @@
 resource "google_artifact_registry_repository" "artifactory_repository" {
   project       = var.project_id
   location      = var.region
-  repository_id = "cloud-function-artifact-regsitry"
+  repository_id = "cloud-run-artifact-regsitry"
   format        = "DOCKER"
-  description   = "cloud-function repository repository "
+  description   = "cloud-run repository repository "
 }
 
 
