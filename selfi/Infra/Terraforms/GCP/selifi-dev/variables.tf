@@ -7,9 +7,9 @@ variable "project_id" {
   type        = "map"
   description = "the project id of the project"
   default     = {
-    "stage" = "gvts-stage"
-    "dev" = "gvts-dev"
-    "prod" = "gvts-prod"
+    "stage" = "satisfi-stage"
+    "dev" = "satisfi-dev"
+    "prod" = "satisfi-prod"
   }
 }
 
@@ -17,9 +17,9 @@ variable "credentials" {
   type        = "map"
   description = "GCP credentials file"
   default     = {
-    "stage" = "../gvts-stage-fa7cb69d1b74.json"
-    "dev"   = "../gvts-dev-fa7cb69d1b74.json"
-    "prod"  = "../gvts-prod-fa7cb69d1b74.json"
+    "stage" = "../satisfi-stage-fa7cb69d1b74.json"
+    "dev"   = "../satisfi-dev-fa7cb69d1b74.json"
+    "prod"  = "../satisfi-prod-fa7cb69d1b74.json"
 }
 }
 variable "region" {
@@ -30,9 +30,9 @@ variable "region" {
 variable "vpc_name" {
   type = "map"
   default = { 
-    "stage" = "custom-network-gvts-stage"
-    "prod" = "custom-network-gvts-prod"
-    "dev" = "custom-network-gvts-dev" 
+    "stage" = "custom-network-satisfi-stage"
+    "prod" = "custom-network-satisfi-prod"
+    "dev" = "custom-network-satisfi-dev" 
 }
 
 variable "gke_cluster_name" {
@@ -65,7 +65,7 @@ variable "target_port" {
 
 variable "application_image" {
   description = "The name of application"
-  default     = "gcr.io/gvts-stage/rivvit:build-5"
+  default     = "gcr.io/satisfi-stage/rivvit:build-5"
 }
 
 variable "container_port" {
