@@ -33,9 +33,9 @@ variable "vpc_name" {
     "stage" = "custom-network-satisfi-stage"
     "prod" = "custom-network-satisfi-prod"
     "dev" = "custom-network-satisfi-dev" 
+  }
 }
-
-variable "gke_cluster_name" {
+variable "cluster_name" {
   default = "gke-cluster-name"
 }
 
@@ -46,8 +46,8 @@ variable "application_name" {
     "stage" = "rivvit-stage-v1"
     "prod" = "rivvit-prod-v1"
     "dev" = "rivvit-dev-v1"
+  }
 }
-
 variable "application_port" {
   description = "The port of application"
   default     = "80"
