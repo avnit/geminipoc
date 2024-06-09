@@ -1,7 +1,7 @@
 terraform {
  backend "gcs" {
    bucket  = "satisfi-core"
-   prefix  = "terraform/state/GKE"
+   prefix  = "terraform/state/GKE-new3"
  }
 }
 
@@ -28,6 +28,7 @@ resource "google_container_cluster" "primary" {
   name                     = var.gke_cluster_name[var.envt]
   location                 = var.zone
   remove_default_node_pool = true
+  deletion_protection = false
   initial_node_count       = 1
   project = var.project_id[var.envt]
   network  = "custom-network-sl-dev-gmni-prj"
@@ -38,13 +39,13 @@ resource "google_container_cluster" "primary" {
     }
   }
   ip_allocation_policy {
-    cluster_ipv4_cidr_block = "10.59.0.0/20"
-    services_ipv4_cidr_block = "10.57.0.0/20"
+    cluster_ipv4_cidr_block = "10.51.0.0/20"
+    services_ipv4_cidr_block = "10.51.16.0/20"
   }
   private_cluster_config {
     enable_private_endpoint = false
     enable_private_nodes    = true
-    master_ipv4_cidr_block  = "10.55.0.0/28"
+    master_ipv4_cidr_block  = "10.51.32.0/28"
   }
   addons_config {
     http_load_balancing {

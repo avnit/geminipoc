@@ -48,7 +48,7 @@ variable "gke_cluster_name" {
   default = {
     "prod"  = "gke-cluster-name"
     "core" = "gke-cluster-core"
-    "dev" = "gke-cluster-dev"
+    "dev" = "gke-cluster-dev1"
 }
 }
 variable "ip_range_pods" {
