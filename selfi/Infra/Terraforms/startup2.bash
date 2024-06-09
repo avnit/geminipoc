@@ -23,7 +23,8 @@ gcloud services enable cloudbilling.googleapis.com
 gcloud services enable iam.googleapis.com
 gcloud services enable compute.googleapis.com
 gcloud services enable serviceusage.googleapis.com
-gclous services enable aiplatform.googleapis.com
+gcloud services enable aiplatform.googleapis.com
+gcloud services enable artifactregistry.googleapis.com
  
 # Add the service layer permission 
  
