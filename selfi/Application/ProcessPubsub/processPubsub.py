@@ -28,10 +28,6 @@ def embed_text(
     embeddings = model.get_embeddings(inputs, **kwargs)
     return [embedding.values for embedding in embeddings]
 
-
-
-
-
 def process_pubsub_message(event, context):
     """Background Cloud Function to be triggered by Pub/Sub.
     Args:
