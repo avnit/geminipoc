@@ -1,6 +1,19 @@
+terraform {
+ backend "gcs" {
+   bucket  = "satisfi-core"
+   prefix  = "terraform/state/artifact"
+ }
+}
+
+provider "google" {
+  credentials = file(var.credentials[var.envt])
+  project     = var.project_id[var.envt]
+  region      = var.region
+}
+
 # Create an Artifactory repository
 resource "google_artifact_registry_repository" "artifactory_repository" {
-  project       = var.project_id
+  project       = var.project_id[var.envt]
   location      = var.region
   repository_id = "cloud-run-artifact-regsitry"
   format        = "DOCKER"
@@ -13,7 +26,7 @@ resource "google_artifact_registry_repository_iam_binding" "cloud_function_iam_b
   repository = google_artifact_registry_repository.artifactory_repository.name
   location   = var.region
   role       = "roles/artifactregistry.writer"
-  project    = var.project_id
+  project    = var.[var.envt]
 
   members = [
     "serviceAccount:${google_cloudfunctions_function.Cloud_function.service_account_email}"
