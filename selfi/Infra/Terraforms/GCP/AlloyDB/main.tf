@@ -65,3 +65,22 @@ data "google_project" "project" {}
 resource "google_compute_network" "default" {
   name = "alloydb-cluster-full"
 }
+
+resource "google_alloydb_instance" "alloydb" {
+    cluster = google_alloydb_cluster.full.cluster_id
+    instance_id = "alloydb-${random_uuid.name_seed.result}"
+    availability_type = "ZONAL"
+    instance_type = "PRIMARY"
+
+    machine_config {
+      cpu_count = var.alloydb_cpu_count
+    }
+
+    query_insights_config {
+      
+      query_plans_per_minute = 20
+      query_string_length = 4500
+      record_application_tags =   true
+      record_client_address = true
+    }
+}

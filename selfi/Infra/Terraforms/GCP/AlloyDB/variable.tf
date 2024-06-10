@@ -28,3 +28,8 @@ variable "region" {
   description = "only run in one region for now for testing"
   default     = "us-central1"
 }
+
+variable "alloydb_cpu_count" {
+    default = 8
+}
+
