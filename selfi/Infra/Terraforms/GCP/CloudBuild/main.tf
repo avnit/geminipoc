@@ -17,7 +17,7 @@ resource "google_cloudbuild_trigger" "build-trigger" {
 
   trigger_template {
     branch_name = "main"
-    repo_name   = "my-repo"
+    repo_name   = "us-docker.pkg.dev/sl-dev-gmni-prj/genai-repo/pubsubprocessing"
   }
 
   build {
