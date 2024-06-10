@@ -26,7 +26,7 @@ resource "google_artifact_registry_repository_iam_binding" "cloud_function_iam_b
   repository = google_artifact_registry_repository.artifactory_repository.name
   location   = var.region
   role       = "roles/artifactregistry.writer"
-  project    = var.[var.envt]
+  project    = var.project_id[var.envt]
 
   members = [
     "serviceAccount:${google_cloudfunctions_function.Cloud_function.service_account_email}"
