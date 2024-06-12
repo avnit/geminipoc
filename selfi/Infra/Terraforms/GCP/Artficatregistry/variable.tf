@@ -10,7 +10,7 @@ variable "project_id" {
     "prod" = "satisfi-prod"
     "stage" = "satisfi-stage"
     "dev" = "sl-dev-gmni-prj"
-}+++
+}
 }
 
 variable "credentials" {
