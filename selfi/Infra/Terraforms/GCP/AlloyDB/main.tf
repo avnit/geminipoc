@@ -19,11 +19,10 @@ data "google_compute_network" "vpc" {
 }
 
 resource "google_alloydb_cluster" "full" {
-  cluster_id = "alloydb-cluster-${random_uuid.name_seed.result}"
+  cluster_id = "alloydb-cluster-full"
   location   = var.region
   network_config {
      network  = "projects/${var.project_id[var.envt]}/global/networks/${var.vpc_name[var.envt]}"
-    # subnetwork = "satisfi-prod-subnetwork-data"
   }
   database_version = "POSTGRES_15"
 
@@ -74,7 +73,7 @@ resource "google_compute_network" "default" {
 
 resource "google_alloydb_instance" "alloydb" {
     cluster = google_alloydb_cluster.full.cluster_id
-    instance_id = "alloydb-${random_uuid.name_seed.result}"
+    instance_id = "alloydb-instance"
     availability_type = "ZONAL"
     instance_type = "PRIMARY"
 

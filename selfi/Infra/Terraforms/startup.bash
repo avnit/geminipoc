@@ -36,6 +36,7 @@ gcloud services enable serviceusage.googleapis.com
 gcloud services enable networkservices.googleapis.com
 gcloud services enable aiplatform.googleapis.com
 gcloud services enable servicenetworking.googleapis.com
+gcloud services enable alloydb.googleapis.com
  
 # Add the service layer permission 
  
