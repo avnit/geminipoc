@@ -33,3 +33,31 @@ variable "alloydb_cpu_count" {
     default = 8
 }
 
+variable "vpc_name" {
+  type = map 
+  description = "VPC Networks"
+  default =  {
+    "dev" = "custom-network-sl-dev-gmni-prj"
+  }
+  
+}
+
+variable "alloydb_user" {
+  type = map
+  description = "Initial user"
+  default = { 
+    "dev" = "alloy_user_dev"
+    "stage" = "alloy_user_stage"
+    "prod" = "alloy_user_prod"
+  }  
+}
+
+# TODO Avnit to move the passwords into KMS and have a data object to reference it. (Customer managed encryption keys)
+variable "alloydb_password" {
+  type = map
+  description = "Initial password"
+  default = {
+    "dev" = "devpassword"
+    "stage" = "stagepassword"
+  }  
+}
