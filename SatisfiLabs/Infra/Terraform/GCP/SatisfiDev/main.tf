@@ -1,3 +1,4 @@
+# This code will be use to deploy application to GKE 
 terraform {
   backend "gcs" {
     bucket = "satisfi-stage"
