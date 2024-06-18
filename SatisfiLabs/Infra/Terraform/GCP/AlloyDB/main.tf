@@ -71,11 +71,13 @@ resource "google_compute_network" "default" {
   name = "satisfi-prod-subnetwork-data-alloydb"
 }
 
+
+
 resource "google_alloydb_instance" "alloydb" {
-    cluster = google_alloydb_cluster.full.cluster_id
-    instance_id = "alloydb-instance"
-    availability_type = "ZONAL"
+    cluster = "alloydb-cluster-full"
+    instance_id = "alloydb-instance-${random_uuid.name_seed.result}"
     instance_type = "PRIMARY"
+
 
     machine_config {
       cpu_count = var.alloydb_cpu_count
@@ -90,15 +92,15 @@ resource "google_alloydb_instance" "alloydb" {
     }
 
     // Turn off SSL Requirements for troubleshooting purpose. Don't do it in prod. 
-    client_connection_config {
-      ssl_config {
-        ssl_mode = "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
-      }
-    }
+    # client_connection_config {
+    #   ssl_config {
+    #     ssl_mode = "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    #   }
+    # }
 
     database_flags = {
       "google_columnar_engine.enabled" = "on"
-      "google_columnar_engine.memory_size_in_mb" = 30720
+      "google_columnar_engine.memory_size_in_mb" = 15625
       "google_columnar_engine.enable_auto_columarization" = "off"
       "google_columnar_engine.enable_vectorized_join" = "on"
     }
