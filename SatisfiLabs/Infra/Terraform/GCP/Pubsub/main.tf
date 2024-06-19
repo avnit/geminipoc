@@ -6,7 +6,11 @@ resource "google_pubsub_schema" "incoming-message" {
 
 resource "google_pubsub_topic" "example" {
   name = "incoming-message-topic"
-
+  # Need to add KMS Key 
+  kms_key_name = ""
+  labels = {
+    "app" = "ragllm" 
+  }
   depends_on = [google_pubsub_schema.incoming-message]
   schema_settings {
     schema = "projects/my-project-name/schemas/example"
