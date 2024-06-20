@@ -37,6 +37,9 @@ gcloud services enable networkservices.googleapis.com
 gcloud services enable aiplatform.googleapis.com
 gcloud services enable servicenetworking.googleapis.com
 gcloud services enable alloydb.googleapis.com
+gcloud services enable run.googleapis.com
+gcloud services enable artifactregistry.googleapis.com
+gcloud services enable eventarc.googleapis.com
  
 # Add the service layer permission 
  
