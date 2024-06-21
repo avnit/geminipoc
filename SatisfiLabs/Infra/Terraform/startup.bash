@@ -40,6 +40,7 @@ gcloud services enable alloydb.googleapis.com
 gcloud services enable run.googleapis.com
 gcloud services enable artifactregistry.googleapis.com
 gcloud services enable eventarc.googleapis.com
+gclod services enable cloudkms.googleapis.com
  
 # Add the service layer permission 
  
