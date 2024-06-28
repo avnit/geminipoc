@@ -1,8 +1,14 @@
 terraform {
- backend "gcs" {
-   bucket  = "satisfi-core"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0" 
+    }
+  }
+  backend "gcs" {
+    bucket  = "satisfi-core"
    prefix  = "terraform/state/artifact"
- }
+  }
 }
 
 provider "google" {
@@ -11,94 +17,58 @@ provider "google" {
   region      = var.region
 }
 
-resource "google_cloudbuild_trigger" "build-trigger" {
-  name = "my-trigger"
+
+# Cloud Build Trigger (build_trigger.tf)
+resource "google_cloudbuild_trigger" "terraform_trigger" {
+  name        = "terraform-apply-trigger"
+  description = "Trigger Terraform apply on code changes"
   location = "global"
 
+  # Trigger on changes to the Terraform configuration in a Git repository
   trigger_template {
+    # this should be bitbucket 
     branch_name = "main"
     repo_name   = "us-docker.pkg.dev/sl-dev-gmni-prj/genai-repo/pubsubprocessing"
+ 
   }
 
   build {
+    # Steps to initialize, plan, and apply Terraform
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
-      timeout = "120s"
-      secret_env = ["MY_SECRET"]
+      name       = "terraform/gcloud"
+      args       = ["init"]
+      entrypoint = "terraform"
     }
-
     step {
-      name   = "ubuntu"
-      script = "echo hello" # using script field
+      name       = "terraform/gcloud"
+      args       = ["plan"]
+      entrypoint = "terraform"
     }
-
-    source {
-      storage_source {
-        bucket = "mybucket"
-        object = "source_code.tar.gz"
-      }
-    }
-    tags = ["build", "newFeature"]
-    substitutions = {
-      _FOO = "bar"
-      _BAZ = "qux"
-    }
-    queue_ttl = "20s"
-    logs_bucket = "gs://mybucket/logs"
-    secret {
-      kms_key_name = "projects/myProject/locations/global/keyRings/keyring-name/cryptoKeys/key-name"
-      secret_env = {
-        PASSWORD = "ZW5jcnlwdGVkLXBhc3N3b3JkCg=="
-      }
-    }
-    available_secrets {
-      secret_manager {
-        env          = "MY_SECRET"
-        version_name = "projects/myProject/secrets/mySecret/versions/latest"
-      }
-    }
-    artifacts {
-      images = ["gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA"]
-      objects {
-        location = "gs://bucket/path/to/somewhere/"
-        paths = ["path"]
-      }
-
-      npm_packages {
-        package_path = "package.json"
-        repository   = "https://us-west1-npm.pkg.dev/myProject/quickstart-nodejs-repo"
-      }
-
-      python_packages {
-        paths      = ["dist/*"]
-        repository = "https://us-west1-python.pkg.dev/myProject/quickstart-python-repo"
-      }
-
-      maven_artifacts {
-        repository  = "https://us-west1-maven.pkg.dev/myProject/quickstart-java-repo"
-        path        = "/workspace/my-app/target/my-app-1.0.SNAPSHOT.jar"
-        artifact_id = "my-app"
-        group_id    = "com.mycompany.app"
-        version     = "1.0"
-      }
-    }
-    options {
-      source_provenance_hash = ["MD5"]
-      requested_verify_option = "VERIFIED"
-      machine_type = "N1_HIGHCPU_8"
-      disk_size_gb = 100
-      substitution_option = "ALLOW_LOOSE"
-      dynamic_substitutions = true
-      log_streaming_option = "STREAM_OFF"
-      worker_pool = "pool"
-      logging = "LEGACY"
-      env = ["ekey = evalue"]
-      secret_env = ["secretenv = svalue"]
-      volumes {
-        name = "v1"
-        path = "v1"
-      }
+    step {
+      name       = "terraform/gcloud"
+      args       = ["apply", "-auto-approve"]
+      entrypoint = "terraform"
     }
   }
+
+  # (Optional) service_account = google_service_account.cloudbuild_sa.email
+}
+
+# Cloud Function & Pub/Sub (function.tf)
+resource "google_pubsub_topic" "example_topic" {
+  name = "example-topic"
+}
+
+resource "google_pubsub_subscription" "example_subscription" {
+  name  = "example-subscription"
+  topic = google_pubsub_topic.example_topic.name
+
+  # Cloud Function as a push endpoint
+  push_config {
+    push_endpoint = google_cloudfunctions_function.example_function.https_trigger_url
+  }
+}
+
+resource "google_cloudfunctions_function" "example_function" {
+  # ... (Configure your Cloud Function based on the "function.tf" example)
 }
