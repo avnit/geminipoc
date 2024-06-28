@@ -27,8 +27,15 @@ resource "google_cloudbuild_trigger" "terraform_trigger" {
   # Trigger on changes to the Terraform configuration in a Git repository
   trigger_template {
     # this should be bitbucket 
-    branch_name = "main"
-    repo_name   = "us-docker.pkg.dev/sl-dev-gmni-prj/genai-repo/pubsubprocessing"
+    bitbucket {
+      hostUrl = "https://bitbucket.org/satisfi/"
+      project = "GeminiPoC"
+      repository = "GeminiPoC"
+      branch = "^main$"
+      invertRegex = false
+    }
+    #branch_name = "main"
+    #repo_name   = "us-docker.pkg.dev/sl-dev-gmni-prj/genai-repo/pubsubprocessing"
  
   }
 
