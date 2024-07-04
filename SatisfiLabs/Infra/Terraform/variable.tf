@@ -1,4 +1,3 @@
-
 variable "envt" {}
 variable "project_id" {
   type = map
