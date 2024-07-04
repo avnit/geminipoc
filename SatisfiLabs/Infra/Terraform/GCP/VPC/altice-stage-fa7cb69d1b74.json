@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "altice-hackathon-vertex-ai-poc",
+  "private_key_id": "339272b4bafdb03007a199b7ede5ce0a3e4d0508",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDAQqz7HmSw7b9p\nV6AapXhXOiJfX3C84oT49JwYfmbjTQANmlbIPB8Fs56XDydR5otgoDhheuZK9ceP\npP/uGPJUzo9YxmtKTgoUXPvGSAI9QRp0ITGNqoXpkVskrHx0A8RHP+UxV5Q1Xkxc\n2no41i28deQPuclke525A3hfzN4q1yZHF8CMTigB2xdMCHGA3sGn2Er2gDWtGO8i\njpMHmQlWff13NnIxyRAbgB03/gMzFI7ENppqV8+j4/dgymEgac/xKKueWAnz0+aR\nBvG4/2dqo8j9BFXGL3WjRdVeyqnOOnbaxo2y2wh76AFr+2PSFZJo+tgD5DYoioeT\nwb2VR+JjAgMBAAECggEAHw5mLNui/jrZUZCNqeA9c9xN0xlyokBLpH9he59ndU4U\ninNPk2FgItFPS9gZzOQFyEz5Q93Qt3PDkajgjTsgYfdKi9eOsIkHSHTLWCMnoXIT\nw4XdIE+BpCdju/p/e/9jxEfw+NXMeLZ2dVqhUERgokcU2Ol05l4Fg0OpPShgYYuU\nVjYk45mn2+MFw8H7INhBNrGuep3DWO8txKmuFzDA/PC+HNRX+HYkm6myAuO40G6l\nObCnsAWv1Uj7q4pS5q67lOjtdqh17xOE2YJkO1KGXgTb7IZX+p+VbQ6M2mXsDRFV\nqbmEh3+XbAemxUbjSf0f+UtyplYwmlimKNHI5hfcuQKBgQDtLOjAJL6OdbReFLLh\nf1HZoSJqVuFUjvWrX0LRPCGM0o0TcVR9KBD0GwzRoDpoOXzLAFZ6tJERyHuqKPAc\n8dbGwdPITtlt+HLSR+GAU2gWzDuJjAPUHJuck1QK4HYu6KG8rJLZis13zZT4BvQ8\nzYlPx0gUikwqEk3Xd6qlGjxbpQKBgQDPhSdXawF8ijxVqeYus4/Wyy02RwcQnFTe\nkpURKeTE5l5q5lzAMlm3gWwjHzsQbH7Ct5oXZCLxiPFZ0g3YHKPcOQxt5GTPDLcE\nJ9NVtQkEyV+VfP1mJNo5iJDENRZ5bAgkDGIH0XIh6Wx3CcG6XMdIHF8/eFDv5teR\n+8zlRA+HZwKBgAdeQczWV2UtmvDhS71dqzlLnDoZgN6TomY0i2rcp14snF1iQ/Gv\ncPdkb72DcM0UHCBiXk1plqgqxky/ANalXLrIAsBSUsbr1QVbXlISRUWQCrl3NBc+\n3Ea8/PtphcJnT78AzX8cpM14AYzDCotpBz8HPeIFeeBEuU5cVVzTt9RRAoGAayzS\nt7Q9DUv7gyZ/CgmUtRMz439lZ6/FqTm9ISMo0oRDqSQWLPEUItEFv1Hm2EGgagIW\n5BPEdEgMlh4FJmMMQbV49NxrL//aGZxT6kTYRo+V/QeTe4h26BXe5magl88ymSOI\nEY+bSWZbrVLtqck25sg4bPg/nNb06KFKHfI7rusCgYAmZTixZHubzt8pr11cNmpn\nZ8VVwc9n17cixcYlDwoijL3syBp8/d1gKyys4YSRpGlHo9vmjfi1Kf6yqZZJuaFc\nYn9NtOt7yQtT+qkz86nqMa/cfbii2x7OqFBlYiAjWftOSCvnTSNPP8XUNlb3C2v1\ndUrOg1h+MqH0ZbCkaFJ1YA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "terraform@altice-hackathon-vertex-ai-poc.iam.gserviceaccount.com",
+  "client_id": "101719743208834675964",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/terraform%40altice-hackathon-vertex-ai-poc.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
