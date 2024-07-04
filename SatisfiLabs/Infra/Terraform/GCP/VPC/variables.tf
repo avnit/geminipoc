@@ -1,11 +1,12 @@
-variable "envt" {}
+variable "envt" {
+    type = string
+    default = "dev"
+}
 variable "project_id" {
   type = map
   description = "the project id of the project"
   default     =  { 
-    "prod" = "gvts-prod"
-    "stage" = "gvts-stage"
-    "core" = "gvts-core" 
+    "dev" = "altice-hackathon-vertex-ai-poc"
 }
 }
 
@@ -13,10 +14,7 @@ variable "credentials" {
   type = map 
   description = "GCP credentials file"
   default     = { 
-    "prod" = "../gvts-prod-fa7cb69d1b74.json"
-    "core" = "../gvts-core-fa7cb69d1b74.json"
-    "stage" = "../gvts-stage-fa7cb69d1b74.json"
-    "dev"   = "../gvts-dev-fa7cb69d1b74.json"
+    "dev"   = "altice-stage-fa7cb69d1b74.json"
 }
 }
 
