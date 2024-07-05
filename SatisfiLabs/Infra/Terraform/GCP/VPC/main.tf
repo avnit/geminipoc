@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "altice-core" 
+    bucket = "satisfi-core" 
     prefix = "terraform/state"
   }
 }
@@ -28,7 +28,7 @@ module "vpc" {
 
   subnets = [
     {
-      subnet_name           = "altice-core-subnetwork-data"
+      subnet_name           = "satisfi-core-subnetwork-data"
       subnet_ip             = "10.60.0.0/22"
       subnet_region         = var.region
       subnet_private_access = "true"
@@ -36,7 +36,7 @@ module "vpc" {
       description           = "data "
     },
     {
-      subnet_name           = "altice-core-subnetwork-app"
+      subnet_name           = "satisfi-core-subnetwork-app"
       subnet_ip             = "10.62.0.0/22"
       subnet_region         = var.region
       subnet_private_access = "true"
@@ -44,7 +44,7 @@ module "vpc" {
       description           = "Application "
     },
     {
-      subnet_name           = "altice-core-subnetwork-dmz"
+      subnet_name           = "satisfi-core-subnetwork-dmz"
       subnet_ip             = "10.64.0.0/22"
       subnet_region         = var.region
       subnet_private_access = "true"
@@ -54,9 +54,9 @@ module "vpc" {
   ]
 
   secondary_ranges = {
-    altice-core-subnetwork-app = []
-    altice-core-subnetwork-data = []
-    altice-core-subnetwork-dmz  = []
+    satisfi-core-subnetwork-app = []
+    satisfi-core-subnetwork-data = []
+    satisfi-core-subnetwork-dmz  = []
   }
 }
 
@@ -73,7 +73,7 @@ resource "google_project_service" "my_enabled_api" {
 }
 
 
-resource "google_compute_network" "altice-custom-network" {
+resource "google_compute_network" "satisfi-custom-network" {
   // depends_on              = ["google_project_service.my_enabled_api"]
   provider                = google-beta
   name                    = "custom-network-${var.project_id[var.envt]}"
@@ -99,8 +99,8 @@ resource "google_compute_subnetwork" "subnetwork" {
 
 
 
-resource "google_compute_subnetwork" "altice-subnetwork-application" {
-  depends_on    = [google_compute_network.altice-custom-network]
+resource "google_compute_subnetwork" "satisfi-subnetwork-application" {
+  depends_on    = [google_compute_network.satisfi-custom-network]
   name          = "${var.project_id[var.envt]}-subnetwork-application"
   project       = var.project_id[var.envt]
   region        = var.region
@@ -112,23 +112,23 @@ resource "google_compute_subnetwork" "altice-subnetwork-application" {
   ]
 }
 
-resource "google_compute_subnetwork" "altice-subnetwork-data" {
+resource "google_compute_subnetwork" "satisfi-subnetwork-data" {
   name          = "${var.project_id[var.envt]}-subnetwork-data-data"
   project       = var.project_id[var.envt]
   region        = var.region
   network       = "custom-network-${var.project_id[var.envt]}"
   ip_cidr_range = "10.4.0.0/20"
-  depends_on               = [google_compute_network.altice-custom-network]
+  depends_on               = [google_compute_network.satisfi-custom-network]
   private_ip_google_access = "true"
 }
 
-resource "google_compute_subnetwork" "altice-subnetwork-dmz" {
+resource "google_compute_subnetwork" "satisfi-subnetwork-dmz" {
   name          = "${var.project_id[var.envt]}-subnetwork-dmz"
   project       = var.project_id[var.envt]
   region        = var.region
   network       = "custom-network-${var.project_id[var.envt]}"
   ip_cidr_range = "10.8.0.0/20"
-  depends_on               = [google_compute_network.altice-custom-network]
+  depends_on               = [google_compute_network.satisfi-custom-network]
   private_ip_google_access = "true"
 }
 
