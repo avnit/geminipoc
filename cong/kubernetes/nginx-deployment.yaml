@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx1
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8181
+      targetPort: 8181
+      name: http
+    - port: 8443
+      targetPort: 8443
+      name: https
+  selector:
+    app: nginx1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx1
+  template:
+    metadata:
+      labels:
+        app: nginx1
+    spec:
+      containers:
+        - name: nginx1
+          image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx:1.26.3
+          ports:
+            - containerPort: 8181
+            - containerPort: 8443
+          env:
+            - name: PROXY_PORT
+              value: "8181"
+            - name: CONSUL_HOST
+              value: "consul1"
+          volumeMounts:
+            - name: nginx-config-template
+              mountPath: /etc/consul-templates/nginx.conf.ctmpl
+              subPath: nginx.conf.ctmpl
+            - name: nginx-certs
+              mountPath: /self-ssl
+      volumes:
+        - name: nginx-config-template
+          configMap:
+            name: nginx-config-template
+        - name: nginx-certs
+          secret:
+            secretName: nginx-certs
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config-template
+data:
+  nginx.conf.ctmpl: |
+    # Content of ./resources/consul-templates/nginx.conf.ctmpl goes here
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nginx-certs
+type: kubernetes.io/tls
+data:
+  tls.crt: # base64 encoded cert
+  tls.key: # base64 encoded key

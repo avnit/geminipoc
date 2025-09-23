@@ -1,0 +1,272 @@
+{{- if .Values.garbageCollector.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-garbage-collector
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: garbage-collector
+spec:
+  ports:
+    - port: 10127
+      targetPort: 10127
+  selector:
+    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: garbage-collector
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-garbage-collector
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: garbage-collector
+spec:
+  replicas: {{ .Values.garbageCollector.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: garbage-collector
+  template:
+    metadata:
+      labels:
+        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: garbage-collector
+    spec:
+      containers:
+        - name: garbage-collector
+          image: "{{ .Values.garbageCollector.image.repository }}:{{ .Values.garbageCollector.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.garbageCollector.image.pullPolicy }}
+          command: ["bin/garbage-collector", "-Dmaana.tableGarbageCollector.pollingInterval=4m", "-Dmaana.kindGarbageCollector.pollingInterval=4m", "-Dlog4j.configurationFile=/opt/log4j2.xml", "-Dmaana.jobLogGarbageCollector.pollingInterval=6m", "-Dmaana.jobLogGarbageCollector.maxJobLogAge=15m", "-Dmaana.metaIndexGarbageCollector.pollingInterval=4h", "-Dmaana.jobGarbageCollector.maxJobAge=15m", "-Dmaana.jobGarbageCollector.pollingInterval=5m"]
+          ports:
+            - containerPort: 10127
+          env:
+            - name: CONSUL_HOST
+              value: "{{ include "cong-chart.fullname" . }}-consul"
+          volumeMounts:
+            - name: maana-share
+              mountPath: /maana_share
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: maana-share
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-maana-share-pvc
+        - name: log4j-config
+          configMap:
+            name: {{ include "cong-chart.fullname" . }}-log4j-config
+{{- end }}
+
+{{- if .Values.applicationService.enabled -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-application-service
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: application-service
+spec:
+  ports:
+    - port: 10121
+  selector:
+    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: application-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-application-service
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: application-service
+spec:
+  replicas: {{ .Values.applicationService.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: application-service
+  template:
+    metadata:
+      labels:
+        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: application-service
+    spec:
+      containers:
+        - name: application-service
+          image: "{{ .Values.applicationService.image.repository }}:{{ .Values.applicationService.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.applicationService.image.pullPolicy }}
+          ports:
+            - containerPort: 10121
+          env:
+            - name: CONSUL_HOST
+              value: "{{ include "cong-chart.fullname" . }}-consul"
+            - name: MAANA_PLUGIN_CONFIG
+              value: "/opt/docker/configuration/modules.json"
+          volumeMounts:
+            - name: configuration
+              mountPath: /opt/docker/configuration
+            - name: modules
+              mountPath: /opt/docker/lib/modules
+            - name: maana-share
+              mountPath: /maana_share
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: configuration
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-configuration-pvc
+        - name: modules
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-modules-pvc
+        - name: maana-share
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-maana-share-pvc
+        - name: log4j-config
+          configMap:
+            name: {{ include "cong-chart.fullname" . }}-log4j-config
+{{- end }}
+
+{{- if .Values.documents.enabled -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-documents
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: documents
+spec:
+  ports:
+    - port: 8088
+      targetPort: 80
+  selector:
+    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: documents
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-documents
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: documents
+spec:
+  replicas: {{ .Values.documents.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: documents
+  template:
+    metadata:
+      labels:
+        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: documents
+    spec:
+      containers:
+        - name: documents
+          image: "{{ .Values.documents.image.repository }}:{{ .Values.documents.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.documents.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: CONSUL_HOST
+              value: "{{ include "cong-chart.fullname" . }}-consul"
+{{- end }}
+
+{{- if .Values.bootstrap.enabled -}}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-bootstrap
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: bootstrap
+spec:
+  template:
+    spec:
+      containers:
+        - name: bootstrap
+          image: "{{ .Values.bootstrap.image.repository }}:{{ .Values.bootstrap.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.bootstrap.image.pullPolicy }}
+          command: ["bin/bootstrap", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          env:
+            - name: CONSUL_HOST
+              value: "{{ include "cong-chart.fullname" . }}-consul"
+          volumeMounts:
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: log4j-config
+          configMap:
+            name: {{ include "cong-chart.fullname" . }}-log4j-config
+      restartPolicy: Never
+  backoffLimit: 4
+{{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-maana-share-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-compute-connectors-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-data-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-configuration-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-modules-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-log4j-config
+data:
+  log4j2.xml: |
+    {{- .Values.log4j.config | nindent 4 }}

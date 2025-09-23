@@ -1,0 +1,297 @@
+version: '3.3'
+
+# Using of this file requires that the environment variable DOCKER_IP is set to
+# the IP of the Docker-Machine running the platform. Use the `docker-machine ip`
+# command to find it.
+#
+# This docker-compose will replicate the back end Infrastructure required for Maana.
+# Components are:
+# Consul - KV Store and Service Discovery.
+# NGINX - Proxy for forward and allow access to component services.
+# Cassandra - Back End Graph Storage.
+# Vault - Secrets Store
+# Monitoring - Prometheus/node_exporter/cadvisor
+# UAA/MySQL - IDP Auth utility and database for storage.
+# OpenLDAP - Authentication IDP back end.
+
+services:
+  # Consul Service for Registration
+  consul1:
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2
+    container_name: "consul1"    
+    hostname: "consul1"
+    ports:
+      - "8500:8500"
+      - "8300:8300"
+      - "8301:8301"
+      - "8301:8301/udp"
+    volumes:
+      - ./resources/consul/consul.json:/consul/config/consul.json
+      - ${NEON_DATA_ROOT}/consuldata:/consul/data
+    command: "agent -advertise=$DOCKER_IP"
+
+  # Docker Registrator to register all containers and ports they expose.
+  # 'command' options
+  # -internal -- Registrator will register the docker0 internal IP and port
+  #              instead of the host mapped ones
+  # consul://consul1:8500 -- Registry URI, specifies the type of registry as
+  #                          consul and where to connect to it
+  registrator1:
+    container_name: "registrar1"
+    hostname: "registrar1"
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/gliderlabs/registrator:latest
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
+    command: -ip $DOCKER_IP consul://consul1:8500
+    depends_on:
+      - consul1
+
+
+  # Secrets storage.
+  vault1:
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault:1.0.2
+    container_name: "vault1"
+    hostname: "vault1"
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "$VAULT_DEV_ROOT_TOKEN_ID"
+    ports:
+      - "8200:8200"
+    command: "server -dev"
+    depends_on:
+      - consul1
+
+  # Proxy front end for back end services.
+  nginx1:
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx:1.26.3
+    container_name: "nginx1"
+    
+    hostname: "nginx1"
+    ports:
+      - "8181:8181"
+      - "8443:8443"
+      #- "9042:9042"
+      #- "9160:9160"
+      #- "7199:7199"
+      #- "8200:8200"
+    environment:
+      PROXY_PORT: 8181
+      CONSUL_HOST: consul1
+      SERVICE_8181_CHECK_HTTP: "/nginx_status"
+      SERVICE_8181_CHECK_INTERVAL: "10s"
+      SERVICE_8181_CHECK_TIMEOUT: "1s"
+    volumes:
+      - ./resources/consul-templates/nginx.conf.ctmpl:/etc/consul-templates/nginx.conf.ctmpl:ro
+      - ./resources/cert:/self-ssl:ro
+
+  # Cassandra to store Graph.
+  cassandra1:
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cassandra:3.11.1
+    #image: cassandra:latest
+    container_name: "cassandra1"
+    
+    hostname: "cassandra1"
+    ports:
+      - "9160:9160"
+      - "9042:9042"
+    environment:
+      CASSANDRA_START_RPC: "true"
+      CASSANDRA_BROADCAST_ADDRESS: "$DOCKER_IP"
+      SERVICE_9160_NAME: "cassandra"
+      SERVICE_7199_CHECK_TCP: "true"
+      SERVICE_7199_CHECK_INTERVAL: "10s"
+      SERVICE_7199_CHECK_TIMEOUT: "1s"
+    volumes:
+      - ${NEON_DATA_ROOT}/cassandradata:/var/lib/cassandra
+    restart: always
+
+
+  # IDP forwarding utility with MySQL Container to store information in.
+  uaa1:
+    container_name: uaa1
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa:1.0
+    environment:
+      - DATABASE_HOST=uaa-mysql1
+      - DATABASE_USER=uaa
+      - DATABASE_PASSWORD=mysecret
+      - DATABASE_NAME=uaa
+      - OPENLDAP_HOST=openldap1
+      - SERVICE_8080_NAME=UAA
+      - SERVICE_8080_CHECK_HTTP=/status
+      - SERVICE_8080_CHECK_INTERVAL=10s
+      - SERVICE_8080_CHECK_TIMEOUT=1s
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./resources/uaa/:/uaa/
+    depends_on:
+      - uaa-mysql1
+
+  uaa-mysql1:
+    container_name: uaa-mysql1
+    hostname: uaa-mysql1
+    ports:
+      - "3306:3306"
+    networks:
+      default:
+        aliases:
+          - mysql
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql:5.7.21
+    environment:
+        - MYSQL_ROOT_PASSWORD=mysecret
+        - MYSQL_DATABASE=uaa
+        - MYSQL_USER=uaa
+        - MYSQL_PASSWORD=mysecret
+        - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ${NEON_DATA_ROOT}/uaadata:/var/lib/mysql
+    command: mysqld --user=root --verbose
+    depends_on:
+      - registrator1
+
+  saq1:
+    container_name: saq1
+    hostname: saq1
+    #image:us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/maana/saq:smexperiment
+    #image:us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/maana/saq:2.28.15-0-0000
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq:3.0.0
+    ports:
+      - "32123:32123" # SAQ_ADVERTISE_PORT
+    environment:
+      - CONSUL_HOST=consul1
+      - SAQ_ADVERTISE_HOST=$DOCKER_IP
+    #command: "start --config /saq.cfg --logLevel INFO --encryptionAtRest false --vaultToken 1D648F3A-73BD-4544-99F5-C1B1B1B4108C --vaultURL  http://$DOCKER_IP:8200/v1/secret/saq --basePath /SAQ"
+    command: "start --config /saq.cfg --logLevel DEBUG --basePath /SAQ"
+    volumes:
+      - ${NEON_DATA_ROOT}/saqdata:/SAQ
+      - ${MAANA_ENV}/maana_share:/maana_share
+
+  kgservice1:
+    container_name: kgservice1
+    hostname: kgservice1
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice:${BUILD_VERSION}
+    command: bin/kgservice -Dlog4j.configurationFile=/opt/log4j2.xml
+    ports:
+      - "10124:10124"
+    environment:
+      - CONSUL_HOST=consul1
+      - SECURE_VAULT=false
+    volumes:
+      - ${MAANA_ENV}/maana_share:/maana_share
+      - ./resources/log4j2.xml:/opt/log4j2.xml
+    
+
+  job-scheduler1:
+    container_name: job-scheduler1
+    hostname: job-scheduler1
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-scheduler:${BUILD_VERSION}
+    command: bin/job-scheduler -Dlog4j.configurationFile=/opt/log4j2.xml
+    ports:
+      - "10123:10123"
+    environment:
+      - CONSUL_HOST=consul1
+      - SECURE_VAULT=false
+    volumes:
+      - ${MAANA_ENV}/maana_share:/maana_share
+      - ./resources/log4j2.xml:/opt/log4j2.xml
+    
+
+  # We could use scaling, but that would make the
+  # developer experience a bit worse.
+  job-executor1:
+    container_name: job-executor1
+    hostname: job-executor1
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:${BUILD_VERSION}
+    command: bin/job-executor -Dlog4j.configurationFile=/opt/log4j2.xml
+    ports:
+      - "10200:10200"
+    environment:
+      - CONSUL_HOST=consul1
+      - SECURE_VAULT=false
+    volumes:
+      - ${MAANA_ENV}/maana_share:/maana_share
+      - ${MAANA_ENV}/env/compute-connectors:/opt/docker/lib/compute-connectors
+      - ${MAANA_ENV}/env/data:/opt/docker/data
+      - ./resources/log4j2.xml:/opt/log4j2.xml
+    
+
+  job-executor2:
+    container_name: job-executor2
+    hostname: job-executor2
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:${BUILD_VERSION}
+    command: bin/job-executor -Dlog4j.configurationFile=/opt/log4j2.xml
+    ports:
+      - "10201:10200"
+    environment:
+      - CONSUL_HOST=consul1
+      - SECURE_VAULT=false
+    depends_on:
+      - job-executor1
+    volumes:
+      - ${MAANA_ENV}/maana_share:/maana_share
+      - ${MAANA_ENV}/env/compute-connectors:/opt/docker/lib/compute-connectors
+      - ${MAANA_ENV}/env/data:/opt/docker/data
+      - ./resources/log4j2.xml:/opt/log4j2.xml
+    
+
+  garbage-collector1:
+    container_name: garbage-collector1
+    hostname: garbage-collector1
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector:3.0.0
+    command: bin/garbage-collector -Dmaana.tableGarbageCollector.pollingInterval=4m -Dmaana.kindGarbageCollector.pollingInterval=4m -Dlog4j.configurationFile=/opt/log4j2.xml -Dmaana.jobLogGarbageCollector.pollingInterval=6m -Dmaana.jobLogGarbageCollector.maxJobLogAge=15m  -Dmaana.metaIndexGarbageCollector.pollingInterval=4h -Dmaana.jobGarbageCollector.maxJobAge=15m -Dmaana.jobGarbageCollector.pollingInterval=5m
+    ports:
+      - "10127:10127"
+    environment:
+      - CONSUL_HOST=consul1
+    volumes:
+      - ${MAANA_ENV}/maana_share:/maana_share
+      - ./resources/log4j2.xml:/opt/log4j2.xml
+    
+
+  application-service1:
+    container_name: application-service1
+    hostname: application-service1
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/application-service:3.0.0
+    ports:
+      - "10121"
+    environment:
+      - CONSUL_HOST=consul1
+      - MAANA_PLUGIN_CONFIG=/opt/docker/configuration/modules.json
+      - SERVICE_10121_NAME=ux
+    volumes:
+      - ${MAANA_ENV}/env/configuration:/opt/docker/configuration
+      - ${MAANA_ENV}/env/modules:/opt/docker/lib/modules
+      - ${MAANA_ENV}/maana_share:/maana_share
+      - ./resources/log4j2.xml:/opt/log4j2.xml
+
+  documents1:
+    container_name: documents1
+    hostname: documents1
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents:3.0.0
+    ports:
+      - 8088:80
+    environment:
+      - CONSUL_HOST=consul1
+      - SERVICE_8088_NAME=documents
+
+## SM this needs to be run only once
+
+  bootstrap:
+    container_name: bootstrap
+    hostname: bootstrap
+    image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap:${BUILD_VERSION}
+    command: bin/bootstrap -Dlog4j.configurationFile=/opt/log4j2.xml
+    environment:
+      - CONSUL_HOST=consul1
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./resources/log4j2.xml:/opt/log4j2.xml
+
+
+#volumes:
+  #consuldata:
+  #saqdata:
+  #cassandradata:
+    

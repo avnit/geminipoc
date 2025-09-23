@@ -1,0 +1,132 @@
+# kubernetes/saq-kg-deployment.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: saq1
+spec:
+  ports:
+    - port: 32123
+      targetPort: 32123
+  selector:
+    app: saq1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saq1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: saq1
+  template:
+    metadata:
+      labels:
+        app: saq1
+    spec:
+      containers:
+        - name: saq1
+          image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq:3.0.0
+          command: ["start", "--config", "/saq.cfg", "--logLevel", "DEBUG", "--basePath", "/SAQ"]
+          ports:
+            - containerPort: 32123
+          env:
+            - name: CONSUL_HOST
+              value: "consul1"
+            - name: SAQ_ADVERTISE_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - name: saq-data
+              mountPath: /SAQ
+            - name: maana-share
+              mountPath: /maana_share
+      volumes:
+        - name: saq-data
+          persistentVolumeClaim:
+            claimName: saq-data-pvc
+        - name: maana-share
+          persistentVolumeClaim:
+            claimName: maana-share-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kgservice1
+spec:
+  ports:
+    - port: 10124
+      targetPort: 10124
+  selector:
+    app: kgservice1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kgservice1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kgservice1
+  template:
+    metadata:
+      labels:
+        app: kgservice1
+    spec:
+      containers:
+        - name: kgservice1
+          image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice:${BUILD_VERSION} # You need to replace ${BUILD_VERSION}
+          command: ["bin/kgservice", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          ports:
+            - containerPort: 10124
+          env:
+            - name: CONSUL_HOST
+              value: "consul1"
+            - name: SECURE_VAULT
+              value: "false"
+          volumeMounts:
+            - name: maana-share
+              mountPath: /maana_share
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: maana-share
+          persistentVolumeClaim:
+            claimName: maana-share-pvc
+        - name: log4j-config
+          configMap:
+            name: log4j-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: saq-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: maana-share-pvc
+spec:
+  accessModes:
+    - ReadWriteMany # This may not be supported by all storage providers
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log4j-config
+data:
+  log4j2.xml: |
+    # Content of ./resources/log4j2.xml goes here

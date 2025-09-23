@@ -1,0 +1,188 @@
+# kubernetes/misc-deployment.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: garbage-collector1
+spec:
+  ports:
+    - port: 10127
+      targetPort: 10127
+  selector:
+    app: garbage-collector1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: garbage-collector1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garbage-collector1
+  template:
+    metadata:
+      labels:
+        app: garbage-collector1
+    spec:
+      containers:
+        - name: garbage-collector1
+          image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector:3.0.0
+          command: ["bin/garbage-collector", "-Dmaana.tableGarbageCollector.pollingInterval=4m", "-Dmaana.kindGarbageCollector.pollingInterval=4m", "-Dlog4j.configurationFile=/opt/log4j2.xml", "-Dmaana.jobLogGarbageCollector.pollingInterval=6m", "-Dmaana.jobLogGarbageCollector.maxJobLogAge=15m", "-Dmaana.metaIndexGarbageCollector.pollingInterval=4h", "-Dmaana.jobGarbageCollector.maxJobAge=15m", "-Dmaana.jobGarbageCollector.pollingInterval=5m"]
+          ports:
+            - containerPort: 10127
+          env:
+            - name: CONSUL_HOST
+              value: "consul1"
+          volumeMounts:
+            - name: maana-share
+              mountPath: /maana_share
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: maana-share
+          persistentVolumeClaim:
+            claimName: maana-share-pvc
+        - name: log4j-config
+          configMap:
+            name: log4j-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-service1
+spec:
+  ports:
+    - port: 10121
+  selector:
+    app: application-service1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-service1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application-service1
+  template:
+    metadata:
+      labels:
+        app: application-service1
+    spec:
+      containers:
+        - name: application-service1
+          image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/application-service:3.0.0
+          ports:
+            - containerPort: 10121
+          env:
+            - name: CONSUL_HOST
+              value: "consul1"
+            - name: MAANA_PLUGIN_CONFIG
+              value: "/opt/docker/configuration/modules.json"
+          volumeMounts:
+            - name: configuration
+              mountPath: /opt/docker/configuration
+            - name: modules
+              mountPath: /opt/docker/lib/modules
+            - name: maana-share
+              mountPath: /maana_share
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: configuration
+          persistentVolumeClaim:
+            claimName: configuration-pvc
+        - name: modules
+          persistentVolumeClaim:
+            claimName: modules-pvc
+        - name: maana-share
+          persistentVolumeClaim:
+            claimName: maana-share-pvc
+        - name: log4j-config
+          configMap:
+            name: log4j-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: documents1
+spec:
+  ports:
+    - port: 8088
+      targetPort: 80
+  selector:
+    app: documents1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: documents1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: documents1
+  template:
+    metadata:
+      labels:
+        app: documents1
+    spec:
+      containers:
+        - name: documents1
+          image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents:3.0.0
+          ports:
+            - containerPort: 80
+          env:
+            - name: CONSUL_HOST
+              value: "consul1"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bootstrap
+spec:
+  template:
+    spec:
+      containers:
+        - name: bootstrap
+          image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap:${BUILD_VERSION} # You need to replace ${BUILD_VERSION}
+          command: ["bin/bootstrap", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          env:
+            - name: CONSUL_HOST
+              value: "consul1"
+          volumeMounts:
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: log4j-config
+          configMap:
+            name: log4j-config
+      restartPolicy: Never
+  backoffLimit: 4
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: configuration-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: modules-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

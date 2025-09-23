@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul1
+  labels:
+    app: consul1
+spec:
+  ports:
+    - port: 8500
+      name: http
+    - port: 8300
+      name: server
+    - port: 8301
+      name: serflan-tcp
+      protocol: TCP
+    - port: 8301
+      name: serflan-udp
+      protocol: UDP
+  selector:
+    app: consul1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul1
+  labels:
+    app: consul1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul1
+  template:
+    metadata:
+      labels:
+        app: consul1
+    spec:
+      containers:
+        - name: consul1
+          image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2
+          command:
+            - "agent"
+            - "-advertise=$(HOST_IP)"
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          ports:
+            - containerPort: 8500
+            - containerPort: 8300
+            - containerPort: 8301
+              protocol: TCP
+            - containerPort: 8301
+              protocol: UDP
+          volumeMounts:
+            - name: consul-config
+              mountPath: /consul/config/consul.json
+              subPath: consul.json
+            - name: consul-data
+              mountPath: /consul/data
+      volumes:
+        - name: consul-config
+          configMap:
+            name: consul-config
+        - name: consul-data
+          persistentVolumeClaim:
+            claimName: consul-data-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: consul-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consul-config
+data:
+  consul.json: |
+    {}

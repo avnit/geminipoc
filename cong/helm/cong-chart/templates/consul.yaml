@@ -1,0 +1,95 @@
+{{- if .Values.consul.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-consul
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: consul
+spec:
+  ports:
+    - port: 8500
+      name: http
+    - port: 8300
+      name: server
+    - port: 8301
+      name: serflan-tcp
+      protocol: TCP
+    - port: 8301
+      name: serflan-udp
+      protocol: UDP
+  selector:
+    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: consul
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-consul
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: consul
+spec:
+  replicas: {{ .Values.consul.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: consul
+  template:
+    metadata:
+      labels:
+        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: consul
+    spec:
+      containers:
+        - name: consul
+          image: "{{ .Values.consul.image.repository }}:{{ .Values.consul.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.consul.image.pullPolicy }}
+          command:
+            - "agent"
+            - "-advertise=$(HOST_IP)"
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          ports:
+            - containerPort: 8500
+            - containerPort: 8300
+            - containerPort: 8301
+              protocol: TCP
+            - containerPort: 8301
+              protocol: UDP
+          volumeMounts:
+            - name: consul-config
+              mountPath: /consul/config/consul.json
+              subPath: consul.json
+            - name: consul-data
+              mountPath: /consul/data
+      volumes:
+        - name: consul-config
+          configMap:
+            name: {{ include "cong-chart.fullname" . }}-consul-config
+        - name: consul-data
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-consul-data-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-consul-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.consul.persistence.size | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-consul-config
+data:
+  consul.json: |
+    {{- .Values.consul.config | toYaml | nindent 4 }}
+{{- end }}
