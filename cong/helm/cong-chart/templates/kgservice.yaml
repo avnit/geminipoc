@@ -1,0 +1,61 @@
+{{- if .Values.kgservice.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-kgservice
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: kgservice
+spec:
+  ports:
+    - port: 10124
+      targetPort: 10124
+  selector:
+    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: kgservice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-kgservice
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: kgservice
+spec:
+  replicas: {{ .Values.kgservice.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: kgservice
+  template:
+    metadata:
+      labels:
+        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: kgservice
+    spec:
+      containers:
+        - name: kgservice
+          image: "{{ .Values.kgservice.image.repository }}:{{ .Values.kgservice.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.kgservice.image.pullPolicy }}
+          command: ["bin/kgservice", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          ports:
+            - containerPort: 10124
+          env:
+            - name: CONSUL_HOST
+              value: "{{ include "cong-chart.fullname" . }}-consul"
+            - name: SECURE_VAULT
+              value: "false"
+          volumeMounts:
+            - name: maana-share
+              mountPath: /maana_share
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: maana-share
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-maana-share-pvc
+        - name: log4j-config
+          configMap:
+            name: {{ include "cong-chart.fullname" . }}-log4j-config
+{{- end }}
