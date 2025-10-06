@@ -2,6 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-kgservice
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -17,12 +18,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-kgservice
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: kgservice
 spec:
-  replicas: {{ .Values.kgservice.replicaCount | default 1 }}
   selector:
     matchLabels:
       {{- include "cong-chart.selectorLabels" . | nindent 6 }}
@@ -33,6 +34,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: kgservice
     spec:
+      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
       containers:
         - name: kgservice
           image: "{{ .Values.kgservice.image.repository }}:{{ .Values.kgservice.image.tag | default .Chart.AppVersion }}"

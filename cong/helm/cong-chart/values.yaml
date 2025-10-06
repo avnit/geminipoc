@@ -3,6 +3,13 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+namespace: console-app
+
+ingress:
+  enabled: false
+
+service:
+  type: ClusterIP
 
 imagePullSecrets: []
 nameOverride: ""
@@ -46,9 +53,9 @@ cassandra:
   enabled: true
   replicaCount: 1
   image:
-    repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cassandra
+    repository: cassandra
     pullPolicy: IfNotPresent
-    tag: "3.11.1"
+    tag: "4.1.3"
   persistence:
     size: 5Gi
 
@@ -75,7 +82,7 @@ uaa:
 
 saq:
   enabled: true
-  replicaCount: 1
+  replicaCount: 2
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq
     pullPolicy: IfNotPresent
@@ -85,7 +92,7 @@ saq:
 
 kgservice:
   enabled: true
-  replicaCount: 1
+  replicaCount: 2
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice
     pullPolicy: IfNotPresent
@@ -101,7 +108,7 @@ jobScheduler:
 
 jobExecutor:
   enabled: true
-  replicaCount: 1
+  replicaCount: 2
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor
     pullPolicy: IfNotPresent
@@ -140,3 +147,9 @@ bootstrap:
 
 log4j:
   config: ""
+
+serviceAccount:
+  create: true
+  name: cong-service-account
+  annotations:
+    iam.gke.io/gcp-service-account: terraform@avathon-saas-runtime-setup.iam.gserviceaccount.com

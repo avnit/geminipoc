@@ -2,6 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-nginx
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -22,12 +23,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-nginx
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: nginx
 spec:
-  replicas: {{ .Values.nginx.replicaCount | default 1 }}
   selector:
     matchLabels:
       {{- include "cong-chart.selectorLabels" . | nindent 6 }}
@@ -38,6 +39,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: nginx
     spec:
+      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
       containers:
         - name: nginx
           image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag | default .Chart.AppVersion }}"
@@ -67,6 +69,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-nginx-config-template
 data:
   nginx.conf.ctmpl: |
@@ -75,9 +78,14 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-nginx-certs
 type: kubernetes.io/tls
 data:
+  {{- if and .Values.nginx.tls.crt .Values.nginx.tls.key }}
   tls.crt: {{ .Values.nginx.tls.crt | b64enc }}
   tls.key: {{ .Values.nginx.tls.key | b64enc }}
+  {{- else }}
+  {{- include "cong-chart.gen-certs" . | nindent 2 }}
+  {{- end }}
 {{- end }}

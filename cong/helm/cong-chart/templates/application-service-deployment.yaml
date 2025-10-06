@@ -1,0 +1,58 @@
+{{- if .Values.applicationService.enabled -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "cong-chart.fullname" . }}-application-service
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: application-service
+spec:
+  replicas: {{ .Values.applicationService.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: application-service
+  template:
+    metadata:
+      labels:
+        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: application-service
+    spec:
+      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      containers:
+        - name: application-service
+          image: "{{ .Values.applicationService.image.repository }}:{{ .Values.applicationService.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.applicationService.image.pullPolicy }}
+          ports:
+            - containerPort: 10121
+          env:
+            - name: CONSUL_HOST
+              value: "{{ include "cong-chart.fullname" . }}-consul"
+            - name: MAANA_PLUGIN_CONFIG
+              value: "/opt/docker/configuration/modules.json"
+          volumeMounts:
+            - name: configuration
+              mountPath: /opt/docker/configuration
+            - name: modules
+              mountPath: /opt/docker/lib/modules
+            - name: maana-share
+              mountPath: /maana_share
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: configuration
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-configuration-pvc
+        - name: modules
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-modules-pvc
+        - name: maana-share
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-maana-share-pvc
+        - name: log4j-config
+          configMap:
+            name: {{ include "cong-chart.fullname" . }}-log4j-config
+{{- end }}
