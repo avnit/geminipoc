@@ -1,0 +1,17 @@
+{{- if .Values.garbageCollector.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "cong-chart.fullname" . }}-garbage-collector
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: garbage-collector
+spec:
+  ports:
+    - port: 10127
+      targetPort: 10127
+  selector:
+    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: garbage-collector
+{{- end }}
