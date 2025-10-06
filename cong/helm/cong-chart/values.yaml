@@ -136,7 +136,7 @@ documents:
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents
     pullPolicy: IfNotPresent
-    tag: "3.0.0"
+    tag: "smve"
 
 bootstrap:
   enabled: true
