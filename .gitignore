@@ -58,3 +58,4 @@ selfi/Infra/Terraforms/GCP/firewall/.terraform/providers/registry.terraform.io/h
 *.lock.hcl
 SatisfiLabs/Infra/Terraform/GCP/AlloyDB/.terraform/providers/registry.terraform.io/hashicorp/google/5.33.0/windows_386/LICENSE.txt
 SatisfiLabs/Infra/Terraform/GCP/AlloyDB/.terraform/providers/registry.terraform.io/hashicorp/random/3.6.2/windows_386/LICENSE.txt
+newwork/geminipoc
