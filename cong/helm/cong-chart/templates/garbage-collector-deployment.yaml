@@ -1,0 +1,56 @@
+{{- if .Values.garbageCollector.enabled -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "cong-chart.fullname" . }}-garbage-collector
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: garbage-collector
+spec:
+  replicas: {{ .Values.garbageCollector.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: garbage-collector
+  template:
+    metadata:
+      labels:
+        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: garbage-collector
+    spec:
+      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      containers:
+        - name: garbage-collector
+          image: "{{ .Values.garbageCollector.image.repository }}:{{ .Values.garbageCollector.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.garbageCollector.image.pullPolicy }}
+          command:
+            - "bin/garbage-collector"
+            - "-Dmaana.tableGarbageCollector.pollingInterval=4m"
+            - "-Dmaana.kindGarbageCollector.pollingInterval=4m"
+            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
+            - "-Dmaana.jobLogGarbageCollector.pollingInterval=6m"
+            - "-Dmaana.jobLogGarbageCollector.maxJobLogAge=15m"
+            - "-Dmaana.metaIndexGarbageCollector.pollingInterval=4h"
+            - "-Dmaana.jobGarbageCollector.maxJobAge=15m"
+            - "-Dmaana.jobGarbageCollector.pollingInterval=5m"
+          ports:
+            - containerPort: 10127
+          env:
+            - name: CONSUL_HOST
+              value: "{{ include "cong-chart.fullname" . }}-consul"
+          volumeMounts:
+            - name: maana-share
+              mountPath: /maana_share
+            - name: log4j-config
+              mountPath: /opt/log4j2.xml
+              subPath: log4j2.xml
+      volumes:
+        - name: maana-share
+          persistentVolumeClaim:
+            claimName: {{ include "cong-chart.fullname" . }}-maana-share-pvc
+        - name: log4j-config
+          configMap:
+            name: {{ include "cong-chart.fullname" . }}-log4j-config
+{{- end }}

@@ -1,0 +1,74 @@
+{{- if .Values.uaa.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "cong-chart.fullname" . }}-uaa
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: uaa
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: uaa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "cong-chart.fullname" . }}-uaa
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: uaa
+spec:
+  selector:
+    matchLabels:
+      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: uaa
+  template:
+    metadata:
+      labels:
+        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: uaa
+    spec:
+      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      containers:
+        - name: uaa
+          image: "{{ .Values.uaa.image.repository }}:{{ .Values.uaa.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.uaa.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_HOST
+              value: "{{ include "cong-chart.fullname" . }}-mysql"
+            - name: DATABASE_USER
+              value: "uaa"
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "cong-chart.fullname" . }}-mysql-secrets
+                  key: user-password
+            - name: DATABASE_NAME
+              value: "uaa"
+            - name: OPENLDAP_HOST
+              value: "openldap1"
+          volumeMounts:
+            - name: uaa-config
+              mountPath: /uaa/
+      volumes:
+        - name: uaa-config
+          configMap:
+            name: {{ include "cong-chart.fullname" . }}-uaa-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "cong-chart.fullname" . }}-uaa-config
+data:
+  uaa.yml: |
+    {{- .Values.uaa.config | toYaml | nindent 4 }}
+{{- end }}

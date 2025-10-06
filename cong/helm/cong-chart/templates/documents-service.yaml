@@ -1,0 +1,18 @@
+{{- if .Values.documents.enabled -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "cong-chart.fullname" . }}-documents
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: documents
+spec:
+  ports:
+    - port: 8088
+      targetPort: 80
+  selector:
+    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: documents
+{{- end }}
