@@ -2,6 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-consul
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -25,12 +26,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-consul
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: consul
 spec:
-  replicas: {{ .Values.consul.replicaCount | default 1 }}
   selector:
     matchLabels:
       {{- include "cong-chart.selectorLabels" . | nindent 6 }}
@@ -41,6 +42,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: consul
     spec:
+      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
       containers:
         - name: consul
           image: "{{ .Values.consul.image.repository }}:{{ .Values.consul.image.tag | default .Chart.AppVersion }}"
@@ -77,6 +79,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-consul-data-pvc
 spec:
   accessModes:
@@ -88,6 +91,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-consul-config
 data:
   consul.json: |

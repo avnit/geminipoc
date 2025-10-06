@@ -1,0 +1,17 @@
+{{- if .Values.applicationService.enabled -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "cong-chart.fullname" . }}-application-service
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: application-service
+spec:
+  ports:
+    - port: 10121
+  selector:
+    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: application-service
+{{- end }}

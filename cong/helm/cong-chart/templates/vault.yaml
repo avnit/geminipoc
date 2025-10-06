@@ -2,6 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-vault
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -17,12 +18,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-vault
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: vault
 spec:
-  replicas: {{ .Values.vault.replicaCount | default 1 }}
   selector:
     matchLabels:
       {{- include "cong-chart.selectorLabels" . | nindent 6 }}
@@ -33,6 +34,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: vault
     spec:
+      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
       containers:
         - name: vault
           image: "{{ .Values.vault.image.repository }}:{{ .Values.vault.image.tag | default .Chart.AppVersion }}"
@@ -56,6 +58,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "cong-chart.fullname" . }}-vault-secrets
 type: Opaque
 data:

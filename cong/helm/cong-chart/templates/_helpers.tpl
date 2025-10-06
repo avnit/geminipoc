@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Generate certificates
+*/}}
+{{- define "cong-chart.gen-certs" -}}
+{{- $altNames := list (printf "%s-nginx" (include "cong-chart.fullname" .)) -}}
+{{- $ca := genCA "cong-ca" 365 -}}
+{{- $cert := genSignedCert (printf "%s-nginx" (include "cong-chart.fullname" .)) nil $altNames 365 $ca -}}
+tls.crt: {{ $cert.Cert | b64enc }}
+tls.key: {{ $cert.Key | b64enc }}
+{{- end -}}

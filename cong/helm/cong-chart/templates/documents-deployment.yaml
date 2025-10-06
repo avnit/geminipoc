@@ -1,0 +1,33 @@
+{{- if .Values.documents.enabled -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "cong-chart.fullname" . }}-documents
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: documents
+spec:
+  replicas: {{ .Values.documents.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: documents
+  template:
+    metadata:
+      labels:
+        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: documents
+    spec:
+      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      containers:
+        - name: documents
+          image: "{{ .Values.documents.image.repository }}:{{ .Values.documents.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.documents.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: CONSUL_HOST
+              value: "{{ include "cong-chart.fullname" . }}-consul"
+{{- end }}
