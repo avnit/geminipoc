@@ -1,0 +1,15 @@
+{{- if .Values.log4j.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cong-chart.fullname" . }}-log4j-config
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+data:
+  log4j2.xml: |
+    {{- .Values.log4j.config | nindent 4 }}
+{{- end }}

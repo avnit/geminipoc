@@ -146,10 +146,22 @@ bootstrap:
     tag: "latest" # You need to change this
 
 log4j:
-  config: ""
+  config: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <Configuration status="INFO">
+      <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+          <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+      </Appenders>
+      <Loggers>
+        <Root level="info">
+          <AppenderRef ref="Console"/>
+        </Root>
+      </Loggers>
+    </Configuration>
 
 serviceAccount:
   create: true
-  name: cong-service-account
   annotations:
     iam.gke.io/gcp-service-account: terraform@avathon-saas-runtime-setup.iam.gserviceaccount.com
