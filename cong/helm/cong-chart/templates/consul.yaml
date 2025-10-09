@@ -48,7 +48,9 @@ spec:
           image: "{{ .Values.consul.image.repository }}:{{ .Values.consul.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.consul.image.pullPolicy }}
           command:
+            - "consul"
             - "agent"
+          args:
             - "-advertise=$(HOST_IP)"
           env:
             - name: HOST_IP

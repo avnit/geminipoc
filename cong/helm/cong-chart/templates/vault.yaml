@@ -40,6 +40,7 @@ spec:
           image: "{{ .Values.vault.image.repository }}:{{ .Values.vault.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.vault.image.pullPolicy }}
           command:
+            - "vault"
             - "server"
             - "-dev"
           securityContext:
