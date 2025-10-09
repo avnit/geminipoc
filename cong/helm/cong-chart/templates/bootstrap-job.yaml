@@ -7,6 +7,7 @@ metadata:
   name: {{ include "cong-chart.fullname" . }}-bootstrap
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "5"
     "helm.sh/hook-delete-policy": before-hook-creation
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -33,6 +34,6 @@ spec:
         - name: log4j-config
           configMap:
             name: {{ include "cong-chart.fullname" . }}-log4j-config
-      restartPolicy: Never
-  backoffLimit: 4
+      restartPolicy: OnFailure
+  backoffLimit: 10
 {{- end }}

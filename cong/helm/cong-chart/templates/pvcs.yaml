@@ -6,7 +6,7 @@ metadata:
   name: {{ include "cong-chart.fullname" . }}-maana-share-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
@@ -18,7 +18,7 @@ metadata:
   name: {{ include "cong-chart.fullname" . }}-compute-connectors-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -30,7 +30,7 @@ metadata:
   name: {{ include "cong-chart.fullname" . }}-data-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -42,7 +42,7 @@ metadata:
   name: {{ include "cong-chart.fullname" . }}-configuration-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -54,7 +54,7 @@ metadata:
   name: {{ include "cong-chart.fullname" . }}-modules-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
