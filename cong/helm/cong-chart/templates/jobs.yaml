@@ -69,114 +69,41 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Release.Namespace }}
-  name: {{ include "cong-chart.fullname" . }}-job-executor1
+  name: {{ include "cong-chart.fullname" . }}-job-executor
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
-    app.kubernetes.io/component: job-executor1
+    app.kubernetes.io/component: job-executor
 spec:
   ports:
     - port: 10200
       targetPort: 10200
   selector:
     {{- include "cong-chart.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: job-executor1
+    app.kubernetes.io/component: job-executor
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: {{ .Release.Namespace }}
-  name: {{ include "cong-chart.fullname" . }}-job-executor1
+  name: {{ include "cong-chart.fullname" . }}-job-executor
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
-    app.kubernetes.io/component: job-executor1
+    app.kubernetes.io/component: job-executor
 spec:
   replicas: {{ .Values.jobExecutor.replicaCount | default 1 }}
   selector:
     matchLabels:
       {{- include "cong-chart.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: job-executor1
+      app.kubernetes.io/component: job-executor
   template:
     metadata:
       labels:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: job-executor1
+        app.kubernetes.io/component: job-executor
     spec:
       serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
       containers:
-        - name: job-executor1
-          image: "{{ .Values.jobExecutor.image.repository }}:{{ .Values.jobExecutor.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.jobExecutor.image.pullPolicy }}
-          command: ["bin/job-executor", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
-          ports:
-            - containerPort: 10200
-          env:
-            - name: CONSUL_HOST
-              value: "{{ include "cong-chart.fullname" . }}-consul"
-            - name: SECURE_VAULT
-              value: "false"
-          volumeMounts:
-            - name: maana-share
-              mountPath: /maana_share
-            - name: compute-connectors
-              mountPath: /opt/docker/lib/compute-connectors
-            - name: data
-              mountPath: /opt/docker/data
-            - name: log4j-config
-              mountPath: /opt/log4j2.xml
-              subPath: log4j2.xml
-      volumes:
-        - name: maana-share
-          persistentVolumeClaim:
-            claimName: {{ include "cong-chart.fullname" . }}-maana-share-pvc
-        - name: compute-connectors
-          persistentVolumeClaim:
-            claimName: {{ include "cong-chart.fullname" . }}-compute-connectors-pvc
-        - name: data
-          persistentVolumeClaim:
-            claimName: {{ include "cong-chart.fullname" . }}-data-pvc
-        - name: log4j-config
-          configMap:
-            name: {{ include "cong-chart.fullname" . }}-log4j-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: {{ .Release.Namespace }}
-  name: {{ include "cong-chart.fullname" . }}-job-executor2
-  labels:
-    {{- include "cong-chart.labels" . | nindent 4 }}
-    app.kubernetes.io/component: job-executor2
-spec:
-  ports:
-    - port: 10201
-      targetPort: 10200
-  selector:
-    {{- include "cong-chart.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: job-executor2
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: {{ .Release.Namespace }}
-  name: {{ include "cong-chart.fullname" . }}-job-executor2
-  labels:
-    {{- include "cong-chart.labels" . | nindent 4 }}
-    app.kubernetes.io/component: job-executor2
-spec:
-  replicas: {{ .Values.jobExecutor.replicaCount | default 1 }}
-  selector:
-    matchLabels:
-      {{- include "cong-chart.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: job-executor2
-  template:
-    metadata:
-      labels:
-        {{- include "cong-chart.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: job-executor2
-    spec:
-      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
-      containers:
-        - name: job-executor2
+        - name: job-executor
           image: "{{ .Values.jobExecutor.image.repository }}:{{ .Values.jobExecutor.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.jobExecutor.image.pullPolicy }}
           command: ["bin/job-executor", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
