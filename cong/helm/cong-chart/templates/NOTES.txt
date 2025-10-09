@@ -1,0 +1,26 @@
+{{- define "cong-chart.notes" }}
+Cong has been installed.
+
+NOTES:
+
+1.  **Image Tags**: Several components are configured to use the 'latest' image tag.
+    For production deployments, it is strongly recommended to use specific, immutable image tags
+    to ensure your deployments are predictable and rollback-able.
+    Please update the following in your values.yaml file:
+    - kgservice.image.tag
+    - jobScheduler.image.tag
+    - jobExecutor.image.tag
+    - bootstrap.image.tag
+
+2.  **Default Secrets**: This chart is pre-configured with default secrets for several components.
+    These are insecure and should be changed for production environments.
+    Please update the following in your values.yaml file or via --set flags:
+    - vault.rootToken
+    - mysql.rootPassword
+    - mysql.userPassword
+
+3.  **NGINX Service**: The NGINX service is exposed as a LoadBalancer by default. You can access it
+   using the external IP address assigned by your cloud provider.
+   You can get the external IP by running:
+   `kubectl get svc --namespace {{ .Release.Namespace }} {{ include "cong-chart.fullname" . }}-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+{{- end }}
