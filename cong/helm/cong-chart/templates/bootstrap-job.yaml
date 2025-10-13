@@ -26,6 +26,7 @@ spec:
           imagePullPolicy: {{ .Values.bootstrap.image.pullPolicy }}
           command:
             - "bin/bootstrap"
+          args:
             - "-Dlog4j.configurationFile=/opt/log4j2.xml"
           env:
             - name: CONSUL_HOST

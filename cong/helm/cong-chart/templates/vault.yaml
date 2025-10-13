@@ -41,6 +41,7 @@ spec:
           imagePullPolicy: {{ .Values.vault.image.pullPolicy }}
           command:
             - "vault"
+          args:
             - "server"
             - "-dev"
           securityContext:

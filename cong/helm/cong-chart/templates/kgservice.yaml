@@ -39,7 +39,10 @@ spec:
         - name: kgservice
           image: "{{ .Values.kgservice.image.repository }}:{{ .Values.kgservice.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.kgservice.image.pullPolicy }}
-          command: ["bin/kgservice", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          command:
+            - "bin/kgservice"
+          args:
+            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
           ports:
             - containerPort: 10124
           env:
