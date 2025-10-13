@@ -25,6 +25,10 @@ spec:
         - name: garbage-collector
           image: "{{ .Values.garbageCollector.image.repository }}:{{ .Values.garbageCollector.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.garbageCollector.image.pullPolicy }}
+          {{- with .Values.garbageCollector.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
             - "bin/garbage-collector"
             - "-Dmaana.tableGarbageCollector.pollingInterval=4m"
@@ -37,6 +41,14 @@ spec:
             - "-Dmaana.jobGarbageCollector.pollingInterval=5m"
           ports:
             - containerPort: 10127
+          {{- with .Values.garbageCollector.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.garbageCollector.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             - name: CONSUL_HOST
               value: "{{ include "cong-chart.fullname" . }}-consul"

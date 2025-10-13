@@ -44,7 +44,27 @@ nginx:
     tag: "1.26.3"
   service:
     type: LoadBalancer
-  configTemplate: ""
+  configTemplate: |
+    worker_processes 1;
+    events {
+      worker_connections 1024;
+    }
+    http {
+      sendfile on;
+      upstream app_backend {
+        server localhost:8080; # Replace with your actual backend service
+      }
+      server {
+        listen 8181;
+        location / {
+          proxy_pass http://app_backend;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        }
+      }
+    }
   tls:
     crt: ""
     key: ""
@@ -121,6 +141,18 @@ garbageCollector:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector
     pullPolicy: IfNotPresent
     tag: "3.0.0"
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 10127 # Use the actual health check port
+    initialDelaySeconds: 15
+    periodSeconds: 20
+  readinessProbe:
+    httpGet:
+      path: /readyz
+      port: 10127 # Use the actual readiness check port
+    initialDelaySeconds: 5
+    periodSeconds: 10
 
 applicationService:
   enabled: true
@@ -129,6 +161,13 @@ applicationService:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/application-service
     pullPolicy: IfNotPresent
     tag: "3.0.0"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 documents:
   enabled: true
