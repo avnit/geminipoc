@@ -1,0 +1,1368 @@
+Name:             cong-release-cong-chart-application-service-b47b965d-jqmnr
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-xuwo/10.0.0.21
+Start Time:       Fri, 10 Oct 2025 23:28:17 +0000
+Labels:           app.kubernetes.io/component=application-service
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=b47b965d
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-07T22:50:36+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Running
+IP:               10.144.5.8
+IPs:
+  IP:           10.144.5.8
+Controlled By:  ReplicaSet/cong-release-cong-chart-application-service-b47b965d
+Containers:
+  application-service:
+    Container ID:   containerd://78f44e0e75dd550096fb509bc80a5b2cb01152ebd8d316fe2b33c0e012922773
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/application-service:3.0.0
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/application-service@sha256:85119939a3be1167b487bd5ac69e1f860d0df6e3d7998336d6cdc83e940dcf2f
+    Port:           10121/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 10 Oct 2025 23:28:53 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:          cong-release-cong-chart-consul
+      MAANA_PLUGIN_CONFIG:  /opt/docker/configuration/modules.json
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/configuration from configuration (rw)
+      /opt/docker/lib/modules from modules (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hbkfx (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  configuration:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-configuration-pvc
+    ReadOnly:   false
+  modules:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-modules-pvc
+    ReadOnly:   false
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-hbkfx:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-bootstrap-d64cq
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-0mqj/10.0.0.15
+Start Time:       Fri, 10 Oct 2025 23:28:36 +0000
+Labels:           batch.kubernetes.io/controller-uid=29d2dea5-b207-4115-b84c-63c429c937a0
+                  batch.kubernetes.io/job-name=cong-release-cong-chart-bootstrap
+                  controller-uid=29d2dea5-b207-4115-b84c-63c429c937a0
+                  job-name=cong-release-cong-chart-bootstrap
+Annotations:      <none>
+Status:           Pending
+IP:               10.144.9.7
+IPs:
+  IP:           10.144.9.7
+Controlled By:  Job/cong-release-cong-chart-bootstrap
+Init Containers:
+  wait-for-consul:
+    Container ID:  containerd://30070a2ed623b26ca2c4a5842eb2d98d259e69be42f53f9327b60a8fb73d58a1
+    Image:         busybox:1.28
+    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      until nc -z cong-release-cong-chart-consul 8500; do echo "waiting for consul"; sleep 2; done;
+    State:          Running
+      Started:      Fri, 10 Oct 2025 23:28:38 +0000
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-mvc82 (ro)
+Containers:
+  bootstrap:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap:latest
+    Image ID:      
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      bin/bootstrap
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:  cong-release-cong-chart-consul
+    Mounts:
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-mvc82 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 False 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-mvc82:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-cassandra-0
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-u59m/10.0.0.22
+Start Time:       Thu, 09 Oct 2025 23:53:57 +0000
+Labels:           app.kubernetes.io/component=cassandra
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  apps.kubernetes.io/pod-index=0
+                  controller-revision-hash=cong-release-cong-chart-cassandra-6f8fdd9dfc
+                  statefulset.kubernetes.io/pod-name=cong-release-cong-chart-cassandra-0
+Annotations:      <none>
+Status:           Running
+IP:               10.144.7.9
+IPs:
+  IP:           10.144.7.9
+Controlled By:  StatefulSet/cong-release-cong-chart-cassandra
+Containers:
+  cassandra:
+    Container ID:   containerd://83673209aff2bdabf63ca45aaf58c176e70861c9f2868835a186e98a31c1d5f5
+    Image:          cassandra:4.1.3
+    Image ID:       docker.io/library/cassandra@sha256:7cbcec0086ac3d448537f1bdd6762f7a69fe8f570f00d45f4f719f6c2cdd4d5c
+    Ports:          9160/TCP, 9042/TCP
+    Host Ports:     0/TCP, 0/TCP
+    State:          Running
+      Started:      Thu, 09 Oct 2025 23:54:20 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      CASSANDRA_START_RPC:          true
+      CASSANDRA_BROADCAST_ADDRESS:   (v1:status.podIP)
+    Mounts:
+      /var/lib/cassandra from cassandra-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-7mf27 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  cassandra-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cassandra-data-cong-release-cong-chart-cassandra-0
+    ReadOnly:   false
+  kube-api-access-7mf27:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-consul-57968b4ff7-w4l7p
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-ktdu/10.0.0.16
+Start Time:       Thu, 09 Oct 2025 23:32:59 +0000
+Labels:           app.kubernetes.io/component=consul
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=57968b4ff7
+Annotations:      <none>
+Status:           Running
+IP:               10.144.2.6
+IPs:
+  IP:           10.144.2.6
+Controlled By:  ReplicaSet/cong-release-cong-chart-consul-57968b4ff7
+Containers:
+  consul:
+    Container ID:  containerd://e9875f7aab5f30285fb57d2b757f117a812061fee6313a07a6c6ea7c295afb8b
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul@sha256:86b87ad1d24ec75f25eabc9fa47399995331b2913c40685180fdc7d03ffc1f78
+    Ports:         8500/TCP, 8300/TCP, 8301/TCP, 8301/UDP
+    Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/UDP
+    Command:
+      agent
+      -advertise=$(HOST_IP)
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       StartError
+      Message:      failed to create containerd task: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: exec: "agent": executable file not found in $PATH
+      Exit Code:    128
+      Started:      Thu, 01 Jan 1970 00:00:00 +0000
+      Finished:     Mon, 13 Oct 2025 00:44:40 +0000
+    Ready:          False
+    Restart Count:  862
+    Environment:
+      HOST_IP:   (v1:status.hostIP)
+    Mounts:
+      /consul/config/consul.json from consul-config (rw,path="consul.json")
+      /consul/data from consul-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-99fkx (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  consul-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-consul-config
+    Optional:  false
+  consul-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-consul-data-pvc
+    ReadOnly:   false
+  kube-api-access-99fkx:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                     From     Message
+  ----     ------   ----                    ----     -------
+  Warning  Failed   55m (x853 over 3d1h)    kubelet  Error: failed to create containerd task: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: exec: "agent": executable file not found in $PATH
+  Normal   Pulled   4m24s (x862 over 3d1h)  kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2" already present on machine
+  Warning  BackOff  37s (x20227 over 3d1h)  kubelet  Back-off restarting failed container consul in pod cong-release-cong-chart-consul-57968b4ff7-w4l7p_console-app(3e9b712b-37d4-43d8-a1ff-072b9b81ef05)
+
+
+Name:             cong-release-cong-chart-consul-74ddbdf4-p2zfm
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-6mmz/10.0.0.17
+Start Time:       Fri, 10 Oct 2025 23:28:17 +0000
+Labels:           app.kubernetes.io/component=consul
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=74ddbdf4
+Annotations:      <none>
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/cong-release-cong-chart-consul-74ddbdf4
+Containers:
+  consul:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2
+    Image ID:      
+    Ports:         8500/TCP, 8300/TCP, 8301/TCP, 8301/UDP
+    Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/UDP
+    Command:
+      consul
+      agent
+    Args:
+      -dev
+      -ui
+      -client=0.0.0.0
+      -advertise=$(HOST_IP)
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      HOST_IP:   (v1:status.hostIP)
+    Mounts:
+      /consul/config/consul.json from consul-config (rw,path="consul.json")
+      /consul/data from consul-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hz6bk (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  consul-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-consul-config
+    Optional:  false
+  consul-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-consul-data-pvc
+    ReadOnly:   false
+  kube-api-access-hz6bk:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-documents-b776dc65-qdfvk
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-f37b357d-6s74/10.0.0.18
+Start Time:       Fri, 10 Oct 2025 23:28:18 +0000
+Labels:           app.kubernetes.io/component=documents
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=b776dc65
+Annotations:      <none>
+Status:           Running
+IP:               10.144.1.10
+IPs:
+  IP:           10.144.1.10
+Controlled By:  ReplicaSet/cong-release-cong-chart-documents-b776dc65
+Containers:
+  documents:
+    Container ID:   containerd://ce51cb5ce29c0c9a54634bb2057e579f91d4274b410ea944bdae3cee5158ab60
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents:smve
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents@sha256:b91913cf5efa18b905c6dd00503f79112e46be5e3a6f40bb22a00c29bd1f136c
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 10 Oct 2025 23:28:22 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:  cong-release-cong-chart-consul
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-psm2b (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-psm2b:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-garbage-collector-5f7dbc598c-7jt48
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-xuwo/10.0.0.21
+Start Time:       Fri, 10 Oct 2025 23:28:17 +0000
+Labels:           app.kubernetes.io/component=garbage-collector
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=5f7dbc598c
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-07T22:50:36+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Running
+IP:               10.144.5.6
+IPs:
+  IP:           10.144.5.6
+Controlled By:  ReplicaSet/cong-release-cong-chart-garbage-collector-5f7dbc598c
+Containers:
+  garbage-collector:
+    Container ID:  containerd://9dbf3a207feaef2df35db5233c57e75b2e9f98d5c684e55e51c2ba87bcb46907
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector:3.0.0
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector@sha256:cc60c13d533520c729430a2d078fa022c7ad2fca2e2311abb7792e05335138d6
+    Port:          10127/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/garbage-collector
+      -Dmaana.tableGarbageCollector.pollingInterval=4m
+      -Dmaana.kindGarbageCollector.pollingInterval=4m
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+      -Dmaana.jobLogGarbageCollector.pollingInterval=6m
+      -Dmaana.jobLogGarbageCollector.maxJobLogAge=15m
+      -Dmaana.metaIndexGarbageCollector.pollingInterval=4h
+      -Dmaana.jobGarbageCollector.maxJobAge=15m
+      -Dmaana.jobGarbageCollector.pollingInterval=5m
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Mon, 13 Oct 2025 00:47:52 +0000
+      Finished:     Mon, 13 Oct 2025 00:47:55 +0000
+    Ready:          False
+    Restart Count:  579
+    Environment:
+      CONSUL_HOST:  cong-release-cong-chart-consul
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-cff7g (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-cff7g:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                       From     Message
+  ----     ------   ----                      ----     -------
+  Warning  BackOff  4m54s (x13461 over 2d1h)  kubelet  Back-off restarting failed container garbage-collector in pod cong-release-cong-chart-garbage-collector-5f7dbc598c-7jt48_console-app(e5a9b28f-8a9f-49ff-906f-2558e9f5ba57)
+  Normal   Pulled   73s (x579 over 2d1h)      kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector:3.0.0" already present on machine
+
+
+Name:             cong-release-cong-chart-job-executor-8d69c496c-f8frb
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-u59m/10.0.0.22
+Start Time:       Fri, 10 Oct 2025 23:28:18 +0000
+Labels:           app.kubernetes.io/component=job-executor
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=8d69c496c
+Annotations:      <none>
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/cong-release-cong-chart-job-executor-8d69c496c
+Containers:
+  job-executor:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest
+    Image ID:      
+    Port:          10200/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/job-executor
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:   cong-release-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/data from data (rw)
+      /opt/docker/lib/compute-connectors from compute-connectors (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-frw27 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  compute-connectors:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-compute-connectors-pvc
+    ReadOnly:   false
+  data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-data-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-frw27:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-job-executor-8d69c496c-fzfpk
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-xuwo/10.0.0.21
+Start Time:       Fri, 10 Oct 2025 23:28:18 +0000
+Labels:           app.kubernetes.io/component=job-executor
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=8d69c496c
+Annotations:      <none>
+Status:           Running
+IP:               10.144.5.10
+IPs:
+  IP:           10.144.5.10
+Controlled By:  ReplicaSet/cong-release-cong-chart-job-executor-8d69c496c
+Containers:
+  job-executor:
+    Container ID:  containerd://d2d99da59373976d3d01e9d3b138f8613a7251079dda6b0b5d1b9a8919916e60
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor@sha256:5610ba92e6c2a99dd6e891d79439bc6efe02e659e150fb133581ecacdd89ef3d
+    Port:          10200/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/job-executor
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Mon, 13 Oct 2025 00:45:51 +0000
+      Finished:     Mon, 13 Oct 2025 00:45:54 +0000
+    Ready:          False
+    Restart Count:  578
+    Environment:
+      CONSUL_HOST:   cong-release-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/data from data (rw)
+      /opt/docker/lib/compute-connectors from compute-connectors (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-72n7l (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  compute-connectors:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-compute-connectors-pvc
+    ReadOnly:   false
+  data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-data-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-72n7l:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                       From     Message
+  ----     ------   ----                      ----     -------
+  Warning  BackOff  4m44s (x13480 over 2d1h)  kubelet  Back-off restarting failed container job-executor in pod cong-release-cong-chart-job-executor-8d69c496c-fzfpk_console-app(612e2d75-5e66-4753-b970-3750611a6b77)
+  Normal   Pulled   3m14s (x578 over 2d1h)    kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest" already present on machine
+
+
+Name:             cong-release-cong-chart-job-executor1-6cdd78499c-7mlpb
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-xuwo/10.0.0.21
+Start Time:       Fri, 10 Oct 2025 23:28:23 +0000
+Labels:           app.kubernetes.io/component=job-executor1
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=6cdd78499c
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-07T22:50:36+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Running
+IP:               10.144.5.7
+IPs:
+  IP:           10.144.5.7
+Controlled By:  ReplicaSet/cong-release-cong-chart-job-executor1-6cdd78499c
+Containers:
+  job-executor1:
+    Container ID:  containerd://9e970a2811ecbd204feefd1a1ead1c4d9bbc608ae3e98f4999b2e0edec65908b
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor@sha256:5610ba92e6c2a99dd6e891d79439bc6efe02e659e150fb133581ecacdd89ef3d
+    Port:          10200/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/job-executor
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Mon, 13 Oct 2025 00:46:55 +0000
+      Finished:     Mon, 13 Oct 2025 00:46:58 +0000
+    Ready:          False
+    Restart Count:  578
+    Environment:
+      CONSUL_HOST:   cong-release-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/data from data (rw)
+      /opt/docker/lib/compute-connectors from compute-connectors (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-j5r6s (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  compute-connectors:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-compute-connectors-pvc
+    ReadOnly:   false
+  data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-data-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-j5r6s:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                       From     Message
+  ----     ------   ----                      ----     -------
+  Warning  BackOff  4m41s (x13483 over 2d1h)  kubelet  Back-off restarting failed container job-executor1 in pod cong-release-cong-chart-job-executor1-6cdd78499c-7mlpb_console-app(517596f3-a15f-4f13-8b4a-0f6ad3fe0e83)
+  Normal   Pulled   2m10s (x578 over 2d1h)    kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest" already present on machine
+
+
+Name:             cong-release-cong-chart-job-executor1-6cdd78499c-jp6jl
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-u59m/10.0.0.22
+Start Time:       Fri, 10 Oct 2025 23:28:23 +0000
+Labels:           app.kubernetes.io/component=job-executor1
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=6cdd78499c
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-07T22:50:36+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/cong-release-cong-chart-job-executor1-6cdd78499c
+Containers:
+  job-executor1:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest
+    Image ID:      
+    Port:          10200/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/job-executor
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:   cong-release-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/data from data (rw)
+      /opt/docker/lib/compute-connectors from compute-connectors (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-9nsvb (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  compute-connectors:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-compute-connectors-pvc
+    ReadOnly:   false
+  data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-data-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-9nsvb:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-job-executor2-75dbcb745-5t8md
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-xuwo/10.0.0.21
+Start Time:       Fri, 10 Oct 2025 23:28:17 +0000
+Labels:           app.kubernetes.io/component=job-executor2
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=75dbcb745
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-07T22:50:36+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Running
+IP:               10.144.5.9
+IPs:
+  IP:           10.144.5.9
+Controlled By:  ReplicaSet/cong-release-cong-chart-job-executor2-75dbcb745
+Containers:
+  job-executor2:
+    Container ID:  containerd://a957eb916c8f667125b8a39471cb569749f519005ed13b1ff85759f1f56f0f79
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor@sha256:5610ba92e6c2a99dd6e891d79439bc6efe02e659e150fb133581ecacdd89ef3d
+    Port:          10200/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/job-executor
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Mon, 13 Oct 2025 00:44:34 +0000
+      Finished:     Mon, 13 Oct 2025 00:44:37 +0000
+    Ready:          False
+    Restart Count:  578
+    Environment:
+      CONSUL_HOST:   cong-release-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/data from data (rw)
+      /opt/docker/lib/compute-connectors from compute-connectors (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-zmzd9 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  compute-connectors:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-compute-connectors-pvc
+    ReadOnly:   false
+  data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-data-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-zmzd9:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                       From     Message
+  ----     ------   ----                      ----     -------
+  Normal   Created  35m (x573 over 2d1h)      kubelet  Created container: job-executor2
+  Normal   Pulled   4m32s (x578 over 2d1h)    kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest" already present on machine
+  Warning  BackOff  4m28s (x13475 over 2d1h)  kubelet  Back-off restarting failed container job-executor2 in pod cong-release-cong-chart-job-executor2-75dbcb745-5t8md_console-app(b0522adb-f185-47f0-9baa-5fa9bf3d1e92)
+
+
+Name:             cong-release-cong-chart-job-executor2-75dbcb745-89xkv
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-u59m/10.0.0.22
+Start Time:       Fri, 10 Oct 2025 23:28:23 +0000
+Labels:           app.kubernetes.io/component=job-executor2
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=75dbcb745
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-07T22:50:36+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/cong-release-cong-chart-job-executor2-75dbcb745
+Containers:
+  job-executor2:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest
+    Image ID:      
+    Port:          10200/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/job-executor
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:   cong-release-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/data from data (rw)
+      /opt/docker/lib/compute-connectors from compute-connectors (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-4mvzt (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  compute-connectors:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-compute-connectors-pvc
+    ReadOnly:   false
+  data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-data-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-4mvzt:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-kgservice-5fb587499d-z28sx
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-u59m/10.0.0.22
+Start Time:       Fri, 10 Oct 2025 23:28:23 +0000
+Labels:           app.kubernetes.io/component=kgservice
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=5fb587499d
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-07T22:50:36+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/cong-release-cong-chart-kgservice-5fb587499d
+Containers:
+  kgservice:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice:latest
+    Image ID:      
+    Port:          10124/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/kgservice
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:   cong-release-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-2smdh (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-2smdh:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-mysql-9f96d59ff-zpc8q
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-u59m/10.0.0.22
+Start Time:       Thu, 09 Oct 2025 23:53:51 +0000
+Labels:           app.kubernetes.io/component=mysql
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=9f96d59ff
+Annotations:      <none>
+Status:           Running
+IP:               10.144.7.8
+IPs:
+  IP:           10.144.7.8
+Controlled By:  ReplicaSet/cong-release-cong-chart-mysql-9f96d59ff
+Containers:
+  mysql:
+    Container ID:  containerd://f87e83ea4700033c90e9a978e4e78e11306118dbb03ddb2226c7db6a92d76ab2
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql:5.7.21
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql@sha256:12e70236ec8be07b87a95008a22deb0a2a6289ac81d852e622ea13e8311cec64
+    Port:          3306/TCP
+    Host Port:     0/TCP
+    Args:
+      mysqld
+      --user=root
+      --verbose
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Mon, 13 Oct 2025 00:44:18 +0000
+      Finished:     Mon, 13 Oct 2025 00:44:18 +0000
+    Ready:          False
+    Restart Count:  859
+    Environment:
+      MYSQL_ROOT_PASSWORD:         <set to the key 'root-password' in secret 'cong-release-cong-chart-mysql-secrets'>  Optional: false
+      MYSQL_DATABASE:              uaa
+      MYSQL_USER:                  uaa
+      MYSQL_PASSWORD:              <set to the key 'user-password' in secret 'cong-release-cong-chart-mysql-secrets'>  Optional: false
+      MYSQL_ALLOW_EMPTY_PASSWORD:  yes
+    Mounts:
+      /var/lib/mysql from mysql-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-v5ml2 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  mysql-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-mysql-data-pvc
+    ReadOnly:   false
+  kube-api-access-v5ml2:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                     From     Message
+  ----     ------   ----                    ----     -------
+  Normal   Created  14m (x858 over 3d)      kubelet  Created container: mysql
+  Normal   Pulled   4m48s (x859 over 3d)    kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql:5.7.21" already present on machine
+  Warning  BackOff  4m34s (x20113 over 3d)  kubelet  Back-off restarting failed container mysql in pod cong-release-cong-chart-mysql-9f96d59ff-zpc8q_console-app(d8c9e19d-39bb-44de-a302-6a5527635a3a)
+
+
+Name:             cong-release-cong-chart-nginx-6c5dc46d8f-nklsl
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-ktdu/10.0.0.16
+Start Time:       Thu, 09 Oct 2025 23:29:31 +0000
+Labels:           app.kubernetes.io/component=nginx
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=6c5dc46d8f
+Annotations:      <none>
+Status:           Running
+IP:               10.144.2.5
+IPs:
+  IP:           10.144.2.5
+Controlled By:  ReplicaSet/cong-release-cong-chart-nginx-6c5dc46d8f
+Containers:
+  nginx:
+    Container ID:   containerd://c3c30c332b8bf1ab9828e7f2e700d230ee1ee552d41ccd9c6a69079ce96b6252
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx:1.26.3
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx@sha256:9294a112f3f2f7dce1aed3ea88e4bef623170fef18a46b7e5f7fe386b293d4b5
+    Ports:          8181/TCP, 8443/TCP
+    Host Ports:     0/TCP, 0/TCP
+    State:          Running
+      Started:      Thu, 09 Oct 2025 23:29:53 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      PROXY_PORT:   8181
+      CONSUL_HOST:  cong-release-cong-chart-consul
+    Mounts:
+      /etc/consul-templates/nginx.conf.ctmpl from nginx-config-template (rw,path="nginx.conf.ctmpl")
+      /self-ssl from nginx-certs (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jw6zj (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  nginx-config-template:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-nginx-config-template
+    Optional:  false
+  nginx-certs:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  cong-release-cong-chart-nginx-certs
+    Optional:    false
+  kube-api-access-jw6zj:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-saq-fd4888fb-nwb6g
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-u59m/10.0.0.22
+Start Time:       Fri, 10 Oct 2025 23:28:23 +0000
+Labels:           app.kubernetes.io/component=saq
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=fd4888fb
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-07T22:50:36+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/cong-release-cong-chart-saq-fd4888fb
+Containers:
+  saq:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq:3.0.0
+    Image ID:      
+    Port:          32123/TCP
+    Host Port:     0/TCP
+    Command:
+      start
+      --config
+      /saq.cfg
+      --logLevel
+      DEBUG
+      --basePath
+      /SAQ
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:         cong-release-cong-chart-consul
+      SAQ_ADVERTISE_HOST:   (v1:status.podIP)
+    Mounts:
+      /SAQ from saq-data (rw)
+      /maana_share from maana-share (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-svbpz (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  saq-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-saq-data-pvc
+    ReadOnly:   false
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cong-release-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  kube-api-access-svbpz:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-uaa-b6c7fcfbb-64gjx
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-f37b357d-oj1w/10.0.0.20
+Start Time:       Thu, 09 Oct 2025 23:44:32 +0000
+Labels:           app.kubernetes.io/component=uaa
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=b6c7fcfbb
+Annotations:      <none>
+Status:           Running
+IP:               10.144.3.3
+IPs:
+  IP:           10.144.3.3
+Controlled By:  ReplicaSet/cong-release-cong-chart-uaa-b6c7fcfbb
+Containers:
+  uaa:
+    Container ID:   containerd://aeff27f5e4acdb587cf83ec484ad7aaa90315c1b32f88b33ee93b98b4fcfbb7b
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa:1.0
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa@sha256:3d73ee3dd935921a4c53412e7870038f567f00d5222920c48100192c46ac85d6
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Thu, 09 Oct 2025 23:44:59 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      DATABASE_HOST:      cong-release-cong-chart-mysql
+      DATABASE_USER:      uaa
+      DATABASE_PASSWORD:  <set to the key 'user-password' in secret 'cong-release-cong-chart-mysql-secrets'>  Optional: false
+      DATABASE_NAME:      uaa
+      OPENLDAP_HOST:      openldap1
+    Mounts:
+      /uaa/ from uaa-config (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-tzzws (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  uaa-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      cong-release-cong-chart-uaa-config
+    Optional:  false
+  kube-api-access-tzzws:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             cong-release-cong-chart-vault-848bcf9c46-j55k5
+Namespace:        console-app
+Priority:         0
+Service Account:  cong-release-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-f37b357d-808e/10.0.0.19
+Start Time:       Fri, 10 Oct 2025 23:28:20 +0000
+Labels:           app.kubernetes.io/component=vault
+                  app.kubernetes.io/instance=cong-release
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=848bcf9c46
+Annotations:      <none>
+Status:           Running
+IP:               10.144.4.6
+IPs:
+  IP:           10.144.4.6
+Controlled By:  ReplicaSet/cong-release-cong-chart-vault-848bcf9c46
+Containers:
+  vault:
+    Container ID:  containerd://c1a8555fb1b6d6b27ddf8c55e843fae3532fe90cfcb7830605848868c42c8ea6
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault:1.0.2
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault@sha256:a233ac3c7a0866959de7865f3ef382448aa9f814c0e96f6139d5b35589126a24
+    Port:          8200/TCP
+    Host Port:     0/TCP
+    Command:
+      vault
+      server
+      -dev
+      server
+      -dev
+    State:          Running
+      Started:      Fri, 10 Oct 2025 23:28:24 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      VAULT_DEV_ROOT_TOKEN_ID:  <set to the key 'root-token' in secret 'cong-release-cong-chart-vault-secrets'>  Optional: false
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-7vpn8 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-7vpn8:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
