@@ -40,7 +40,10 @@ spec:
         - name: job-scheduler
           image: "{{ .Values.jobScheduler.image.repository }}:{{ .Values.jobScheduler.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.jobScheduler.image.pullPolicy }}
-          command: ["bin/job-scheduler", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          command:
+            - "bin/job-scheduler"
+          args:
+            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
           ports:
             - containerPort: 10123
           env:
@@ -106,7 +109,10 @@ spec:
         - name: job-executor
           image: "{{ .Values.jobExecutor.image.repository }}:{{ .Values.jobExecutor.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.jobExecutor.image.pullPolicy }}
-          command: ["bin/job-executor", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          command:
+            - "bin/job-executor"
+          args:
+            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
           ports:
             - containerPort: 10200
           env:

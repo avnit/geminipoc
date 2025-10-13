@@ -31,6 +31,7 @@ spec:
           {{- end }}
           command:
             - "bin/garbage-collector"
+          args:
             - "-Dmaana.tableGarbageCollector.pollingInterval=4m"
             - "-Dmaana.kindGarbageCollector.pollingInterval=4m"
             - "-Dlog4j.configurationFile=/opt/log4j2.xml"

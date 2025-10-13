@@ -35,8 +35,9 @@ spec:
         - name: mysql
           image: "{{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.mysql.image.pullPolicy }}
-          args:
+          command:
             - "mysqld"
+          args:
             - "--user=root"
             - "--verbose"
           env:

@@ -39,7 +39,15 @@ spec:
         - name: saq
           image: "{{ .Values.saq.image.repository }}:{{ .Values.saq.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.saq.image.pullPolicy }}
-          command: ["start", "--config", "/saq.cfg", "--logLevel", "DEBUG", "--basePath", "/SAQ"]
+          command:
+            - "start"
+          args:
+            - "--config"
+            - "/saq.cfg"
+            - "--logLevel"
+            - "DEBUG"
+            - "--basePath"
+            - "/SAQ"
           ports:
             - containerPort: 32123
           env:
