@@ -50,6 +50,9 @@ spec:
           command:
             - "consul"
             - "agent"
+            - "dev"
+            - "-ui"
+            - "-client=0.0.0.0"
           args:
             - "-advertise=$(HOST_IP)"
           env:
