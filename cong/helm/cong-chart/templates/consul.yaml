@@ -47,7 +47,8 @@ spec:
         - name: consul
           image: "{{ .Values.consul.image.repository }}:{{ .Values.consul.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.consul.image.pullPolicy }}
-          command: ["consul", "agent", "-dev", "-ui", "-client=0.0.0.0", "-advertise=$(HOST_IP)"]
+          command: ["/usr/local/binconsul"]
+          arge: ["agent", "-dev", "-ui", "-client=0.0.0.0", "-advertise=$(HOST_IP)"]
           env:
             - name: HOST_IP
               valueFrom:
