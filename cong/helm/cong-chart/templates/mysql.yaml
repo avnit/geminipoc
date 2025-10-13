@@ -37,9 +37,9 @@ spec:
           imagePullPolicy: {{ .Values.mysql.image.pullPolicy }}
           command:
             - "mysqld"
-          args:
             - "--user=root"
             - "--verbose"
+            - "--lower_case_table_names=1"
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:

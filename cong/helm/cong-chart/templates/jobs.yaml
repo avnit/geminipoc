@@ -42,7 +42,6 @@ spec:
           imagePullPolicy: {{ .Values.jobScheduler.image.pullPolicy }}
           command:
             - "bin/job-scheduler"
-          args:
             - "-Dlog4j.configurationFile=/opt/log4j2.xml"
           ports:
             - containerPort: 10123
@@ -111,7 +110,6 @@ spec:
           imagePullPolicy: {{ .Values.jobExecutor.image.pullPolicy }}
           command:
             - "bin/job-executor"
-          args:
             - "-Dlog4j.configurationFile=/opt/log4j2.xml"
           ports:
             - containerPort: 10200
