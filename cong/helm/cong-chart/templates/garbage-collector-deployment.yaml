@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-garbage-collector
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -23,7 +23,7 @@ spec:
       serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
       containers:
         - name: garbage-collector
-          image: "{{ .Values.garbageCollector.image.repository }}:{{ .Values.garbageCollector.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.garbageCollector.image.repository }}:{{ .Values.garbageCollector.image.tag }}"
           imagePullPolicy: {{ .Values.garbageCollector.image.pullPolicy }}
           {{- with .Values.garbageCollector.resources }}
           resources:

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-job-scheduler
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -18,7 +18,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-job-scheduler
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -38,8 +38,12 @@ spec:
       serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
       containers:
         - name: job-scheduler
-          image: "{{ .Values.jobScheduler.image.repository }}:{{ .Values.jobScheduler.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.jobScheduler.image.repository }}:{{ .Values.jobScheduler.image.tag }}"
           imagePullPolicy: {{ .Values.jobScheduler.image.pullPolicy }}
+          {{- with .Values.jobScheduler.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
             - "bin/job-scheduler"
             - "-Dlog4j.configurationFile=/opt/log4j2.xml"
@@ -70,7 +74,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-job-executor
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -86,7 +90,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-job-executor
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
@@ -106,8 +110,12 @@ spec:
       serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
       containers:
         - name: job-executor
-          image: "{{ .Values.jobExecutor.image.repository }}:{{ .Values.jobExecutor.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.jobExecutor.image.repository }}:{{ .Values.jobExecutor.image.tag }}"
           imagePullPolicy: {{ .Values.jobExecutor.image.pullPolicy }}
+          {{- with .Values.jobExecutor.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
             - "bin/job-executor"
             - "-Dlog4j.configurationFile=/opt/log4j2.xml"

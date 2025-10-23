@@ -2,6 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-log4j-config
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
