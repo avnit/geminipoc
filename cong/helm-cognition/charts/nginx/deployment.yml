@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: neon-test
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx-container
+        #image: maananeonbuilds.azurecr.io/nginx:1.26
+        image: nginx:1.26.0
+        ports:
+          - containerPort: 8181
+            name: http-port
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d/default.conf
+            subPath: default.conf
+            readOnly: false
+        #command: ["/docker-entrypoint.sh"]
+        #args: ["nginx", "-g", "daemon off;"]
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-config
+      imagePullSecrets:
+        - name: azurecr
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: neon-test
+  annotations:
+    consul.hashicorp.com/service-sync: 'true'
+    consul.hashicorp.com/service-name: 'nginx'
+spec:
+  selector:
+    app: nginx
+  type: LoadBalancer # This provisions an external load balancer
+  ports:
+    - name: http-port
+      protocol: TCP
+      port: 80
+      targetPort: 8181

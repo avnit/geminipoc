@@ -25,6 +25,13 @@ consul:
   persistence:
     size: 1Gi
   config: {}
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 vault:
   enabled: true
@@ -34,6 +41,13 @@ vault:
     pullPolicy: IfNotPresent
     tag: "1.0.2"
   rootToken: "changeme"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 nginx:
   enabled: true
@@ -68,6 +82,13 @@ nginx:
   tls:
     crt: ""
     key: ""
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 cassandra:
   enabled: true
@@ -78,6 +99,13 @@ cassandra:
     tag: "4.1.3"
   persistence:
     size: 5Gi
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 mysql:
   enabled: true
@@ -90,6 +118,13 @@ mysql:
   userPassword: "mysecret"
   persistence:
     size: 2Gi
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 uaa:
   enabled: true
@@ -99,24 +134,45 @@ uaa:
     pullPolicy: IfNotPresent
     tag: "1.0"
   config: {}
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 saq:
   enabled: true
-  replicaCount: 2
+  replicaCount: 1
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq
     pullPolicy: IfNotPresent
     tag: "3.0.0"
   persistence:
-    size: 1Gi
+    size: 10Gi
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 kgservice:
   enabled: true
-  replicaCount: 2
+  replicaCount: 1
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice
     pullPolicy: IfNotPresent
-    tag: "latest" # You need to change this
+    tag: "3.0.0"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 jobScheduler:
   enabled: true
@@ -124,15 +180,28 @@ jobScheduler:
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-scheduler
     pullPolicy: IfNotPresent
-    tag: "latest" # You need to change this
-
+    tag: "3.0.0"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 jobExecutor:
   enabled: true
-  replicaCount: 2
+  replicaCount: 1
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor
     pullPolicy: IfNotPresent
-    tag: "latest" # You need to change this
+    tag: "3.0.0"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 garbageCollector:
   enabled: true
@@ -153,6 +222,13 @@ garbageCollector:
       port: 10127 # Use the actual readiness check port
     initialDelaySeconds: 5
     periodSeconds: 10
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 applicationService:
   enabled: true
@@ -175,14 +251,21 @@ documents:
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents
     pullPolicy: IfNotPresent
-    tag: "smve"
+    tag: "3.0.0"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 bootstrap:
   enabled: true
   image:
     repository: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap
     pullPolicy: IfNotPresent
-    tag: "latest" # You need to change this
+    tag: "3.0.0"
 
 log4j:
   config: |
@@ -202,5 +285,3 @@ log4j:
 
 serviceAccount:
   create: true
-  annotations:
-    iam.gke.io/gcp-service-account: terraform@avathon-saas-runtime-setup.iam.gserviceaccount.com

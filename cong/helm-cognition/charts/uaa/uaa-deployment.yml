@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    consul.hashicorp.com/service-sync: 'true'
+    consul.hashicorp.com/service-name: 'uaa'
+  name: uaa
+  namespace: neon-test
+  labels:
+    app: uaa
+spec:
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+  selector:
+    app: uaa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uaa
+  namespace: neon-test
+  labels:
+    app: uaa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uaa
+  template:
+    metadata:
+      labels:
+        app: uaa
+    spec:
+      containers:
+      - name: uaa
+      #image: us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa:1.0
+        image: maananeonbuilds.azurecr.io/maana/cloudbreak-uaa:1.0
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+          - name: uaa-config-volume
+            mountPath: /uaa/config 
+        command: ["/bin/sh", "-c"]
+        args:
+          - "cp /uaa/config/uaa.config.yml /uaa/uaa.yml && /tmp/run.sh"
+        env:
+        - name: DATABASE_HOST
+          value: uaa-mysql
+        - name: DATABASE_USER
+          value: uaa
+        - name: DATABASE_PASSWORD
+          value: mysecret
+        - name: DATABASE_NAME
+          value: uaa
+      imagePullSecrets:
+        - name: azurecr
+      volumes:
+      - name: uaa-config-volume
+        configMap:
+          name: uaa-config
+---
+

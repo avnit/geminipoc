@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-mysql-secrets
 type: Opaque
 data:
@@ -14,18 +14,18 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-nginx-certs
 type: kubernetes.io/tls
 data:
-  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURVRENDQWppZ0F3SUJBZ0lRQlFrUDRERXZ3aU1pZUZoV05SRFBwekFOQmdrcWhraUc5dzBCQVFzRkFEQVMKTVJBd0RnWURWUVFERXdkamIyNW5MV05oTUI0WERUSTFNVEF3TnpJeE1UVXlObG9YRFRJMk1UQXdOekl4TVRVeQpObG93S0RFbU1DUUdBMVVFQXhNZGNtVnNaV0Z6WlMxdVlXMWxMV052Ym1jdFkyaGhjblF0Ym1kcGJuZ3dnZ0VpCk1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRREtER3dhb0htaWhJa0REeDRicDJFTFZkL0IKUWxxVVUwalViNFRpVVl0VlFiTzFZKzlkR0F0N3FrY0tsRGlWOE5EV1ZMR2QrL250NTR2MVNnNFp1c0NLOHhmTQoxdlJRM25TN0xWNFlycWZCaFBpVVRBbWRpTHM4SER1MlMxWUR6K0p1MTh1MExoUHJtS2kxK3NBb2dZaVV2QjFhCk4vVVhpdWJUcXNNVys1L0xxcEFJdkoxZ2ZTZXhGU0JRYzJQQTJrZngvQTdGbXVaSndtZVBmMmN5M0IwcTI4Q2gKcFIweTdXME85dVd5NXNzM2ROLytxUHBkS2gyR2lHM0RrTWp1QUhmaXRkSzhOQmdob0RGSk5kcHdCenBsbmlKMApEL0hNZ2JMeGdWSEZZUEhXOEx3R1N3THhNaUVWTXZTdENmOUJ2b2tRczdxdTF6K1V0SkdQTGZoVEh4RHBBZ01CCkFBR2pnWXN3Z1lnd0RnWURWUjBQQVFIL0JBUURBZ1dnTUIwR0ExVWRKUVFXTUJRR0NDc0dBUVVGQndNQkJnZ3IKQmdFRkJRY0RBakFNQmdOVkhSTUJBZjhFQWpBQU1COEdBMVVkSXdRWU1CYUFGR3B6Vk45eVJJS25RSWZJMWthZQpIVmQyZGJqUU1DZ0dBMVVkRVFRaE1CK0NIWEpsYkdWaGMyVXRibUZ0WlMxamIyNW5MV05vWVhKMExXNW5hVzU0Ck1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQUxsRmJQQ2FnZmkrSnN6VmluUUZpbisvMXgxWWRtMG1LR0ZTdnoKL3ZaU1pUVjdRcTArVkNvdUozdDdYdlBSMDBiNkdUSDRGUFpQNzd6ajJKQ0FCdHd5Y2RKMEZ6ZUxoeEVoRTdtZwprZk5rcTJQdStDTElEdC81Uk5lY0dJZXRoSzRlbFNVUGtja2ZoaEZuWm1SMDVNUjBlZzdCc0dEOXo2UDZKVmlSCjV5MnFKeXRhM0VJT3JwSEdwazVxeUs4aWxKWEFvQUErU3FMOXN5N0NqUVNNYWtCRjBzcFdhUWtwemxnUm9Fd0gKb040S3IyRy9DRm4wNEFudUJKL0w4eXB3aUFwMUhSUCtTSHZ0YjJzRjdJYm1PWnNIcUtrV2lIeHlVVzNGdm9ZbQo5bjRIelQ0enFoeVBjbXpIbW9tSjg2ejhEZHRaR09VdFpWOGtyWXpnTFRDNVZUcmsKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
-  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBeWd4c0dxQjVvb1NKQXc4ZUc2ZGhDMVhmd1VKYWxGTkkxRytFNGxHTFZVR3p0V1B2ClhSZ0xlNnBIQ3BRNGxmRFExbFN4bmZ2NTdlZUw5VW9PR2JyQWl2TVh6TmIwVU41MHV5MWVHSzZud1lUNGxFd0oKbllpN1BCdzd0a3RXQTgvaWJ0Zkx0QzRUNjVpb3RmckFLSUdJbEx3ZFdqZjFGNHJtMDZyREZ2dWZ5NnFRQ0x5ZApZSDBuc1JVZ1VITmp3TnBIOGZ3T3hacm1TY0puajM5bk10d2RLdHZBb2FVZE11MXREdmJsc3ViTE4zVGYvcWo2ClhTb2Rob2h0dzVESTdnQjM0clhTdkRRWUlhQXhTVFhhY0FjNlpaNGlkQS94eklHeThZRlJ4V0R4MXZDOEJrc0MKOFRJaEZUTDByUW4vUWI2SkVMTzZydGMvbExTUmp5MzRVeDhRNlFJREFRQUJBb0lCQUFTZXR6SkxSUHNsVFBvZwpyZ1Eyd3RNb2VzWVJLT1lxZEZ1RkxlRlY3RTBLMFJ1eDh0aDNqS0o0SFlrOWNMUC9BWjZxbkdnYnZOYUd2RzVqCmVLaVJwNUx2WlkrU2o3VkxFMHk4TG52SUdXWmxRYnAwWEF3Z1F3S09naHpVUEVRZTh0TXN0N3NuMXl1cXlzMysKRFBxd0laQlRGajZJbm9aVUNXbDA3UHdzWm5ZL0pwVUx0bm9RRk9Ia2tKRzIyR1oxeG5xU3BpVUZEWXFyMExKcQpraGo5R0ZDZVlkdEdSekJxK3p5WkRoaTZGZlI0MHpZZWppNFN2Si9ucGJzdVhqQ0VTK2E4cUtGYXN6alBGMDR0CmVrWHhtN0Jmd2tlekRHaUsvU3dUTERkS1JSNE8zRHJvVzNLQmsyZktxcXVSWitoYnJUSU1ZNG9FTll3L2pSbHUKZ3k1MEttRUNnWUVBK1gySGMzWjFXUStrRjJEOThudUNZZ2REai84U2Q5Qnk0OGhsWnowZFViRkV4SkRtenY5bQp0eUdvZ0JTVGN5TnpqemF6RzhjNmYzbnN3YXR3dUtENmhML2tXaWE5aTQvbTVGTnM4RU8zRWxUYmp0VnJGQWlMClBVaUlLOXBlLzFxTUZlNUkrNFVPeXd6ck5XNUxoa1NVSGZScHVDa2RCQ0dsRk5hcXV5RE9oemtDZ1lFQXoxSUIKYUFoaytKbU80cjJ4WnVhRXo4dGlxR1Urb1ZmdHk3NXBhSndqQVJBRUpuKzF0ZFpLajF0UWxhUnh3Vlc0RU5LWApncmw3dFZmMVQyRUN3ekxVSFhJQmNBby9QeEhoTC9tc2xRYmc1WTRkNXhIU2pjenk3ZW9zREl3YXVaNm9SQnd5CkNsbVN2ZmFqV29SSkEwaU9kUGFXMWNXbkxHbzh1VThtYnJOcHB6RUNnWUVBcWNvMU9XMy90S25CV2F2SGg1Tm8KaTBBNFNiSWtwbWUxR0xIVDJPdXRuV0FQMWRwclNhcGxBL0tqRXU5dDNhamR4elJKdG5qaXBjaWJTTDVkQ3psNgo1SWNYYUFiL2JoQno2U1doZU80TWxDd3Q4OG5vZ296Qi9lWHp6aXhpQkZSaUM3Ykw4bWgrUmMrMzd2ZnQ3Q1dWCnk4RC9oYlp0S2RlZjJrdXhpNEpySzNrQ2dZQXh5ZlR5Z2dtVnRuTWRPd2N1dWkrdEk2QVc1dkdxbDg1US92S2IKbjl1OE5wZDRrM1VWTFZpTW94WndTYVRVRkh6MjlVeFRwYTN5K0NPK280S2hWRVNpcWExMHRkRkltVWVtV09TOAppWUZiUDgwb29Cd2IxOXVEalpoMGp2VWdITjAyTmp0Q1J3NjV0bEMydlV3M2tLWTlxcmJBc2c0YTJZeXB5RHRuCm5JakVFUUtCZ0hESFRubnI3am92czgvSnBmdHZhWDdUVW0ydlQ3ZU9qVUk5TkRyUVVTeFpDSGpjaGNoNkRNUEcKZFYxTjQzRWZ4SlhtekVyc29jRWVjSVplNlllRDJXNWtLZ0lBakMvTU5vclFBOWlxYzV3ZVloV1RKSWg3TzdrdApkQzFjQzVvWmVDTUZiQ0dqblNmUUpjREF2ZG1wUkQrVnUrdDJZUVZwU2E4OXUvQjlwbU5TCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURVRENDQWppZ0F3SUJBZ0lRWXE3d1l1Q0NVayt4YUIrWUlWVk0xVEFOQmdrcWhraUc5dzBCQVFzRkFEQVMKTVJBd0RnWURWUVFERXdkamIyNW5MV05oTUI0WERUSTFNVEF5TURBeU16UXpObG9YRFRJMk1UQXlNREF5TXpRegpObG93S0RFbU1DUUdBMVVFQXhNZGNtVnNaV0Z6WlMxdVlXMWxMV052Ym1jdFkyaGhjblF0Ym1kcGJuZ3dnZ0VpCk1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRQ2tQMHhLOGFEdlIzVG5tMDRzbGVpYWY4cVgKTzFzNHBwR1lsNUIwTmJWN1YyVjk4ZFNOSStCSUNQdFk3MmxFcE5pQU1iME1xM3ExVmVNNlFBcHJrV0xYYWVScgp2T21vSDJCUGVYNU01TkxNbnJjd2lENURyQnkrKzBzQk5PelJMRGFqWlk1MXlLeEZqd3pzY1MwYTl5SXo4dFFyCjhrQS9aNWJFR0R6ZGRuenhROVNERzUreWtDT1h3L0puU0FjalFRQlJBbjZRQmhrMThhYTZobHBkb0RBZS9yeEkKaVdHY253N2NoNGxtWHlsWXhzcitnUUxCaUJsVFlRVmZGNGtkSVVxcUxYd1FHaFA0Z05saEhLZCt5clZPZnVKSgpGbVMwZzdKYlI3K01Od0E3eDNUMVNXZVdWbjNXbGFsNE9malJKWEl0Y0Y5T2Y5Zmp4MDlWTXR1N1pON3ZBZ01CCkFBR2pnWXN3Z1lnd0RnWURWUjBQQVFIL0JBUURBZ1dnTUIwR0ExVWRKUVFXTUJRR0NDc0dBUVVGQndNQkJnZ3IKQmdFRkJRY0RBakFNQmdOVkhSTUJBZjhFQWpBQU1COEdBMVVkSXdRWU1CYUFGQm5hOEp4QWxWM2J2WHdzV2ptQgo1aEp6S0dzcU1DZ0dBMVVkRVFRaE1CK0NIWEpsYkdWaGMyVXRibUZ0WlMxamIyNW5MV05vWVhKMExXNW5hVzU0Ck1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQXU5L1ozNFRrZWlpdkd1Q0dFRGw2RWpIUEpvOW9EdTVhbTdWY0cKVU04QVNacVJpeFl5WjFBOHR3SEFYZnZRbE5uOXhIQXZxNCtiVXpTM2grQVBjUUhleStCc2xLQ3hxcEM5WlpJSwoybTd6VDdTbUViRjNZODRWdUIwYmlDZGNHU2Y1UW5yYzBYM1VmWXhiTVVhSU5EWmU1eSttY3N4ZjUxZVhCajZHCkk1WmFZSXZpVHFGSlY3aXZsbnVzZlVtVXhuWk1EWkVjL3krc0VxM2MrWERKVTUvZFhFQ3dTZjF5U2o1ZGUzNisKYXdHbEZvZmZTZUN3aTljRjdGR0RXZ0s5L2d3Y0JjSnR2VHhyaGJsMGF6RFN4MDhmc3o2Y1FhN1c4MG5FQkZnNQo1blY2RXVjVzFweFVLMGEvbTQ1dWwzcG15NURQTE9qOTA1RW5KeFJibDI3c0FGU1YKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBcEQ5TVN2R2c3MGQwNTV0T0xKWG9tbi9LbHp0Yk9LYVJtSmVRZERXMWUxZGxmZkhVCmpTUGdTQWo3V085cFJLVFlnREc5REt0NnRWWGpPa0FLYTVGaTEybmthN3pwcUI5Z1QzbCtUT1RTeko2M01JZysKUTZ3Y3Z2dExBVFRzMFN3Mm8yV09kY2lzUlk4TTdIRXRHdmNpTS9MVUsvSkFQMmVXeEJnODNYWjg4VVBVZ3h1ZgpzcEFqbDhQeVowZ0hJMEVBVVFKK2tBWVpOZkdtdW9aYVhhQXdIdjY4U0lsaG5KOE8zSWVKWmw4cFdNYksvb0VDCndZZ1pVMkVGWHhlSkhTRktxaTE4RUJvVCtJRFpZUnluZnNxMVRuN2lTUlprdElPeVcwZS9qRGNBTzhkMDlVbG4KbGxaOTFwV3BlRG40MFNWeUxYQmZUbi9YNDhkUFZUTGJ1MlRlN3dJREFRQUJBb0lCQUFQTVVPdlV2WmQ2N0FtbApEa0E2c1RmTlo3WnFrWGYwWmg2RXRycnhPUUtpcVQ2cDFuUHpGZThrZ2dkeTlkaTRCU2VsdnN6cHREczRRcnBvCm03VVVGaGlNSXRPWStVQkJoWDBnL3BveG1teFA2VVdPaVA0UW4xT05SUlZBajQ5Z3VkeTZidnByU3d5S3U4NUYKNmJpYmFXZVJJSFhwc3JHa3FCaGR4UjZMN0dTNTF0VndocnZmOU1vYUZVYmp4MEs1cE41WU53OTMrT3ZFdFVRagpsV01lRXF3N2RJa0RMWlpEK045bGtwcFBhaHZjbERxbWpJd3FteWlmdVRUMnR2Qm1veE9lditvT2NqcUNNYm4zCm5iODIxUEY1WTJRU3hETGRHK2IrenA2MlVveUZ2dUt6SWdDQVIzRXVBOERyV1l3Y0JtbVYrU0IvNW8zOTVhTWQKNnJHaW1Ba0NnWUVBMUUxUXQ2SlpRaGNDUEoxaUJkOEZybDJqL3FZZytuNjRyVVBrSFdGUmJ0anJ6UkdWVTA4Sgp6NEoxMzFZWFJYZDhLdS83VjAxRzdmcUFKZkFWTjB4c0QxdlRHa1Eyc3Y4RFJwc1Z1OGZMMFVzRld5bjJrY3g3CjIvSjh5S2pvT2owMWZPam12VTd1UHNRVXhTSWdiYVdPdTdXamRVZGRYUFVJSFlvOWtOalEvTmNDZ1lFQXhnM2QKeTk3RjJFbDAzeGd2SDFWNlQ5ZFFhU21vUGhncFYrcUovbDNJS1FZelBOYml1WU9ndGZUay9CZzNtbHBLc2NFeAptUmI3OFBJeHV1cEFFNkg5QnVXbXVvTkdrbVJEQUtFazg5b0lrN2x1WnQwMzd3Si96NktIU3NFR3hOYVNFYVl2ClhROHhob2hxOFlYNHNiRHdrenFybWN1QU9PY1JzTkcwdGs5bUU2a0NnWUVBbXdYRnpnR1hhY0lCV1IrWEJ6QisKSm4rc0UzTmRtMnhURC9vR0pVbjl1NUpjUk1iMUlmc1I3OXVVbEx0NWpMa2VDd0JucUt6K0FTSXMxd2NEaHZpZgo0MnNxc0FCbGJMajN2R1BjTDkxSndBOG0zeFc2UFdaeWZ2NEhEa01BS0I2djR3RHlGQVFCeGdWS0lWUzFGenVRCkNSTXVRNklUMDUvOUNBejh2YnNFaDhzQ2dZQkJxbDFNZC9zKzMvUUk5L3EvdDlhSzNFZkQ1bFRxNlpYam1WYlIKYUlTeDNXVmxtWldvanBUZFgyb0FqNEw0QVZIY3A4SnJFS3pOMFc5ZG1zZE4reHBxakFBQXZQL01EOFFMVkdKdApHM0JXa2xlaGNWMVhPSXZwNnVoU2g3ZFgwaEN5RzFoKzBVZkpaRGVaQnFOVFB1ZzAySElHMXVzWGNyMXgwOFhICjRJRm1xUUtCZ1FDOGp2cjFOcUVZK2dUWFNTZ1RXaVBRSDZadG1IOXBXeDE5OGpqcGpkRExqelNGem0xSWRlNE0KbXBwK3NXaTRDNmZLaS9TN0E4V2ZQRTUydWJUbW5OMUZ6ZG1ndi9LTEFlb09YUUhvMyt6anp0MEJiUmw5RVpTZgpDZ0VQMnJDblMwMGNxVGpDelMyTWZXVEFHTHNXMUpxVnVFaUJPOUlUdnlEWGFGQzMzZmhPNGc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
 ---
 # Source: cong-chart/templates/vault.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-vault-secrets
 type: Opaque
 data:
@@ -35,7 +35,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-consul-config
 data:
   consul.json: |
@@ -45,17 +45,37 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-nginx-config-template
 data:
   nginx.conf.ctmpl: |
+    worker_processes 1;
+    events {
+      worker_connections 1024;
+    }
+    http {
+      sendfile on;
+      upstream app_backend {
+        server localhost:8080; # Replace with your actual backend service
+      }
+      server {
+        listen 8181;
+        location / {
+          proxy_pass http://app_backend;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        }
+      }
+    }
 ---
 # Source: cong-chart/templates/release.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: release-name-release
-  namespace: default
+  namespace: console-app
 data:
   release-name: release-name
   release-namespace: default
@@ -64,7 +84,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-uaa-config
 data:
   uaa.yml: |
@@ -74,7 +94,7 @@ data:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-consul-data-pvc
 spec:
   accessModes:
@@ -87,7 +107,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-mysql-data-pvc
 spec:
   accessModes:
@@ -100,7 +120,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-maana-share-pvc
 spec:
   accessModes:
@@ -113,7 +133,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-compute-connectors-pvc
 spec:
   accessModes:
@@ -126,7 +146,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-data-pvc
 spec:
   accessModes:
@@ -139,11 +159,11 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-configuration-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -152,11 +172,11 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-modules-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -165,7 +185,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-saq-data-pvc
 spec:
   accessModes:
@@ -178,7 +198,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-application-service
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -199,7 +219,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-cassandra
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -224,7 +244,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-consul
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -254,7 +274,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-documents
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -276,7 +296,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-garbage-collector
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -298,7 +318,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-job-scheduler
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -320,7 +340,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-job-scheduler
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -346,9 +366,18 @@ spec:
       serviceAccountName: release-name-cong-chart
       containers:
         - name: job-scheduler
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-scheduler:latest"
+          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-scheduler:3.0.0"
           imagePullPolicy: IfNotPresent
-          command: ["bin/job-scheduler", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          command:
+            - "bin/job-scheduler"
+            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
           ports:
             - containerPort: 10123
           env:
@@ -372,15 +401,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
-  name: release-name-cong-chart-job-executor1
+  namespace: console-app
+  name: release-name-cong-chart-job-executor
   labels:
     helm.sh/chart: cong-chart-0.2.1
     app.kubernetes.io/name: cong-chart
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: job-executor1
+    app.kubernetes.io/component: job-executor
 spec:
   ports:
     - port: 10200
@@ -388,35 +417,13 @@ spec:
   selector:
     app.kubernetes.io/name: cong-chart
     app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: job-executor1
----
-# Source: cong-chart/templates/jobs.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: default
-  name: release-name-cong-chart-job-executor2
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: job-executor2
-spec:
-  ports:
-    - port: 10201
-      targetPort: 10200
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: job-executor2
+    app.kubernetes.io/component: job-executor
 ---
 # Source: cong-chart/templates/kgservice.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-kgservice
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -438,8 +445,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-mysql
+  labels:
+    helm.sh/chart: cong-chart-0.2.1
+    app.kubernetes.io/name: cong-chart
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: mysql
 spec:
   ports:
     - port: 3306
@@ -452,7 +466,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-nginx
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -479,7 +493,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-saq
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -501,7 +515,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-uaa
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -523,7 +537,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-vault
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -545,7 +559,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-application-service
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -608,7 +622,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-consul
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -618,6 +632,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: consul
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cong-chart
@@ -635,9 +650,15 @@ spec:
         - name: consul
           image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2"
           imagePullPolicy: IfNotPresent
-          command:
-            - "agent"
-            - "-advertise=$(HOST_IP)"
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          command: ["consul"]
+          args: ["agent", "-dev", "-ui", "-client=0.0.0.0", "-advertise=$(HOST_IP)"]
           env:
             - name: HOST_IP
               valueFrom:
@@ -668,7 +689,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-documents
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -696,6 +717,13 @@ spec:
         - name: documents
           image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents:3.0.0"
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
           ports:
             - containerPort: 80
           env:
@@ -706,7 +734,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-garbage-collector
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -734,6 +762,13 @@ spec:
         - name: garbage-collector
           image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector:3.0.0"
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
           command:
             - "bin/garbage-collector"
             - "-Dmaana.tableGarbageCollector.pollingInterval=4m"
@@ -746,6 +781,18 @@ spec:
             - "-Dmaana.jobGarbageCollector.pollingInterval=5m"
           ports:
             - containerPort: 10127
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 10127
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 10127
+            initialDelaySeconds: 5
+            periodSeconds: 10
           env:
             - name: CONSUL_HOST
               value: "release-name-cong-chart-consul"
@@ -767,99 +814,44 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
-  name: release-name-cong-chart-job-executor1
+  namespace: console-app
+  name: release-name-cong-chart-job-executor
   labels:
     helm.sh/chart: cong-chart-0.2.1
     app.kubernetes.io/name: cong-chart
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: job-executor1
+    app.kubernetes.io/component: job-executor
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cong-chart
       app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: job-executor1
+      app.kubernetes.io/component: job-executor
   template:
     metadata:
       labels:
         app.kubernetes.io/name: cong-chart
         app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: job-executor1
+        app.kubernetes.io/component: job-executor
     spec:
       serviceAccountName: release-name-cong-chart
       containers:
-        - name: job-executor1
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest"
+        - name: job-executor
+          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:3.0.0"
           imagePullPolicy: IfNotPresent
-          command: ["bin/job-executor", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
-          ports:
-            - containerPort: 10200
-          env:
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
-            - name: SECURE_VAULT
-              value: "false"
-          volumeMounts:
-            - name: maana-share
-              mountPath: /maana_share
-            - name: compute-connectors
-              mountPath: /opt/docker/lib/compute-connectors
-            - name: data
-              mountPath: /opt/docker/data
-            - name: log4j-config
-              mountPath: /opt/log4j2.xml
-              subPath: log4j2.xml
-      volumes:
-        - name: maana-share
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-maana-share-pvc
-        - name: compute-connectors
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-compute-connectors-pvc
-        - name: data
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-data-pvc
-        - name: log4j-config
-          configMap:
-            name: release-name-cong-chart-log4j-config
----
-# Source: cong-chart/templates/jobs.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: default
-  name: release-name-cong-chart-job-executor2
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: job-executor2
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: job-executor2
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: job-executor2
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: job-executor2
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:latest"
-          imagePullPolicy: IfNotPresent
-          command: ["bin/job-executor", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          command:
+            - "bin/job-executor"
+            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
           ports:
             - containerPort: 10200
           env:
@@ -895,7 +887,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-kgservice
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -905,6 +897,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: kgservice
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cong-chart
@@ -920,9 +913,12 @@ spec:
       serviceAccountName: release-name-cong-chart
       containers:
         - name: kgservice
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice:latest"
+          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice:3.0.0"
           imagePullPolicy: IfNotPresent
-          command: ["bin/kgservice", "-Dlog4j.configurationFile=/opt/log4j2.xml"]
+          command:
+            - "bin/kgservice"
+          args:
+            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
           ports:
             - containerPort: 10124
           env:
@@ -948,7 +944,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-mysql
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -958,6 +954,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: mysql
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cong-chart
@@ -975,10 +972,18 @@ spec:
         - name: mysql
           image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql:5.7.21"
           imagePullPolicy: IfNotPresent
-          args:
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          command:
             - "mysqld"
             - "--user=root"
             - "--verbose"
+            - "--lower_case_table_names=1"
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
@@ -1010,7 +1015,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-nginx
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -1020,6 +1025,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: nginx
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cong-chart
@@ -1037,6 +1043,13 @@ spec:
         - name: nginx
           image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx:1.26.3"
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
           ports:
             - containerPort: 8181
             - containerPort: 8443
@@ -1063,7 +1076,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-saq
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -1073,6 +1086,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: saq
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cong-chart
@@ -1090,7 +1104,21 @@ spec:
         - name: saq
           image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq:3.0.0"
           imagePullPolicy: IfNotPresent
-          command: ["start", "--config", "/saq.cfg", "--logLevel", "DEBUG", "--basePath", "/SAQ"]
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          command:
+            - "/bin/start"
+            - "--config"
+            - "/saq.cfg"
+            - "--logLevel"
+            - "DEBUG"
+            - "--basePath"
+            - "/SAQ"
           ports:
             - containerPort: 32123
           env:
@@ -1117,7 +1145,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-uaa
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -1127,6 +1155,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: uaa
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cong-chart
@@ -1144,6 +1173,13 @@ spec:
         - name: uaa
           image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa:1.0"
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
           ports:
             - containerPort: 8080
           env:
@@ -1172,7 +1208,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-vault
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -1182,6 +1218,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: vault
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cong-chart
@@ -1199,7 +1236,16 @@ spec:
         - name: vault
           image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault:1.0.2"
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
           command:
+            - "vault"
+          args:
             - "server"
             - "-dev"
           securityContext:
@@ -1219,7 +1265,7 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-cassandra
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -1247,6 +1293,13 @@ spec:
         - name: cassandra
           image: "cassandra:4.1.3"
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
           ports:
             - containerPort: 9160
             - containerPort: 9042
@@ -1274,7 +1327,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -1286,12 +1339,12 @@ metadata:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": before-hook-creation
-    iam.gke.io/gcp-service-account: terraform@avathon-saas-runtime-setup.iam.gserviceaccount.com
 ---
 # Source: cong-chart/templates/log4j-config.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: console-app
   name: release-name-cong-chart-log4j-config
   labels:
     helm.sh/chart: cong-chart-0.2.1
@@ -1323,7 +1376,7 @@ data:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  namespace: default
+  namespace: console-app
   name: release-name-cong-chart-bootstrap
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
@@ -1346,7 +1399,7 @@ spec:
           command: ['sh', '-c', 'until nc -z release-name-cong-chart-consul 8500; do echo "waiting for consul"; sleep 2; done;']
       containers:
         - name: bootstrap
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap:latest"
+          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap:3.0.0"
           imagePullPolicy: IfNotPresent
           command:
             - "bin/bootstrap"

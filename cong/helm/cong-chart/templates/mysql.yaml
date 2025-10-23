@@ -2,8 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-mysql
+  labels:
+    {{- include "cong-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: mysql
 spec:
   ports:
     - port: 3306
@@ -14,12 +17,13 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-mysql
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: mysql
 spec:
+  replicas: {{ .Values.mysql.replicaCount | default 1 }}
   selector:
     matchLabels:
       {{- include "cong-chart.selectorLabels" . | nindent 6 }}
@@ -35,10 +39,11 @@ spec:
         - name: mysql
           image: "{{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.mysql.image.pullPolicy }}
-          command:
-            - "mysqld"
-            - "--user=root"
-            - "--verbose"
+          {{- with .Values.mysql.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          args:
             - "--lower_case_table_names=1"
           env:
             - name: MYSQL_ROOT_PASSWORD
@@ -55,8 +60,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "cong-chart.fullname" . }}-mysql-secrets
                   key: user-password
-            - name: MYSQL_ALLOW_EMPTY_PASSWORD
-              value: "yes"
           ports:
             - containerPort: 3306
           volumeMounts:
@@ -70,7 +73,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-mysql-data-pvc
 spec:
   accessModes:
@@ -82,7 +85,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-mysql-secrets
 type: Opaque
 data:

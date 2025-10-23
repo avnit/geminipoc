@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-bootstrap
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade

@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uaa-mysql-data
+  namespace: neon-test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi  # Adjust the size as needed
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uaa-mysql-deployment
+  namespace: neon-test
+  labels:
+    app: uaa-mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uaa-mysql-deployment
+  template:
+    metadata:
+      labels:
+        app: uaa-mysql-deployment
+    spec:
+      containers:
+      - name: uaa-mysql
+        image: maananeonbuilds.azurecr.io/mysql:5.7.21
+        args:
+          - "--ignore-db-dir=lost+found"
+        #command: ["mysqld", "--user=root", "--initialize-insecure"]
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: "mysecret"
+          - name: MYSQL_DATABASE
+            value: "uaa"
+          - name: MYSQL_USER
+            value: "uaa"
+          - name: MYSQL_PASSWORD
+            value: "mysecret"
+          - name: MYSQL_ALLOW_EMPTY_PASSWORD
+            value: "yes"
+          - name: MYSQL_ROOT_HOST
+            value: "%"
+        ports:
+          - containerPort: 3306
+        volumeMounts:
+          - name: mysql-data
+            mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: uaa-mysql-data
+      imagePullSecrets:
+        - name: azurecr
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uaa-mysql
+  namespace: neon-test
+  labels:
+    app: uaa-mysql-deployment
+spec:
+  selector:
+    app: uaa-mysql-deployment
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
