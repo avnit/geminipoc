@@ -15,7 +15,7 @@ spec:
     volumeHandle: "modeInstance/us-central1/maana-storage/maana_share"
     volumeAttributes:
       ip: 10.66.192.2
-      volumne: maana_share_pvc
+      volume: maana_share_pvc
       protocol: nfsv3
   storageClassName: maana-filestore
 ---
@@ -36,7 +36,7 @@ spec:
     volumeHandle: "modeInstance/us-central1/maana-storage/maana_share/compute-connectors"
     volumeAttributes:
       ip: 10.66.192.2
-      volumne: maana_share_pvc
+      volume: maana_share_pvc
       protocol: nfsv3
   storageClassName: maana-filestore
 ---
@@ -57,7 +57,7 @@ spec:
     volumeHandle: "modeInstance/us-central1/maana-storage/maana_share/data"
     volumeAttributes:
       ip: 10.66.192.2
-      volumne: maana_share_pvc
+      volume: maana_share_pvc
       protocol: nfsv3
   storageClassName: maana-filestore
 
