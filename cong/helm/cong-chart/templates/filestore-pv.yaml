@@ -1,9 +1,20 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: maana-filestore
+provisioner: filestore.csi.storage.gke.io
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+parameters:
+  tier: standard
+  network: main-vpc
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: maana-filestore-pv
 spec:
-  storageClassName: ""
   capacity:
     storage: 10Gi
   accessModes:
@@ -24,7 +35,6 @@ kind: PersistentVolume
 metadata:
   name: maana-filestore-pv-compute-connectors
 spec:
-  storageClassName: ""
   capacity:
     storage: 10Gi
   accessModes:
@@ -45,7 +55,6 @@ kind: PersistentVolume
 metadata:
   name: maana-filestore-pv-data
 spec:
-  storageClassName: ""
   capacity:
     storage: 1Gi
   accessModes:
@@ -61,14 +70,3 @@ spec:
       protocol: nfsv3
   storageClassName: maana-filestore
 
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: maana-filestore
-provisioner: filestore.csi.storage.gke.io
-volumeBindingMode: Immediate
-allowVolumeExpansion: true
-parameters:
-  tier: standard
-  network: default
