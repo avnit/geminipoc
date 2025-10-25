@@ -1,1416 +1,1007 @@
----
-# Source: cong-chart/templates/mysql.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-mysql-secrets
-type: Opaque
-data:
-  root-password: bXlzZWNyZXQ=
-  user-password: bXlzZWNyZXQ=
----
-# Source: cong-chart/templates/nginx.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-nginx-certs
-type: kubernetes.io/tls
-data:
-  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURVRENDQWppZ0F3SUJBZ0lRZm5sYkc3WlNQQk45U1NObjliOGhwekFOQmdrcWhraUc5dzBCQVFzRkFEQVMKTVJBd0RnWURWUVFERXdkamIyNW5MV05oTUI0WERUSTFNVEF5TWpFME1URXdORm9YRFRJMk1UQXlNakUwTVRFdwpORm93S0RFbU1DUUdBMVVFQXhNZGNtVnNaV0Z6WlMxdVlXMWxMV052Ym1jdFkyaGhjblF0Ym1kcGJuZ3dnZ0VpCk1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRQzBRRHRIMWFiekhHaDF3YzlBaVBwM0VVY04KaTFJNjRrSUxtMmVYbXBmTkV2N2dMc3NVMlZBamFXbW1WTzM1VDJTRVRXQWNEOTZyeHlRTlZFK0NiMEUwY2NWTApKbjh6K052UEx5TFBac0R3NVJrclFUSnVwOGZqdWRYVTk3dCtBT0t4bi9mTTcvRWZyZDFuN084RVNyK2pxbDg1CkNXZGV0L1dBZ0YvVnZSQ1NQWmxKSktQWE8rSEZHWGttSHZoRSszckNQYTVCNUJCNE94OFV0YWlzRFYxbHN1eFMKRzJ1azVKQ0ZWNUpiVktQeGw0RzBZTnFhSWMwQnAxb1FBZDQ2V3JIT3R0bG5WbWUvcHA5VHd3cncvTG1xVjJycwpvVnIrN2o4bVZaeWhHN0cwdk9sUUFUSTc2dWxzWWRMUklCSDVJbXVrdGNnRDFVWFJNb2F1Y1JOdE9PelBBZ01CCkFBR2pnWXN3Z1lnd0RnWURWUjBQQVFIL0JBUURBZ1dnTUIwR0ExVWRKUVFXTUJRR0NDc0dBUVVGQndNQkJnZ3IKQmdFRkJRY0RBakFNQmdOVkhSTUJBZjhFQWpBQU1COEdBMVVkSXdRWU1CYUFGQkdNK2JWVXpLd2lmcDRyS1R2bQp0MFRROGZlRU1DZ0dBMVVkRVFRaE1CK0NIWEpsYkdWaGMyVXRibUZ0WlMxamIyNW5MV05vWVhKMExXNW5hVzU0Ck1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQjBZTHUxQTRjaHhYT2VhUWtERElyRFlXYVo3cEZqUGNMTFJaejMKQmNqeDRsbWVYOTFvODV6Um1lZlpsRkhMNWZ1ME9INnhmZ0pLTGI5YTd2TmdLRVJKT1NIeitTeUFIY2N5dDM1VwpxRDU1NW95M2VWZDQwcFNTQXg0Rk1OSnZ1M3F1dDIxYU1ZSXVNVnhWY3Q3a00vSmFvVE1YQTlEU0FYNldMZDRYCjlldGcvZHZCNkUzbU5aZEVHUUxuZWR5Z3UzdUhYcEtweTV5aTNxdjVoK1JocVRSK2p4R3g4ajJKa2Y2Z2xzaW8KNGJZYkx3OURuS09acTBvMHhDVkpQYVhwU3ZCVnh2NFNEMFUvcFM5QW0xUHJKK2NjYmFOc1UyYlZzWE1sTDBqYwo0amZzanZ4Vk05QjIyZGU4YjlManl5TWhPbTAwSDlabzlvbndzQ1dHbW1rWVpYM28KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
-  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb2dJQkFBS0NBUUVBdEVBN1I5V204eHhvZGNIUFFJajZkeEZIRFl0U091SkNDNXRubDVxWHpSTCs0QzdMCkZObFFJMmxwcGxUdCtVOWtoRTFnSEEvZXE4Y2tEVlJQZ205Qk5ISEZTeVovTS9qYnp5OGl6MmJBOE9VWkswRXkKYnFmSDQ3blYxUGU3ZmdEaXNaLzN6Ty94SDYzZForenZCRXEvbzZwZk9RbG5YcmYxZ0lCZjFiMFFrajJaU1NTagoxenZoeFJsNUpoNzRSUHQ2d2oydVFlUVFlRHNmRkxXb3JBMWRaYkxzVWh0cnBPU1FoVmVTVzFTajhaZUJ0R0RhCm1pSE5BYWRhRUFIZU9scXh6cmJaWjFabnY2YWZVOE1LOFB5NXFsZHE3S0ZhL3U0L0psV2NvUnV4dEx6cFVBRXkKTytycGJHSFMwU0FSK1NKcnBMWElBOVZGMFRLR3JuRVRiVGpzendJREFRQUJBb0lCQUQxKzJIcTJpcUhRcEZiZwppMnZTRDltRmZIOURkQWVBMzlXRDdJRE5qbEs1MDFqNnZmQmIvN3BGSVhWTTdtK3JSWGpaeVJ0cDBxYzZack5oCmUwcmQyQm9qWXBNMERCdllJRzM3LzkxUWlpemxqSU8wVjVkbkNJeEovNGtNQjl5Q1F0VWs1Vzcyd1lYMFZHQTcKZG9RNVdFNW5OdHVIdU11WTZWb3c4Z0ZDNHA5eGIydkd5NHVuWGtzNW4yT2lKMWVaMjd2T09Vem04Q3ZTMERrLwo3WUNwQ1VxMmM1NEJENE5IMTVMTzE5c0dIcDdMNEhLV2E0SWFjZ1RWUGxRZDIyZGd5NmNkbEs3Q1RrNk1ncGpVCnFOTlU0NTVUM3JZYStqQzVSVHhLM0toYk90eElZWXdiQ3BCeXl2VUpSTUtoTy96MndZcjZWVmtjZlRGRjYxeU4KYll4T3IvRUNnWUVBeEd0RThPR3RxWkR0bFg1VGxuVWlydW9NUjI1U3htZDlKRUM3UjVRQ0d5dTg3ZE1saGlCUgptb0R3czRqSFIzWS82UHYwUzNJbzlkVnZUblZ3aVFoODZzdUhQUys5QXFTcFlhZ0hSVTFxZ2tIYzJHcWJNVTF3CkE5ZkttZkg1OFdXb1VtRVFUUWo2dWIwcUJsa1JXMDNUSFRRSG1xZ1IyVEZHc0VUUDd5TWVPaWNDZ1lFQTZ1MXgKVlZlOGVlclRwQWNKY0ZVc29EbkVMdk9JS2NmTUhwS2ZWZURMT05jMk1CY1BUQkZBRjBza3laNlZRL2dsMVlqMApzV2c2TVdvcldKQTZCakM3QkNwWE4ybGh3c3h2cEpZMGwyVDM2V1ptbllYTFpvY3hlWGluTy9EUnJxTHNMTGpTCjQ4N1hwVEZpazVQU21MRXAxbmF1Yk9NRXZZcU9IYXRJa1NxREtSa0NnWUEvYnRrajVlNDh2Y1pNcWpCNmZiZkcKdjJWWnlFSkpPdkRLUFhGK0MwbW0xcmc4SWgyVE5HckdOL0FFT3g4SWNDTHhyalRXRExjM3RVY3VFblZXZS94RApvNWs0Wkd0cEtCNWZvSEZBcTJERFVsdnROSGlNTXBNRFdyUmVoU3dRRHFHT2dUUlBmSi9rVGpmOU50U0pKUmdSCjdWU3JXSzN5ODV2OW55dDc4bDUzcndLQmdFcU51OCszbmlxYXFUdCt1REliOWFPTGNZVHM2Q05LTXE3cEhRT2wKNlJoS3cvbVM5OW5PQjZiY3cvbndCN0tnUjNGeW15VEp6TjN0c1gvVGxYWnRkSXduMjdITUVhZytOSmZveXh2WQpnUXhpNE9IUW1mSVpxVXZCVEdFclZYKzBXSHNBMUh4VElnQmNvY252dVgrWGlZMXo4SHJCdUxsbUJSL0pRYWcvCjg0dlJBb0dBZUN3bVdmSUdUK3NZc1hPdjVoMnNyN3QxRGhkWHoyZnRxdUpGNUppaGlZSVhSTnZ1ZU50SWs4N0sKNHVpcGdnVEdwbXYvWXRnVzZhN2I4WU5BMWFmci85dTJkM2U1RlBGOERDYWoxSzJhN1RMTlI3ZUJtWFVLVzk2MApyM1pTSzBrYk02L1RYK2ZMYVhoWUFCWDUzenMzc1BMM0MvcUFweGRVWTZ5TmxBOHlRTm89Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
----
-# Source: cong-chart/templates/vault.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-vault-secrets
-type: Opaque
-data:
-  root-token: Y2hhbmdlbWU=
----
-# Source: cong-chart/templates/consul.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-consul-config
-data:
-  consul.json: |
-    {}
----
-# Source: cong-chart/templates/nginx.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-nginx-config-template
-data:
-  nginx.conf.ctmpl: |
-    worker_processes 1;
-    events {
-      worker_connections 1024;
-    }
-    http {
-      sendfile on;
-      upstream app_backend {
-        server localhost:8080; # Replace with your actual backend service
-      }
-      server {
-        listen 8181;
-        location / {
-          proxy_pass http://app_backend;
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-        }
-      }
-    }
----
-# Source: cong-chart/templates/release.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: release-name-release
-  namespace: console-app
-data:
-  release-name: release-name
-  release-namespace: default
----
-# Source: cong-chart/templates/uaa.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-uaa-config
-data:
-  uaa.yml: |
-    {}
----
-# Source: cong-chart/templates/filestore-pv.yaml
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: maana-filestore-pv
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteMany
-  csi:
-    driver: filestore.csi.storage.gke.io
-    volumeHandle: "modeInstance/us-central1/maana-storage/maana_share"
-  storageClassName: maana-filestore
----
-# Source: cong-chart/templates/consul.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-consul-data-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: "1Gi"
----
-# Source: cong-chart/templates/mysql.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-mysql-data-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: "2Gi"
----
-# Source: cong-chart/templates/pvcs.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-maana-share-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
-  storageClassName: maana-filestore
----
-# Source: cong-chart/templates/pvcs.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-compute-connectors-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: maana-filestore
----
-# Source: cong-chart/templates/pvcs.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-data-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: maana-filestore
----
-# Source: cong-chart/templates/pvcs.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-configuration-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
-# Source: cong-chart/templates/pvcs.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-modules-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
-# Source: cong-chart/templates/saq.yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-saq-data-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: "10Gi"
----
-# Source: cong-chart/templates/application-service-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-application-service
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: application-service
-spec:
-  ports:
-    - port: 10121
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: application-service
----
-# Source: cong-chart/templates/cassandra.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-cassandra
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: cassandra
-spec:
-  ports:
-    - port: 9160
-      name: thrift
-    - port: 9042
-      name: cql
-  clusterIP: None
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: cassandra
----
-# Source: cong-chart/templates/consul.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-consul
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: consul
-spec:
-  ports:
-    - port: 8500
-      name: http
-    - port: 8300
-      name: server
-    - port: 8301
-      name: serflan-tcp
-      protocol: TCP
-    - port: 8301
-      name: serflan-udp
-      protocol: UDP
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: consul
----
-# Source: cong-chart/templates/documents-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-documents
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: documents
-spec:
-  ports:
-    - port: 8088
-      targetPort: 80
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: documents
----
-# Source: cong-chart/templates/garbage-collector-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-garbage-collector
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: garbage-collector
-spec:
-  ports:
-    - port: 10127
-      targetPort: 10127
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: garbage-collector
----
-# Source: cong-chart/templates/jobs.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-job-scheduler
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: job-scheduler
-spec:
-  ports:
-    - port: 10123
-      targetPort: 10123
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: job-scheduler
----
-# Source: cong-chart/templates/jobs.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-job-scheduler
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: job-scheduler
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: job-scheduler
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: job-scheduler
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: job-scheduler
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-scheduler:3.0.0"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          command:
-            - "bin/job-scheduler"
-            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
-          ports:
-            - containerPort: 10123
-          env:
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
-            - name: SECURE_VAULT
-              value: "false"
-          volumeMounts:
-            - name: maana-share
-              mountPath: /maana_share
-            - name: log4j-config
-              mountPath: /opt/log4j2.xml
-              subPath: log4j2.xml
-      volumes:
-        - name: maana-share
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-maana-share-pvc
-        - name: log4j-config
-          configMap:
-            name: release-name-cong-chart-log4j-config---
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-job-executor
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: job-executor
-spec:
-  ports:
-    - port: 10200
-      targetPort: 10200
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: job-executor
----
-# Source: cong-chart/templates/kgservice.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-kgservice
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: kgservice
-spec:
-  ports:
-    - port: 10124
-      targetPort: 10124
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: kgservice
----
-# Source: cong-chart/templates/mysql.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-mysql
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: mysql
-spec:
-  ports:
-    - port: 3306
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: mysql
----
-# Source: cong-chart/templates/nginx.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-nginx
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: nginx
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 8181
-      targetPort: 8181
-      name: http
-    - port: 8443
-      targetPort: 8443
-      name: https
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: nginx
----
-# Source: cong-chart/templates/saq.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-saq
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: saq
-spec:
-  ports:
-    - port: 32123
-      targetPort: 32123
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: saq
----
-# Source: cong-chart/templates/uaa.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-uaa
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: uaa
-spec:
-  ports:
-    - port: 8080
-      targetPort: 8080
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: uaa
----
-# Source: cong-chart/templates/vault.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-vault
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: vault
-spec:
-  ports:
-    - port: 8200
-      targetPort: 8200
-  selector:
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/component: vault
----
-# Source: cong-chart/templates/application-service-deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-application-service
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: application-service
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: application-service
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: application-service
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: application-service
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/application-service:3.0.0"
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 10121
-          env:
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
-            - name: MAANA_PLUGIN_CONFIG
-              value: "/opt/docker/configuration/modules.json"
-          volumeMounts:
-            - name: configuration
-              mountPath: /opt/docker/configuration
-            - name: modules
-              mountPath: /opt/docker/lib/modules
-            - name: maana-share
-              mountPath: /maana_share
-            - name: log4j-config
-              mountPath: /opt/log4j2.xml
-              subPath: log4j2.xml
-      volumes:
-        - name: configuration
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-configuration-pvc
-        - name: modules
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-modules-pvc
-        - name: maana-share
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-maana-share-pvc
-        - name: log4j-config
-          configMap:
-            name: release-name-cong-chart-log4j-config
----
-# Source: cong-chart/templates/consul.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-consul
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: consul
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: consul
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: consul
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: consul
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          command: ["consul"]
-          args: ["agent", "-dev", "-ui", "-client=0.0.0.0", "-advertise=$(HOST_IP)"]
-          env:
-            - name: HOST_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
-          ports:
-            - containerPort: 8500
-            - containerPort: 8300
-            - containerPort: 8301
-              protocol: TCP
-            - containerPort: 8301
-              protocol: UDP
-          volumeMounts:
-            - name: consul-config
-              mountPath: /consul/config/consul.json
-              subPath: consul.json
-            - name: consul-data
-              mountPath: /consul/data
-      volumes:
-        - name: consul-config
-          configMap:
-            name: release-name-cong-chart-consul-config
-        - name: consul-data
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-consul-data-pvc
----
-# Source: cong-chart/templates/documents-deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-documents
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: documents
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: documents
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: documents
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: documents
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents:3.0.0"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          ports:
-            - containerPort: 80
-          env:
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
----
-# Source: cong-chart/templates/garbage-collector-deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-garbage-collector
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: garbage-collector
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: garbage-collector
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: garbage-collector
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: garbage-collector
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector:3.0.0"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          command:
-            - "bin/garbage-collector"
-            - "-Dmaana.tableGarbageCollector.pollingInterval=4m"
-            - "-Dmaana.kindGarbageCollector.pollingInterval=4m"
-            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
-            - "-Dmaana.jobLogGarbageCollector.pollingInterval=6m"
-            - "-Dmaana.jobLogGarbageCollector.maxJobLogAge=15m"
-            - "-Dmaana.metaIndexGarbageCollector.pollingInterval=4h"
-            - "-Dmaana.jobGarbageCollector.maxJobAge=15m"
-            - "-Dmaana.jobGarbageCollector.pollingInterval=5m"
-          ports:
-            - containerPort: 10127
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 10127
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          readinessProbe:
-            httpGet:
-              path: /readyz
-              port: 10127
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          env:
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
-          volumeMounts:
-            - name: maana-share
-              mountPath: /maana_share
-            - name: log4j-config
-              mountPath: /opt/log4j2.xml
-              subPath: log4j2.xml
-      volumes:
-        - name: maana-share
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-maana-share-pvc
-        - name: log4j-config
-          configMap:
-            name: release-name-cong-chart-log4j-config
----
-# Source: cong-chart/templates/jobs.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-job-executor
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: job-executor
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: job-executor
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: job-executor
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: job-executor
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:3.0.0"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          command:
-            - "bin/job-executor"
-            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
-          ports:
-            - containerPort: 10200
-          env:
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
-            - name: SECURE_VAULT
-              value: "false"
-          volumeMounts:
-            - name: maana-share
-              mountPath: /maana_share
-            - name: compute-connectors
-              mountPath: /opt/docker/lib/compute-connectors
-            - name: data
-              mountPath: /opt/docker/data
-            - name: log4j-config
-              mountPath: /opt/log4j2.xml
-              subPath: log4j2.xml
-      volumes:
-        - name: maana-share
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-maana-share-pvc
-        - name: compute-connectors
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-compute-connectors-pvc
-        - name: data
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-data-pvc
-        - name: log4j-config
-          configMap:
-            name: release-name-cong-chart-log4j-config
----
-# Source: cong-chart/templates/kgservice.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-kgservice
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: kgservice
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: kgservice
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: kgservice
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: kgservice
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice:3.0.0"
-          imagePullPolicy: IfNotPresent
-          command:
-            - "bin/kgservice"
-          args:
-            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
-          ports:
-            - containerPort: 10124
-          env:
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
-            - name: SECURE_VAULT
-              value: "false"
-          volumeMounts:
-            - name: maana-share
-              mountPath: /maana_share
-            - name: log4j-config
-              mountPath: /opt/log4j2.xml
-              subPath: log4j2.xml
-      volumes:
-        - name: maana-share
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-maana-share-pvc
-        - name: log4j-config
-          configMap:
-            name: release-name-cong-chart-log4j-config
----
-# Source: cong-chart/templates/mysql.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-mysql
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: mysql
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: mysql
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: mysql
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: mysql
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql:5.7.21"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          args:
-            - "--lower_case_table_names=1"
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: release-name-cong-chart-mysql-secrets
-                  key: root-password
-            - name: MYSQL_DATABASE
-              value: "uaa"
-            - name: MYSQL_USER
-              value: "uaa"
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: release-name-cong-chart-mysql-secrets
-                  key: user-password
-          ports:
-            - containerPort: 3306
-          volumeMounts:
-            - name: mysql-data
-              mountPath: /var/lib/mysql
-      volumes:
-        - name: mysql-data
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-mysql-data-pvc
----
-# Source: cong-chart/templates/nginx.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-nginx
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: nginx
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: nginx
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: nginx
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: nginx
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx:1.26.3"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          ports:
-            - containerPort: 8181
-            - containerPort: 8443
-          env:
-            - name: PROXY_PORT
-              value: "8181"
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
-          volumeMounts:
-            - name: nginx-config-template
-              mountPath: /etc/consul-templates/nginx.conf.ctmpl
-              subPath: nginx.conf.ctmpl
-            - name: nginx-certs
-              mountPath: /self-ssl
-      volumes:
-        - name: nginx-config-template
-          configMap:
-            name: release-name-cong-chart-nginx-config-template
-        - name: nginx-certs
-          secret:
-            secretName: release-name-cong-chart-nginx-certs
----
-# Source: cong-chart/templates/saq.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-saq
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: saq
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: saq
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: saq
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: saq
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq:3.0.0"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          command:
-            - "/saq_run.sh"
-            - "start"
-            - "--config"
-            - "/saq.cfg"
-            - "--logLevel"
-            - "DEBUG"
-            - "--basePath"
-            - "/SAQ"
-          ports:
-            - containerPort: 32123
-          env:
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
-            - name: SAQ_ADVERTISE_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-          volumeMounts:
-            - name: saq-data
-              mountPath: /SAQ
-            - name: maana-share
-              mountPath: /maana_share
-      volumes:
-        - name: saq-data
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-saq-data-pvc
-        - name: maana-share
-          persistentVolumeClaim:
-            claimName: release-name-cong-chart-maana-share-pvc
----
-# Source: cong-chart/templates/uaa.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-uaa
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: uaa
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: uaa
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: uaa
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: uaa
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa:1.0"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          ports:
-            - containerPort: 8080
-          env:
-            - name: DATABASE_HOST
-              value: "release-name-cong-chart-mysql"
-            - name: DATABASE_USER
-              value: "uaa"
-            - name: DATABASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: release-name-cong-chart-mysql-secrets
-                  key: user-password
-            - name: DATABASE_NAME
-              value: "uaa"
-            - name: OPENLDAP_HOST
-              value: "openldap1"
-          volumeMounts:
-            - name: uaa-config
-              mountPath: /uaa/
-      volumes:
-        - name: uaa-config
-          configMap:
-            name: release-name-cong-chart-uaa-config
----
-# Source: cong-chart/templates/vault.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-vault
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: vault
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: vault
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: vault
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: vault
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault:1.0.2"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          command:
-            - "vault"
-          args:
-            - "server"
-            - "-dev"
-          securityContext:
-            capabilities:
-              add:
-                - "IPC_LOCK"
-          env:
-            - name: VAULT_DEV_ROOT_TOKEN_ID
-              valueFrom:
-                secretKeyRef:
-                  name: release-name-cong-chart-vault-secrets
-                  key: root-token
-          ports:
-            - containerPort: 8200
----
-# Source: cong-chart/templates/cassandra.yaml
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-cassandra
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: cassandra
-spec:
-  serviceName: release-name-cong-chart-cassandra
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: cong-chart
-      app.kubernetes.io/instance: release-name
-      app.kubernetes.io/component: cassandra
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: cong-chart
-        app.kubernetes.io/instance: release-name
-        app.kubernetes.io/component: cassandra
-    spec:
-      serviceAccountName: release-name-cong-chart
-      containers:
-        - name: cassandra
-          image: "cassandra:4.1.3"
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: 250m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          ports:
-            - containerPort: 9160
-            - containerPort: 9042
-          env:
-            - name: CASSANDRA_START_RPC
-              value: "true"
-            - name: CASSANDRA_BROADCAST_ADDRESS
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-          volumeMounts:
-            - name: cassandra-data
-              mountPath: /var/lib/cassandra
-  volumeClaimTemplates:
-    - metadata:
-        name: cassandra-data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: "5Gi"
----
-# Source: cong-chart/templates/log4j-config.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-log4j-config
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "-5"
-    "helm.sh/hook-delete-policy": before-hook-creation
-data:
-  log4j2.xml: |
-    <?xml version="1.0" encoding="UTF-8"?>
-    <Configuration status="INFO">
-      <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-          <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </Console>
-      </Appenders>
-      <Loggers>
-        <Root level="info">
-          <AppenderRef ref="Console"/>
-        </Root>
-      </Loggers>
-    </Configuration>
----
-# Source: cong-chart/templates/bootstrap-job.yaml
-apiVersion: batch/v1
-kind: Job
-metadata:
-  namespace: console-app
-  name: release-name-cong-chart-bootstrap
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "5"
-    "helm.sh/hook-delete-policy": before-hook-creation
-  labels:
-    helm.sh/chart: cong-chart-0.2.1
-    app.kubernetes.io/name: cong-chart
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: bootstrap
-spec:
-  template:
-    spec:
-      serviceAccountName: release-name-cong-chart
-      initContainers:
-        - name: wait-for-consul
-          image: busybox:1.28
-          command: ['sh', '-c', 'until nc -z release-name-cong-chart-consul 8500; do echo "waiting for consul"; sleep 2; done;']
-      containers:
-        - name: bootstrap
-          image: "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap:3.0.0"
-          imagePullPolicy: IfNotPresent
-          command:
-            - "bin/bootstrap"
-            - "-Dlog4j.configurationFile=/opt/log4j2.xml"
-          env:
-            - name: CONSUL_HOST
-              value: "release-name-cong-chart-consul"
-          volumeMounts:
-            - name: log4j-config
-              mountPath: /opt/log4j2.xml
-              subPath: log4j2.xml
-      volumes:
-        - name: log4j-config
-          configMap:
-            name: release-name-cong-chart-log4j-config
-      restartPolicy: OnFailure
-  backoffLimit: 10
+Name:             console-cong-chart-application-service-6d44c6b864-rf6xg
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-3iav/10.0.0.33
+Start Time:       Fri, 24 Oct 2025 23:11:31 +0000
+Labels:           app.kubernetes.io/component=application-service
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=6d44c6b864
+Annotations:      <none>
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/console-cong-chart-application-service-6d44c6b864
+Containers:
+  application-service:
+    Container ID:   
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/application-service:3.0.0
+    Image ID:       
+    Port:           10121/TCP
+    Host Port:      0/TCP
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:          console-cong-chart-consul
+      MAANA_PLUGIN_CONFIG:  /opt/docker/configuration/modules.json
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/configuration from configuration (rw)
+      /opt/docker/lib/modules from modules (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-kq5mg (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  configuration:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-configuration-pvc
+    ReadOnly:   false
+  modules:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-modules-pvc
+    ReadOnly:   false
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-kq5mg:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason                  Age                 From                     Message
+  ----     ------                  ----                ----                     -------
+  Normal   Scheduled               25m                 default-scheduler        Successfully assigned console-app/console-cong-chart-application-service-6d44c6b864-rf6xg to gke-primary-gke-clus-primary-node-poo-dc619f79-3iav
+  Normal   SuccessfulAttachVolume  25m                 attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-71dfca24-1449-46e1-9afe-d218d1a40459"
+  Normal   SuccessfulAttachVolume  25m                 attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-9471e6c3-a04c-4cd4-8ba3-667b9ad9d2ba"
+  Warning  FailedMount             63s (x20 over 25m)  kubelet                  MountVolume.MountDevice failed for volume "maana-filestore-pv" : rpc error: code = InvalidArgument desc = volume attribute key ip not set
+
+
+Name:             console-cong-chart-bootstrap-m7s7n
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-3iav/10.0.0.33
+Start Time:       Fri, 24 Oct 2025 23:11:28 +0000
+Labels:           batch.kubernetes.io/controller-uid=4543c878-ac74-4206-9970-65895c4d7676
+                  batch.kubernetes.io/job-name=console-cong-chart-bootstrap
+                  controller-uid=4543c878-ac74-4206-9970-65895c4d7676
+                  job-name=console-cong-chart-bootstrap
+Annotations:      <none>
+Status:           Running
+IP:               10.144.5.18
+IPs:
+  IP:           10.144.5.18
+Controlled By:  Job/console-cong-chart-bootstrap
+Init Containers:
+  wait-for-consul:
+    Container ID:  containerd://5bfc8e017a1818f9c4baddb00d018cad046a53341cc529336cbe2e449ad8ca31
+    Image:         busybox:1.28
+    Image ID:      docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      until nc -z console-cong-chart-consul 8500; do echo "waiting for consul"; sleep 2; done;
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Fri, 24 Oct 2025 23:11:29 +0000
+      Finished:     Fri, 24 Oct 2025 23:11:44 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-dws26 (ro)
+Containers:
+  bootstrap:
+    Container ID:  containerd://7c8036b73c3ea238636809fcc3cffac44b5f699a40ac45d7d96a554e1844a7f3
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap:3.0.0
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap@sha256:011ec8fe3c943bfb01db415598c0b029608cdf2c138079620a978fdcb220e95a
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      bin/bootstrap
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Fri, 24 Oct 2025 23:33:11 +0000
+      Finished:     Fri, 24 Oct 2025 23:33:13 +0000
+    Ready:          False
+    Restart Count:  9
+    Environment:
+      CONSUL_HOST:  console-cong-chart-consul
+    Mounts:
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-dws26 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-dws26:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                   From               Message
+  ----     ------     ----                  ----               -------
+  Normal   Scheduled  25m                   default-scheduler  Successfully assigned console-app/console-cong-chart-bootstrap-m7s7n to gke-primary-gke-clus-primary-node-poo-dc619f79-3iav
+  Normal   Pulled     25m                   kubelet            Container image "busybox:1.28" already present on machine
+  Normal   Created    25m                   kubelet            Created container: wait-for-consul
+  Normal   Started    25m                   kubelet            Started container wait-for-consul
+  Normal   Created    14m (x8 over 25m)     kubelet            Created container: bootstrap
+  Normal   Started    14m (x8 over 25m)     kubelet            Started container bootstrap
+  Warning  BackOff    5m2s (x91 over 25m)   kubelet            Back-off restarting failed container bootstrap in pod console-cong-chart-bootstrap-m7s7n_console-app(34433c1b-b632-46b9-9ee2-f1dd893ae4f6)
+  Normal   Pulled     3m54s (x10 over 25m)  kubelet            Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/bootstrap:3.0.0" already present on machine
+
+
+Name:             console-cong-chart-cassandra-0
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             <none>
+Labels:           app.kubernetes.io/component=cassandra
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  apps.kubernetes.io/pod-index=0
+                  controller-revision-hash=console-cong-chart-cassandra-866b646f6
+                  statefulset.kubernetes.io/pod-name=console-cong-chart-cassandra-0
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-24T23:11:28+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    StatefulSet/console-cong-chart-cassandra
+Containers:
+  cassandra:
+    Image:       cassandra:4.1.3
+    Ports:       9160/TCP, 9042/TCP
+    Host Ports:  0/TCP, 0/TCP
+    Limits:
+      cpu:     2
+      memory:  1Gi
+    Requests:
+      cpu:     1
+      memory:  1Gi
+    Environment:
+      CASSANDRA_START_RPC:          true
+      CASSANDRA_BROADCAST_ADDRESS:   (v1:status.podIP)
+    Mounts:
+      /var/lib/cassandra from cassandra-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-slmxm (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  cassandra-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cassandra-data-console-cong-chart-cassandra-0
+    ReadOnly:   false
+  kube-api-access-slmxm:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason             Age                 From                Message
+  ----     ------             ----                ----                -------
+  Warning  FailedScheduling   25m                 default-scheduler   0/9 nodes are available: 9 Insufficient cpu. preemption: 0/9 nodes are available: 9 No preemption victims found for incoming pod.
+  Warning  FailedScheduling   15m (x2 over 20m)   default-scheduler   0/9 nodes are available: 9 Insufficient cpu. preemption: 0/9 nodes are available: 9 No preemption victims found for incoming pod.
+  Normal   NotTriggerScaleUp  3s (x152 over 25m)  cluster-autoscaler  Pod didn't trigger scale-up:
+
+
+Name:             console-cong-chart-consul-665d45fb7d-g29cs
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-le2e/10.0.0.41
+Start Time:       Fri, 24 Oct 2025 23:11:30 +0000
+Labels:           app.kubernetes.io/component=consul
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=665d45fb7d
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-24T23:11:22+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Running
+IP:               10.144.6.19
+IPs:
+  IP:           10.144.6.19
+Controlled By:  ReplicaSet/console-cong-chart-consul-665d45fb7d
+Containers:
+  consul:
+    Container ID:  containerd://b7250ee217a52db7b6e64186a8824dfb7a1a789c6fc1cdf0811b49fd04f15a39
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul@sha256:86b87ad1d24ec75f25eabc9fa47399995331b2913c40685180fdc7d03ffc1f78
+    Ports:         8500/TCP, 8300/TCP, 8301/TCP, 8301/UDP
+    Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/UDP
+    Command:
+      consul
+    Args:
+      agent
+      -dev
+      -ui
+      -client=0.0.0.0
+      -advertise=$(HOST_IP)
+    State:          Running
+      Started:      Fri, 24 Oct 2025 23:11:41 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:     100m
+      memory:  128Mi
+    Environment:
+      HOST_IP:   (v1:status.hostIP)
+    Mounts:
+      /consul/config/consul.json from consul-config (rw,path="consul.json")
+      /consul/data from consul-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-5tq8t (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  consul-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-consul-config
+    Optional:  false
+  consul-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-consul-data-pvc
+    ReadOnly:   false
+  kube-api-access-5tq8t:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason                  Age   From                     Message
+  ----     ------                  ----  ----                     -------
+  Warning  FailedScheduling        25m   default-scheduler        0/9 nodes are available: persistentvolumeclaim "console-cong-chart-consul-data-pvc" not found. preemption: 0/9 nodes are available: 9 Preemption is not helpful for scheduling.
+  Warning  FailedScheduling        25m   default-scheduler        running PreFilter plugin "VolumeBinding": error getting PVC "console-app/console-cong-chart-consul-data-pvc": could not find v1.PersistentVolumeClaim "console-app/console-cong-chart-consul-data-pvc"
+  Normal   Scheduled               25m   default-scheduler        Successfully assigned console-app/console-cong-chart-consul-665d45fb7d-g29cs to gke-primary-gke-clus-primary-node-poo-be30a3d2-le2e
+  Normal   NotTriggerScaleUp       25m   cluster-autoscaler       Pod didn't trigger scale-up:
+  Normal   SuccessfulAttachVolume  25m   attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-d83b09d3-c911-490e-852f-09aab379a591"
+  Normal   Pulled                  25m   kubelet                  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2" already present on machine
+  Normal   Created                 25m   kubelet                  Created container: consul
+  Normal   Started                 25m   kubelet                  Started container consul
+
+
+Name:             console-cong-chart-documents-98b9c7cc-858z9
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-f37b357d-093n/10.0.0.38
+Start Time:       Fri, 24 Oct 2025 23:11:26 +0000
+Labels:           app.kubernetes.io/component=documents
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=98b9c7cc
+Annotations:      <none>
+Status:           Running
+IP:               10.144.4.17
+IPs:
+  IP:           10.144.4.17
+Controlled By:  ReplicaSet/console-cong-chart-documents-98b9c7cc
+Containers:
+  documents:
+    Container ID:   containerd://c067d24b1d5dd269b66e8432fd41df8f4f89139ca48061844cf1804d31ab44a5
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents:3.0.0
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents@sha256:933574ccfe09873a12b30c31213d646dc38c632fd82a581837f69c16ca238911
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 24 Oct 2025 23:11:28 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:     100m
+      memory:  128Mi
+    Environment:
+      CONSUL_HOST:  console-cong-chart-consul
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-rzt8d (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-rzt8d:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  25m   default-scheduler  Successfully assigned console-app/console-cong-chart-documents-98b9c7cc-858z9 to gke-primary-gke-clus-primary-node-poo-f37b357d-093n
+  Normal  Pulled     25m   kubelet            Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents:3.0.0" already present on machine
+  Normal  Created    25m   kubelet            Created container: documents
+  Normal  Started    25m   kubelet            Started container documents
+
+
+Name:             console-cong-chart-garbage-collector-f7c6df984-rxwsd
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-le2e/10.0.0.41
+Start Time:       Fri, 24 Oct 2025 23:11:27 +0000
+Labels:           app.kubernetes.io/component=garbage-collector
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=f7c6df984
+Annotations:      <none>
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/console-cong-chart-garbage-collector-f7c6df984
+Containers:
+  garbage-collector:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector:3.0.0
+    Image ID:      
+    Port:          10127/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/garbage-collector
+      -Dmaana.tableGarbageCollector.pollingInterval=4m
+      -Dmaana.kindGarbageCollector.pollingInterval=4m
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+      -Dmaana.jobLogGarbageCollector.pollingInterval=6m
+      -Dmaana.jobLogGarbageCollector.maxJobLogAge=15m
+      -Dmaana.metaIndexGarbageCollector.pollingInterval=4h
+      -Dmaana.jobGarbageCollector.maxJobAge=15m
+      -Dmaana.jobGarbageCollector.pollingInterval=5m
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:      100m
+      memory:   128Mi
+    Liveness:   http-get http://:10127/healthz delay=15s timeout=1s period=20s #success=1 #failure=3
+    Readiness:  http-get http://:10127/readyz delay=5s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      CONSUL_HOST:  console-cong-chart-consul
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-4xdqj (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-4xdqj:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason       Age                 From               Message
+  ----     ------       ----                ----               -------
+  Normal   Scheduled    25m                 default-scheduler  Successfully assigned console-app/console-cong-chart-garbage-collector-f7c6df984-rxwsd to gke-primary-gke-clus-primary-node-poo-be30a3d2-le2e
+  Warning  FailedMount  68s (x18 over 25m)  kubelet            MountVolume.MountDevice failed for volume "maana-filestore-pv" : rpc error: code = InvalidArgument desc = volume attribute key ip not set
+
+
+Name:             console-cong-chart-job-executor-599b4cc9d9-tkc74
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-m6s6/10.0.0.39
+Start Time:       Fri, 24 Oct 2025 23:11:29 +0000
+Labels:           app.kubernetes.io/component=job-executor
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=599b4cc9d9
+Annotations:      <none>
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/console-cong-chart-job-executor-599b4cc9d9
+Containers:
+  job-executor:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:3.0.0
+    Image ID:      
+    Port:          10200/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/job-executor
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:     100m
+      memory:  128Mi
+    Environment:
+      CONSUL_HOST:   console-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/data from data (rw)
+      /opt/docker/lib/compute-connectors from compute-connectors (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-wmsj2 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  compute-connectors:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-compute-connectors-pvc
+    ReadOnly:   false
+  data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-data-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-wmsj2:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason       Age                   From               Message
+  ----     ------       ----                  ----               -------
+  Normal   Scheduled    25m                   default-scheduler  Successfully assigned console-app/console-cong-chart-job-executor-599b4cc9d9-tkc74 to gke-primary-gke-clus-primary-node-poo-be30a3d2-m6s6
+  Warning  FailedMount  24m (x8 over 25m)     kubelet            MountVolume.MountDevice failed for volume "maana-filestore-pv-compute-connectors" : rpc error: code = InvalidArgument desc = volume attribute key ip not set
+  Warning  FailedMount  23m (x8 over 25m)     kubelet            MountVolume.MountDevice failed for volume "maana-filestore-pv" : rpc error: code = InvalidArgument desc = volume attribute key ip not set
+  Warning  FailedMount  5m11s (x18 over 25m)  kubelet            MountVolume.MountDevice failed for volume "maana-filestore-pv-data" : rpc error: code = InvalidArgument desc = volume attribute key ip not set
+
+
+Name:             console-cong-chart-kgservice-7c99dd9f45-z2rfj
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-le2e/10.0.0.41
+Start Time:       Fri, 24 Oct 2025 23:11:27 +0000
+Labels:           app.kubernetes.io/component=kgservice
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=7c99dd9f45
+Annotations:      <none>
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/console-cong-chart-kgservice-7c99dd9f45
+Containers:
+  kgservice:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice:3.0.0
+    Image ID:      
+    Port:          10124/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/kgservice
+    Args:
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:   console-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-4j5f9 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-4j5f9:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason       Age                From               Message
+  ----     ------       ----               ----               -------
+  Normal   Scheduled    25m                default-scheduler  Successfully assigned console-app/console-cong-chart-kgservice-7c99dd9f45-z2rfj to gke-primary-gke-clus-primary-node-poo-be30a3d2-le2e
+  Warning  FailedMount  11m (x2 over 25m)  kubelet            MountVolume.MountDevice failed for volume "maana-filestore-pv" : rpc error: code = InvalidArgument desc = volume attribute key ip not set
+
+
+Name:             console-cong-chart-mysql-85999795b-nnvpj
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-wztb/10.0.0.40
+Start Time:       Fri, 24 Oct 2025 23:11:31 +0000
+Labels:           app.kubernetes.io/component=mysql
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=85999795b
+Annotations:      <none>
+Status:           Running
+IP:               10.144.7.14
+IPs:
+  IP:           10.144.7.14
+Controlled By:  ReplicaSet/console-cong-chart-mysql-85999795b
+Containers:
+  mysql:
+    Container ID:  containerd://d2592a6295e96de30de8b101992945f8bcf0f997fafd6c4b9ba63354cc031d1d
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql:5.7.21
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql@sha256:12e70236ec8be07b87a95008a22deb0a2a6289ac81d852e622ea13e8311cec64
+    Port:          3306/TCP
+    Host Port:     0/TCP
+    Args:
+      --lower_case_table_names=1
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Fri, 24 Oct 2025 23:32:53 +0000
+      Finished:     Fri, 24 Oct 2025 23:32:53 +0000
+    Ready:          False
+    Restart Count:  9
+    Limits:
+      cpu:     1
+      memory:  512Mi
+    Requests:
+      cpu:     500m
+      memory:  512Mi
+    Environment:
+      MYSQL_ROOT_PASSWORD:  <set to the key 'root-password' in secret 'console-cong-chart-mysql-secrets'>  Optional: false
+      MYSQL_DATABASE:       uaa
+      MYSQL_USER:           uaa
+      MYSQL_PASSWORD:       <set to the key 'user-password' in secret 'console-cong-chart-mysql-secrets'>  Optional: false
+    Mounts:
+      /var/lib/mysql from mysql-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-6fxsj (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  mysql-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-mysql-data-pvc
+    ReadOnly:   false
+  kube-api-access-6fxsj:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason                  Age                   From                     Message
+  ----     ------                  ----                  ----                     -------
+  Normal   Scheduled               25m                   default-scheduler        Successfully assigned console-app/console-cong-chart-mysql-85999795b-nnvpj to gke-primary-gke-clus-primary-node-poo-be30a3d2-wztb
+  Normal   SuccessfulAttachVolume  25m                   attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-36804f4d-c052-470c-bc5a-3adc403f23d1"
+  Normal   Started                 9m25s (x9 over 25m)   kubelet                  Started container mysql
+  Normal   Pulled                  4m14s (x10 over 25m)  kubelet                  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql:5.7.21" already present on machine
+  Normal   Created                 4m14s (x10 over 25m)  kubelet                  Created container: mysql
+  Warning  BackOff                 15s (x119 over 25m)   kubelet                  Back-off restarting failed container mysql in pod console-cong-chart-mysql-85999795b-nnvpj_console-app(e23f6602-97a4-4b57-963e-2f36fcd5b198)
+
+
+Name:             console-cong-chart-nginx-764bbc9c4f-scv5c
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-f37b357d-093n/10.0.0.38
+Start Time:       Fri, 24 Oct 2025 23:11:28 +0000
+Labels:           app.kubernetes.io/component=nginx
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=764bbc9c4f
+Annotations:      <none>
+Status:           Running
+IP:               10.144.4.18
+IPs:
+  IP:           10.144.4.18
+Controlled By:  ReplicaSet/console-cong-chart-nginx-764bbc9c4f
+Containers:
+  nginx:
+    Container ID:   containerd://b51976905d899a33ec8cf8421f79f7d2335386bd7d94c92f959609633ae34011
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx:1.26.3
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx@sha256:9294a112f3f2f7dce1aed3ea88e4bef623170fef18a46b7e5f7fe386b293d4b5
+    Ports:          8181/TCP, 8443/TCP
+    Host Ports:     0/TCP, 0/TCP
+    State:          Running
+      Started:      Fri, 24 Oct 2025 23:11:36 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:     100m
+      memory:  128Mi
+    Environment:
+      PROXY_PORT:   8181
+      CONSUL_HOST:  console-cong-chart-consul
+    Mounts:
+      /etc/consul-templates/nginx.conf.ctmpl from nginx-config-template (rw,path="nginx.conf.ctmpl")
+      /self-ssl from nginx-certs (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xx9jx (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  nginx-config-template:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-nginx-config-template
+    Optional:  false
+  nginx-certs:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  console-cong-chart-nginx-certs
+    Optional:    false
+  kube-api-access-xx9jx:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  25m   default-scheduler  Successfully assigned console-app/console-cong-chart-nginx-764bbc9c4f-scv5c to gke-primary-gke-clus-primary-node-poo-f37b357d-093n
+  Normal  Pulling    25m   kubelet            Pulling image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx:1.26.3"
+  Normal  Pulled     25m   kubelet            Successfully pulled image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx:1.26.3" in 7.232s (7.232s including waiting). Image size: 76221299 bytes.
+  Normal  Created    25m   kubelet            Created container: nginx
+  Normal  Started    25m   kubelet            Started container nginx
+
+
+Name:             console-cong-chart-saq-988749788-2th7s
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-m6s6/10.0.0.39
+Start Time:       Fri, 24 Oct 2025 23:11:32 +0000
+Labels:           app.kubernetes.io/component=saq
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=988749788
+Annotations:      <none>
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/console-cong-chart-saq-988749788
+Containers:
+  saq:
+    Container ID:  
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq:3.0.0
+    Image ID:      
+    Port:          32123/TCP
+    Host Port:     0/TCP
+    Command:
+      /saq_run.sh
+    Args:
+      start
+      --config
+      /saq.cfg
+      --logLevel
+      DEBUG
+      --basePath
+      /SAQ
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:     100m
+      memory:  128Mi
+    Environment:
+      CONSUL_HOST:         console-cong-chart-consul
+      SAQ_ADVERTISE_HOST:   (v1:status.podIP)
+    Mounts:
+      /SAQ from saq-data (rw)
+      /maana_share from maana-share (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-lfwfv (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  saq-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-saq-data-pvc
+    ReadOnly:   false
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  kube-api-access-lfwfv:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason                  Age                From                     Message
+  ----     ------                  ----               ----                     -------
+  Normal   Scheduled               25m                default-scheduler        Successfully assigned console-app/console-cong-chart-saq-988749788-2th7s to gke-primary-gke-clus-primary-node-poo-be30a3d2-m6s6
+  Normal   SuccessfulAttachVolume  25m                attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-a0e399ea-883e-4834-96ed-821c7b43972f"
+  Warning  FailedMount             67s (x3 over 24m)  kubelet                  MountVolume.MountDevice failed for volume "maana-filestore-pv" : rpc error: code = InvalidArgument desc = volume attribute key ip not set
+
+
+Name:             console-cong-chart-uaa-7964f569bf-7msdz
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-vdze/10.0.0.34
+Start Time:       Fri, 24 Oct 2025 23:11:28 +0000
+Labels:           app.kubernetes.io/component=uaa
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=7964f569bf
+Annotations:      <none>
+Status:           Running
+IP:               10.144.8.14
+IPs:
+  IP:           10.144.8.14
+Controlled By:  ReplicaSet/console-cong-chart-uaa-7964f569bf
+Containers:
+  uaa:
+    Container ID:   containerd://fcc1187b7559e8f1cba2161e526bb6ec6b901128ef7edcf5acfa7ca81351e710
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa:1.0
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa@sha256:3d73ee3dd935921a4c53412e7870038f567f00d5222920c48100192c46ac85d6
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 24 Oct 2025 23:11:47 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  512Mi
+    Requests:
+      cpu:     500m
+      memory:  512Mi
+    Environment:
+      DATABASE_HOST:      console-cong-chart-mysql
+      DATABASE_USER:      uaa
+      DATABASE_PASSWORD:  <set to the key 'user-password' in secret 'console-cong-chart-mysql-secrets'>  Optional: false
+      DATABASE_NAME:      uaa
+      OPENLDAP_HOST:      openldap1
+    Mounts:
+      /uaa/ from uaa-config (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-sc8g5 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  uaa-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-uaa-config
+    Optional:  false
+  kube-api-access-sc8g5:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  25m   default-scheduler  Successfully assigned console-app/console-cong-chart-uaa-7964f569bf-7msdz to gke-primary-gke-clus-primary-node-poo-dc619f79-vdze
+  Normal  Pulling    25m   kubelet            Pulling image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa:1.0"
+  Normal  Pulled     25m   kubelet            Successfully pulled image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa:1.0" in 18.054s (18.054s including waiting). Image size: 428383362 bytes.
+  Normal  Created    25m   kubelet            Created container: uaa
+  Normal  Started    25m   kubelet            Started container uaa
+
+
+Name:             console-cong-chart-vault-78c576496d-xkjtw
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-vdze/10.0.0.34
+Start Time:       Fri, 24 Oct 2025 23:11:27 +0000
+Labels:           app.kubernetes.io/component=vault
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=78c576496d
+Annotations:      <none>
+Status:           Running
+IP:               10.144.8.13
+IPs:
+  IP:           10.144.8.13
+Controlled By:  ReplicaSet/console-cong-chart-vault-78c576496d
+Containers:
+  vault:
+    Container ID:  containerd://9a38cf4d3058d826dc68437fee15a51c6fe66dadefa15266a3b9306ce19f74ea
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault:1.0.2
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault@sha256:a233ac3c7a0866959de7865f3ef382448aa9f814c0e96f6139d5b35589126a24
+    Port:          8200/TCP
+    Host Port:     0/TCP
+    Command:
+      vault
+    Args:
+      server
+      -dev
+    State:          Running
+      Started:      Fri, 24 Oct 2025 23:11:35 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:     100m
+      memory:  128Mi
+    Environment:
+      VAULT_DEV_ROOT_TOKEN_ID:  <set to the key 'root-token' in secret 'console-cong-chart-vault-secrets'>  Optional: false
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-lf4n8 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-lf4n8:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  25m   default-scheduler  Successfully assigned console-app/console-cong-chart-vault-78c576496d-xkjtw to gke-primary-gke-clus-primary-node-poo-dc619f79-vdze
+  Normal  Pulling    25m   kubelet            Pulling image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault:1.0.2"
+  Normal  Pulled     25m   kubelet            Successfully pulled image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault:1.0.2" in 6.471s (6.471s including waiting). Image size: 39131032 bytes.
+  Normal  Created    25m   kubelet            Created container: vault
+  Normal  Started    25m   kubelet            Started container vault
