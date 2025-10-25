@@ -46,6 +46,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: standard-rwo
   resources:
     requests:
       storage: 1Gi
@@ -58,6 +59,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: standard-rwo
   resources:
     requests:
       storage: 1Gi

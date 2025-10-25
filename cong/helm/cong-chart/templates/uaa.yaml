@@ -40,10 +40,13 @@ spec:
         - name: uaa
           image: "{{ .Values.uaa.image.repository }}:{{ .Values.uaa.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.uaa.image.pullPolicy }}
-          {{- with .Values.uaa.resources }}
           resources:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "512Mi"
           ports:
             - containerPort: 8080
           env:
