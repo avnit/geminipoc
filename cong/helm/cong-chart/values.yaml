@@ -87,7 +87,9 @@ consul:
     tag: "1.19.2"
   persistence:
     size: 1Gi
-  config: {}
+  config: 
+    ui_config:
+      enabled: true
 
 vault:
   enabled: true
@@ -131,7 +133,7 @@ mysql:
   rootPassword: "mysecret"
   userPassword: "mysecret"
   persistence:
-    storageClassName: "standard"
+    storageClassName: "standard-rwo"
     size: 2Gi
 
 uaa:
