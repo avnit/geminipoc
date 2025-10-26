@@ -38,7 +38,6 @@ spec:
             - "-Dmaana.jobLogGarbageCollector.maxJobLogAge=15m"
             - "-Dmaana.metaIndexGarbageCollector.pollingInterval=4h"
             - "-Dmaana.jobGarbageCollector.maxJobAge=15m"
-            - "-Dmaana.jobGarbageCollector.pollingInterval=5m"
           ports:
             - containerPort: 10127
           {{- with .Values.garbageCollector.livenessProbe }}

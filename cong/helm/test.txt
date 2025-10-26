@@ -1,0 +1,840 @@
+Name:             console-cong-chart-application-service-6d44c6b864-5wt9d
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-f37b357d-0e5j/10.0.0.37
+Start Time:       Sat, 25 Oct 2025 08:33:57 +0000
+Labels:           app.kubernetes.io/component=application-service
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=6d44c6b864
+Annotations:      <none>
+Status:           Running
+IP:               10.144.1.7
+IPs:
+  IP:           10.144.1.7
+Controlled By:  ReplicaSet/console-cong-chart-application-service-6d44c6b864
+Containers:
+  application-service:
+    Container ID:   containerd://2aa9ede147ea306cf07c03a24626a1de98bf4ec1a4dee6723377d59504629ebc
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/application-service:3.0.0
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/application-service@sha256:85119939a3be1167b487bd5ac69e1f860d0df6e3d7998336d6cdc83e940dcf2f
+    Port:           10121/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sat, 25 Oct 2025 08:34:22 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:          console-cong-chart-consul
+      MAANA_PLUGIN_CONFIG:  /opt/docker/configuration/modules.json
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/configuration from configuration (rw)
+      /opt/docker/lib/modules from modules (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xwzp5 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  configuration:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-configuration-pvc
+    ReadOnly:   false
+  modules:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-modules-pvc
+    ReadOnly:   false
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-xwzp5:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             console-cong-chart-cassandra-0
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             <none>
+Labels:           app.kubernetes.io/component=cassandra
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  apps.kubernetes.io/pod-index=0
+                  controller-revision-hash=console-cong-chart-cassandra-866b646f6
+                  statefulset.kubernetes.io/pod-name=console-cong-chart-cassandra-0
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-25T08:33:37+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    StatefulSet/console-cong-chart-cassandra
+Containers:
+  cassandra:
+    Image:       cassandra:4.1.3
+    Ports:       9160/TCP, 9042/TCP
+    Host Ports:  0/TCP, 0/TCP
+    Limits:
+      cpu:     2
+      memory:  1Gi
+    Requests:
+      cpu:     1
+      memory:  1Gi
+    Environment:
+      CASSANDRA_START_RPC:          true
+      CASSANDRA_BROADCAST_ADDRESS:   (v1:status.podIP)
+    Mounts:
+      /var/lib/cassandra from cassandra-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-t8pwj (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  cassandra-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  cassandra-data-console-cong-chart-cassandra-0
+    ReadOnly:   false
+  kube-api-access-t8pwj:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason             Age                    From                Message
+  ----     ------             ----                   ----                -------
+  Warning  FailedScheduling   7m53s (x382 over 31h)  default-scheduler   0/9 nodes are available: 9 Insufficient cpu. preemption: 0/9 nodes are available: 9 No preemption victims found for incoming pod.
+  Normal   NotTriggerScaleUp  27s (x11227 over 31h)  cluster-autoscaler  Pod didn't trigger scale-up:
+
+
+Name:             console-cong-chart-consul-6ffc6c7584-srnff
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-le2e/10.0.0.41
+Start Time:       Sat, 25 Oct 2025 08:33:52 +0000
+Labels:           app.kubernetes.io/component=consul
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=6ffc6c7584
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-25T08:33:38+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Running
+IP:               10.144.6.31
+IPs:
+  IP:           10.144.6.31
+Controlled By:  ReplicaSet/console-cong-chart-consul-6ffc6c7584
+Containers:
+  consul:
+    Container ID:  containerd://18aa378ff05477c1a38aaaf3d27ba435379e61d1466769c9941516f9e1000239
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul:1.19.2
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/consul@sha256:86b87ad1d24ec75f25eabc9fa47399995331b2913c40685180fdc7d03ffc1f78
+    Ports:         8500/TCP, 8300/TCP, 8301/TCP, 8301/UDP
+    Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/UDP
+    Command:
+      consul
+    Args:
+      agent
+      -dev
+      -ui
+      -client=0.0.0.0
+      -advertise=$(HOST_IP)
+    State:          Running
+      Started:      Sat, 25 Oct 2025 08:34:13 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      HOST_IP:   (v1:status.hostIP)
+    Mounts:
+      /consul/config/consul.json from consul-config (rw,path="consul.json")
+      /consul/data from consul-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hwgsh (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  consul-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-consul-config
+    Optional:  false
+  consul-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-consul-data-pvc
+    ReadOnly:   false
+  kube-api-access-hwgsh:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             console-cong-chart-documents-66994b6b8c-zdblk
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-fdbf/10.0.0.35
+Start Time:       Sat, 25 Oct 2025 08:33:51 +0000
+Labels:           app.kubernetes.io/component=documents
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=66994b6b8c
+Annotations:      <none>
+Status:           Running
+IP:               10.144.9.5
+IPs:
+  IP:           10.144.9.5
+Controlled By:  ReplicaSet/console-cong-chart-documents-66994b6b8c
+Containers:
+  documents:
+    Container ID:   containerd://1e327a60f246eda2fd0920ce5050438d8be7898082088b0679db49c890b6a7e2
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents:3.0.0
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/documents@sha256:933574ccfe09873a12b30c31213d646dc38c632fd82a581837f69c16ca238911
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sat, 25 Oct 2025 08:33:56 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:  console-cong-chart-consul
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-7q7qq (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-7q7qq:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             console-cong-chart-garbage-collector-56d674765d-mwgtw
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-m6s6/10.0.0.39
+Start Time:       Sat, 25 Oct 2025 08:33:51 +0000
+Labels:           app.kubernetes.io/component=garbage-collector
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=56d674765d
+Annotations:      <none>
+Status:           Running
+IP:               10.144.2.21
+IPs:
+  IP:           10.144.2.21
+Controlled By:  ReplicaSet/console-cong-chart-garbage-collector-56d674765d
+Containers:
+  garbage-collector:
+    Container ID:  containerd://c7d454cbd0a3dc6b771670c79bb159652df48b15e7fe4ebfd72f813b81b9470e
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector:3.0.0
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector@sha256:cc60c13d533520c729430a2d078fa022c7ad2fca2e2311abb7792e05335138d6
+    Port:          10127/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/garbage-collector
+      -Dmaana.tableGarbageCollector.pollingInterval=4m
+      -Dmaana.kindGarbageCollector.pollingInterval=4m
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+      -Dmaana.jobLogGarbageCollector.pollingInterval=6m
+      -Dmaana.jobLogGarbageCollector.maxJobLogAge=15m
+      -Dmaana.metaIndexGarbageCollector.pollingInterval=4h
+      -Dmaana.jobGarbageCollector.maxJobAge=15m
+      -Dmaana.jobGarbageCollector.pollingInterval=5m
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    143
+      Started:      Sun, 26 Oct 2025 16:22:13 +0000
+      Finished:     Sun, 26 Oct 2025 16:23:12 +0000
+    Ready:          False
+    Restart Count:  534
+    Liveness:       http-get http://:10127/healthz delay=15s timeout=1s period=20s #success=1 #failure=3
+    Readiness:      http-get http://:10127/readyz delay=5s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      CONSUL_HOST:  console-cong-chart-consul
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-wkwnd (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-wkwnd:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                    From     Message
+  ----     ------     ----                   ----     -------
+  Warning  Unhealthy  11m (x1588 over 31h)   kubelet  Liveness probe failed: Get "http://10.144.2.21:10127/healthz": dial tcp 10.144.2.21:10127: connect: connection refused
+  Normal   Killing    11m (x530 over 31h)    kubelet  Container garbage-collector failed liveness probe, will be restarted
+  Normal   Pulled     4m59s (x533 over 31h)  kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/garbage-collector:3.0.0" already present on machine
+  Warning  BackOff    100s (x6494 over 31h)  kubelet  Back-off restarting failed container garbage-collector in pod console-cong-chart-garbage-collector-56d674765d-mwgtw_console-app(99525a58-ab3f-4597-a5d2-3c609d9967ed)
+
+
+Name:             console-cong-chart-job-executor-68c97d59ff-qc8vq
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-f37b357d-093n/10.0.0.38
+Start Time:       Sat, 25 Oct 2025 08:33:50 +0000
+Labels:           app.kubernetes.io/component=job-executor
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=68c97d59ff
+Annotations:      <none>
+Status:           Running
+IP:               10.144.4.21
+IPs:
+  IP:           10.144.4.21
+Controlled By:  ReplicaSet/console-cong-chart-job-executor-68c97d59ff
+Containers:
+  job-executor:
+    Container ID:  containerd://1b34a586bdf13d394295aa1d35dc79fe77c4f553e201cd0621267673670d8cb6
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:3.0.0
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor@sha256:e2a41cd2035249374a80032e26122c0e87a8b4040768c0562224ee237d162ec8
+    Port:          10200/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/job-executor
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Sun, 26 Oct 2025 16:22:34 +0000
+      Finished:     Sun, 26 Oct 2025 16:24:19 +0000
+    Ready:          False
+    Restart Count:  275
+    Environment:
+      CONSUL_HOST:   console-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/docker/data from data (rw)
+      /opt/docker/lib/compute-connectors from compute-connectors (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-4npr9 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  compute-connectors:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-compute-connectors-pvc
+    ReadOnly:   false
+  data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-data-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-4npr9:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                     From     Message
+  ----     ------   ----                    ----     -------
+  Normal   Created  10m (x275 over 31h)     kubelet  Created container: job-executor
+  Warning  BackOff  4m35s (x6353 over 31h)  kubelet  Back-off restarting failed container job-executor in pod console-cong-chart-job-executor-68c97d59ff-qc8vq_console-app(f6fb87a6-52b5-4955-8ee2-b09b85af7b7d)
+  Normal   Pulled   3m24s (x275 over 31h)   kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/job-executor:3.0.0" already present on machine
+
+
+Name:             console-cong-chart-kgservice-7c99dd9f45-hpxfw
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-le2e/10.0.0.41
+Start Time:       Sat, 25 Oct 2025 08:33:50 +0000
+Labels:           app.kubernetes.io/component=kgservice
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=7c99dd9f45
+Annotations:      <none>
+Status:           Running
+IP:               10.144.6.29
+IPs:
+  IP:           10.144.6.29
+Controlled By:  ReplicaSet/console-cong-chart-kgservice-7c99dd9f45
+Containers:
+  kgservice:
+    Container ID:  containerd://c458b14ac16cfda5cbc843f0729262f45e8fd070eb59fcd7503f56dced9fc210
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice:3.0.0
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice@sha256:e7cd2273704220c75dbd3c5261c3f3b4d004bcc9fa9f310cb07120b907a42c52
+    Port:          10124/TCP
+    Host Port:     0/TCP
+    Command:
+      bin/kgservice
+    Args:
+      -Dlog4j.configurationFile=/opt/log4j2.xml
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Sun, 26 Oct 2025 16:22:30 +0000
+      Finished:     Sun, 26 Oct 2025 16:24:15 +0000
+    Ready:          False
+    Restart Count:  276
+    Environment:
+      CONSUL_HOST:   console-cong-chart-consul
+      SECURE_VAULT:  false
+    Mounts:
+      /maana_share from maana-share (rw)
+      /opt/log4j2.xml from log4j-config (rw,path="log4j2.xml")
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-8rxgl (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  log4j-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-log4j-config
+    Optional:  false
+  kube-api-access-8rxgl:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                    From     Message
+  ----     ------   ----                   ----     -------
+  Normal   Created  10m (x276 over 31h)    kubelet  Created container: kgservice
+  Normal   Pulled   3m28s (x276 over 31h)  kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/kgservice:3.0.0" already present on machine
+  Warning  BackOff  103s (x6381 over 31h)  kubelet  Back-off restarting failed container kgservice in pod console-cong-chart-kgservice-7c99dd9f45-hpxfw_console-app(71e73e99-31ba-43fe-8232-0ed511e14c8e)
+
+
+Name:             console-cong-chart-mysql-85999795b-6z297
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-wztb/10.0.0.40
+Start Time:       Sat, 25 Oct 2025 08:33:55 +0000
+Labels:           app.kubernetes.io/component=mysql
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=85999795b
+Annotations:      <none>
+Status:           Running
+IP:               10.144.7.17
+IPs:
+  IP:           10.144.7.17
+Controlled By:  ReplicaSet/console-cong-chart-mysql-85999795b
+Containers:
+  mysql:
+    Container ID:  containerd://5971fc72d42dd3692510c2a88d80bab006cc06426002ecd6d5f89ead5beff6de
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql:5.7.21
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql@sha256:12e70236ec8be07b87a95008a22deb0a2a6289ac81d852e622ea13e8311cec64
+    Port:          3306/TCP
+    Host Port:     0/TCP
+    Args:
+      --lower_case_table_names=1
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Sun, 26 Oct 2025 16:24:10 +0000
+      Finished:     Sun, 26 Oct 2025 16:24:10 +0000
+    Ready:          False
+    Restart Count:  378
+    Limits:
+      cpu:     1
+      memory:  512Mi
+    Requests:
+      cpu:     500m
+      memory:  512Mi
+    Environment:
+      MYSQL_ROOT_PASSWORD:  <set to the key 'root-password' in secret 'console-cong-chart-mysql-secrets'>  Optional: false
+      MYSQL_DATABASE:       uaa
+      MYSQL_USER:           uaa
+      MYSQL_PASSWORD:       <set to the key 'user-password' in secret 'console-cong-chart-mysql-secrets'>  Optional: false
+    Mounts:
+      /var/lib/mysql from mysql-data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-njstt (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  mysql-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-mysql-data-pvc
+    ReadOnly:   false
+  kube-api-access-njstt:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                    From     Message
+  ----     ------   ----                   ----     -------
+  Normal   Pulled   108s (x379 over 31h)   kubelet  Container image "us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/mysql:5.7.21" already present on machine
+  Normal   Created  108s (x379 over 31h)   kubelet  Created container: mysql
+  Warning  BackOff  107s (x8806 over 31h)  kubelet  Back-off restarting failed container mysql in pod console-cong-chart-mysql-85999795b-6z297_console-app(f2813c8b-0df5-4be7-8b85-3c36594e3b98)
+
+
+Name:             console-cong-chart-nginx-69df8cd555-nhd9w
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-f37b357d-093n/10.0.0.38
+Start Time:       Sat, 25 Oct 2025 08:33:51 +0000
+Labels:           app.kubernetes.io/component=nginx
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=69df8cd555
+Annotations:      <none>
+Status:           Running
+IP:               10.144.4.22
+IPs:
+  IP:           10.144.4.22
+Controlled By:  ReplicaSet/console-cong-chart-nginx-69df8cd555
+Containers:
+  nginx:
+    Container ID:   containerd://eb3aac5726558b08ddd89b23e13af86e42cf5dee79a2d56debe43493a3c444d5
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx:1.26.3
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/nginx@sha256:9294a112f3f2f7dce1aed3ea88e4bef623170fef18a46b7e5f7fe386b293d4b5
+    Ports:          8181/TCP, 8443/TCP
+    Host Ports:     0/TCP, 0/TCP
+    State:          Running
+      Started:      Sat, 25 Oct 2025 08:33:52 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      PROXY_PORT:   8181
+      CONSUL_HOST:  console-cong-chart-consul
+    Mounts:
+      /etc/consul-templates/nginx.conf.ctmpl from nginx-config-template (rw,path="nginx.conf.ctmpl")
+      /self-ssl from nginx-certs (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-qm4dk (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  nginx-config-template:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-nginx-config-template
+    Optional:  false
+  nginx-certs:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  console-cong-chart-nginx-certs
+    Optional:    false
+  kube-api-access-qm4dk:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             console-cong-chart-saq-c49cd4b98-4sllh
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-be30a3d2-le2e/10.0.0.41
+Start Time:       Sat, 25 Oct 2025 08:33:55 +0000
+Labels:           app.kubernetes.io/component=saq
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=c49cd4b98
+Annotations:      cloud.google.com/cluster_autoscaler_unhelpable_since: 2025-10-25T08:33:45+0000
+                  cloud.google.com/cluster_autoscaler_unhelpable_until: Inf
+Status:           Running
+IP:               10.144.6.30
+IPs:
+  IP:           10.144.6.30
+Controlled By:  ReplicaSet/console-cong-chart-saq-c49cd4b98
+Containers:
+  saq:
+    Container ID:  containerd://95cfef87b2a044e63f0299df08471e8215672e112c6eb543ccb25c5d6b0c75ca
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq:3.0.0
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/saq@sha256:b6a56e69f1abcf255ae5dbc690102ed84ed1706029f4d0a50f0db863ecb4ae4a
+    Port:          32123/TCP
+    Host Port:     0/TCP
+    Command:
+      /saq_run.sh
+    Args:
+      start
+      --config
+      /saq.cfg
+      --logLevel
+      DEBUG
+      --basePath
+      /SAQ
+    State:          Running
+      Started:      Sat, 25 Oct 2025 08:34:11 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      CONSUL_HOST:         console-cong-chart-consul
+      SAQ_ADVERTISE_HOST:   (v1:status.podIP)
+    Mounts:
+      /SAQ from saq-data (rw)
+      /maana_share from maana-share (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-9fjfn (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  saq-data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-saq-data-pvc
+    ReadOnly:   false
+  maana-share:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  console-cong-chart-maana-share-pvc
+    ReadOnly:   false
+  kube-api-access-9fjfn:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             console-cong-chart-uaa-7964f569bf-6zjgt
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-vdze/10.0.0.34
+Start Time:       Sat, 25 Oct 2025 08:33:42 +0000
+Labels:           app.kubernetes.io/component=uaa
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=7964f569bf
+Annotations:      <none>
+Status:           Running
+IP:               10.144.8.16
+IPs:
+  IP:           10.144.8.16
+Controlled By:  ReplicaSet/console-cong-chart-uaa-7964f569bf
+Containers:
+  uaa:
+    Container ID:   containerd://b424f3f24d4c1b1e54625cd0d2bcbb4a9603684628b0b27e35804ed0ac886d3f
+    Image:          us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa:1.0
+    Image ID:       us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/cloudbreak-uaa@sha256:3d73ee3dd935921a4c53412e7870038f567f00d5222920c48100192c46ac85d6
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sat, 25 Oct 2025 08:33:55 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  512Mi
+    Requests:
+      cpu:     500m
+      memory:  512Mi
+    Environment:
+      DATABASE_HOST:      console-cong-chart-mysql
+      DATABASE_USER:      uaa
+      DATABASE_PASSWORD:  <set to the key 'user-password' in secret 'console-cong-chart-mysql-secrets'>  Optional: false
+      DATABASE_NAME:      uaa
+      OPENLDAP_HOST:      openldap1
+    Mounts:
+      /uaa/ from uaa-config (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-g7xhv (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  uaa-config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      console-cong-chart-uaa-config
+    Optional:  false
+  kube-api-access-g7xhv:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+
+
+Name:             console-cong-chart-vault-7c7498c9f8-z4b6w
+Namespace:        console-app
+Priority:         0
+Service Account:  console-cong-chart
+Node:             gke-primary-gke-clus-primary-node-poo-dc619f79-3iav/10.0.0.33
+Start Time:       Sat, 25 Oct 2025 08:33:50 +0000
+Labels:           app.kubernetes.io/component=vault
+                  app.kubernetes.io/instance=console
+                  app.kubernetes.io/name=cong-chart
+                  pod-template-hash=7c7498c9f8
+Annotations:      <none>
+Status:           Running
+IP:               10.144.5.21
+IPs:
+  IP:           10.144.5.21
+Controlled By:  ReplicaSet/console-cong-chart-vault-7c7498c9f8
+Containers:
+  vault:
+    Container ID:  containerd://769a0ae096e8b6a82ab68595f99e1a7b0f3b87172d956862e13721cc23a72571
+    Image:         us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault:1.0.2
+    Image ID:      us-docker.pkg.dev/sparkcognition-neon-dev/engineering/neon/vault@sha256:a233ac3c7a0866959de7865f3ef382448aa9f814c0e96f6139d5b35589126a24
+    Port:          8200/TCP
+    Host Port:     0/TCP
+    Command:
+      vault
+    Args:
+      server
+      -dev
+    State:          Running
+      Started:      Sat, 25 Oct 2025 08:33:50 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      VAULT_DEV_ROOT_TOKEN_ID:  <set to the key 'root-token' in secret 'console-cong-chart-vault-secrets'>  Optional: false
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-654pv (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-654pv:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
