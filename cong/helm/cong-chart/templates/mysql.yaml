@@ -41,11 +41,11 @@ spec:
           imagePullPolicy: {{ .Values.mysql.image.pullPolicy }}
           resources:
             requests:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: "250m"
+              memory: "256Mi"
             limits:
-              cpu: "1000m"
-              memory: "512Mi"
+              cpu: "500m"
+              memory: "256Mi"
           args:
             - "--lower_case_table_names=1"
           env:
