@@ -1,11 +1,9 @@
+{{- if .Values.filestore.createPvs }}
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: maana-filestore
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "-20"
 provisioner: filestore.csi.storage.gke.io
 volumeBindingMode: Immediate
 allowVolumeExpansion: true
@@ -17,9 +15,6 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: maana-filestore-pv
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "-20"
 spec:
   capacity:
     storage: 10Gi
@@ -40,9 +35,6 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: maana-filestore-pv-compute-connectors
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "-20"
 spec:
   capacity:
     storage: 10Gi
@@ -63,9 +55,6 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: maana-filestore-pv-data
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "-20"
 spec:
   capacity:
     storage: 1Gi
@@ -81,4 +70,4 @@ spec:
       volume: maana_share_pvc
       protocol: nfsv3
   storageClassName: maana-filestore
-
+{{- end }}

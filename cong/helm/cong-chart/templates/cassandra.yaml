@@ -4,9 +4,6 @@ kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-cassandra
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "-20"
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: cassandra
@@ -26,9 +23,6 @@ kind: StatefulSet
 metadata:
   namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-cassandra
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "-20"
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: cassandra
@@ -44,7 +38,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: cassandra
     spec:
-      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "cong-chart.fullname" . }}
       containers:
         - name: cassandra
           image: "{{ .Values.cassandra.image.repository }}:{{ .Values.cassandra.image.tag | default .Chart.AppVersion }}"

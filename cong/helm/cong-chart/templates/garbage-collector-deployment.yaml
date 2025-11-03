@@ -20,7 +20,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: garbage-collector
     spec:
-      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "cong-chart.fullname" . }}
       containers:
         - name: garbage-collector
           image: "{{ .Values.garbageCollector.image.repository }}:{{ .Values.garbageCollector.image.tag }}"
