@@ -35,7 +35,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: kgservice
     spec:
-      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "cong-chart.fullname" . }}
       containers:
         - name: kgservice
           image: "{{ .Values.kgservice.image.repository }}:{{ .Values.kgservice.image.tag }}"

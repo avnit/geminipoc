@@ -6,6 +6,6 @@ output "gke_cluster_endpoint" {
   value = google_container_cluster.primary.endpoint
 }
 
-output "cloud_sql_instance_name" {
-  value = google_sql_database_instance.mysql.name
+output "filestore_ip_address" {
+  value = google_filestore_instance.main.networks[0].ip_addresses[0]
 }

@@ -35,7 +35,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: vault
     spec:
-      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "cong-chart.fullname" . }}
       containers:
         - name: vault
           image: "{{ .Values.vault.image.repository }}:{{ .Values.vault.image.tag | default .Chart.AppVersion }}"

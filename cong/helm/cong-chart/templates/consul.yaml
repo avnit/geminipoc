@@ -4,9 +4,6 @@ kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-consul
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "-20"
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: consul
@@ -31,9 +28,6 @@ kind: Deployment
 metadata:
   namespace: {{ .Values.namespace }}
   name: {{ include "cong-chart.fullname" . }}-consul
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "-20"
   labels:
     {{- include "cong-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: consul
@@ -49,7 +43,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: consul
     spec:
-      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "cong-chart.fullname" . }}
       containers:
         - name: consul
           image: "{{ .Values.consul.image.repository }}:{{ .Values.consul.image.tag | default .Chart.AppVersion }}"

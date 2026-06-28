@@ -14,7 +14,7 @@ metadata:
 spec:
   template:
     spec:
-      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "cong-chart.fullname" . }}
       initContainers:
         - name: wait-for-consul
           image: busybox:1.28

@@ -20,7 +20,7 @@ spec:
         {{- include "cong-chart.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: documents
     spec:
-      serviceAccountName: {{ include "cong-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "cong-chart.fullname" . }}
       containers:
         - name: documents
           image: "{{ .Values.documents.image.repository }}:{{ .Values.documents.image.tag | default .Chart.AppVersion }}"
